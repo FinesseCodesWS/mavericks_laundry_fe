@@ -1,0 +1,55 @@
+{
+  "logo": {
+    "path": "/dashboard",
+    "src": "images/logo.webp",
+    "alt": "blue",
+    "name": "hotash"
+  },
+  "pattern": {
+    "src": "images/pattern.webp",
+    "alt": "line-pattern"
+  },
+  "title": "Login to Hotash",
+  "input": [
+    {
+      "icon": "phone",
+      "name": "phoneNumber",
+      "type": "number",
+      "placeholder": "Enter your phone number",
+      "fieldSize": "w-100 h-sm"
+    },
+    {
+      "icon": "lock",
+      "name": "password",
+      "type": "password",
+      "placeholder": "Enter your password",
+      "fieldSize": "w-100 h-sm",
+      "passwordVisible": true
+    }
+  ],
+  "inputForgot": [
+    {
+      "icon": "phone",
+      "type": "number",
+      "placeholder": "Enter your phone number",
+      "fieldSize": "w-100 h-sm"
+    }
+  ],
+  "button": {
+    "type": "button",
+    "text": "sign in",
+    "fieldSize": "h-sm"
+  },
+  "forgot": {
+    "path": "/forgotpassword",
+    "text": "Login with password"
+  },
+  "divide": {
+    "text": "or"
+  },
+  "navigate": {
+    "title": "Don't have an account?",
+    "path": "/register",
+    "text": "Create account"
+  }
+}

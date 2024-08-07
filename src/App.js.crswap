@@ -1,0 +1,354 @@
+import { useEffect, useState } from "react";
+import { ThemeProvider } from "./context/Themes";
+import { LoaderProvider } from "./context/Preloader";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Overview, Documentation, ChangeLog, Error } from "./pages/supports";
+import {
+  Avatars,
+  Alerts,
+  Buttons,
+  Charts,
+  Tables,
+  Fields,
+  Headings,
+  Colors,
+} from "./pages/blocks";
+import {
+  Ecommerce,
+  Analytics,
+  CRM,
+  ForgotPassword,
+  Register,
+  Login,
+  LoginForgot,
+  UserList,
+  UserProfile,
+  MyAccount,
+  ProductList,
+  ProductView,
+  ProductUpload,
+  InvoiceList,
+  InvoiceDetails,
+  OrderList,
+  Message,
+  Notification,
+  BlankPage,
+  Settings,
+} from "./pages/master";
+import axios from "./axios";
+import { useSelector, useDispatch } from "react-redux";
+
+const getStaffs = {
+  status: "success",
+  staff_count: 2,
+  all_staff: [
+    {
+      first_name: "jon",
+      last_name: "doe",
+      staff_id: "ID5574064887",
+      phone_number: "08067105592",
+      activated: true,
+      verification_code: "5245116",
+      role: "sales",
+      createdAt: "2022-07-29T09:47:44.891Z",
+      updatedAt: "2022-07-29T10:10:36.547Z",
+      __v: 0,
+      address: "heaven's gate avenue",
+      email: "ask@google.com",
+      image: "image link",
+    },
+    {
+      first_name: "super",
+      last_name: "admin",
+      staff_id: "ID234234234",
+      phone_number: "08067105592",
+      email: "super@bakery.ng",
+      image: "none",
+      address: "Heaven avenue, lagos",
+      activated: true,
+      role: "super admin",
+      createdAt: "2022-07-29T09:42:23.077Z",
+      updatedAt: "2022-07-29T09:42:23.077Z",
+      __v: 0,
+    },
+  ],
+};
+const getInvoices = {
+  status: "success",
+  data: {
+    invoiceList: [
+      {
+        _id: "63df04101f92bd5907d997dc",
+        invoiceId: "INV9354051798",
+        createdBy: {
+          _id: "63def7fc3f61448230d32e13",
+          role: "cashier",
+        },
+        items: [
+          {
+            _id: "63df040f1f92bd5907d997d8",
+            salesId: "SID0751772587",
+            createdBy: "63def7fc3f61448230d32e13",
+            productName: "cake",
+            price_per_unit: 400,
+            quantity: 2,
+            date: "Sun Feb 05 2023",
+            createdAt: "2023-02-05T01:19:11.982Z",
+            updatedAt: "2023-02-05T01:19:11.982Z",
+            total_price: 800,
+            month: "Feb 2023",
+            week: 6,
+            __v: 0,
+            id: "63df040f1f92bd5907d997d8",
+          },
+          {
+            _id: "63df040f1f92bd5907d997d9",
+            salesId: "SID2821369980",
+            createdBy: "63def7fc3f61448230d32e13",
+            productName: "water",
+            price_per_unit: 10,
+            quantity: 12,
+            date: "Sun Feb 05 2023",
+            createdAt: "2023-02-05T01:19:11.983Z",
+            updatedAt: "2023-02-05T01:19:11.983Z",
+            total_price: 120,
+            month: "Feb 2023",
+            week: 6,
+            __v: 0,
+            id: "63df040f1f92bd5907d997d9",
+          },
+        ],
+        date: "Sun Feb 05 2023",
+        createdAt: "2023-02-05T01:19:12.008Z",
+        updatedAt: "2023-02-05T01:19:12.008Z",
+        totalPrice: 120,
+        month: "Feb 2023",
+        week: 6,
+        __v: 0,
+        id: "63df04101f92bd5907d997dc",
+      },
+    ],
+  },
+};
+const getListsData = {
+  status: "success",
+  data: [
+    {
+      image: {
+        link: "https://cassava.com",
+        key: "xxxxxxx",
+      },
+      _id: "63de2f2e6942f76405f9caac",
+      itemName: "WalnutRR",
+      category: "FLOWER",
+      createdBy: "63dd8d5bee7c70320d00c6ba",
+      unitPrice: 1400,
+      createdAt: "2023-02-04T10:10:54.848Z",
+      updatedAt: "2023-02-04T10:10:54.848Z",
+      __v: 0,
+    },
+  ],
+};
+
+const getRevenues = {
+  status: "success",
+  data: {
+    sales: [
+      {
+        _id: "Sun Feb 05 2023",
+        revenue: 22800,
+        count: 86,
+      },
+    ],
+  },
+};
+
+const getSales = {
+  status: "success",
+  data: {
+    salesList: [
+      {
+        _id: "63def13653e0d7ab61491219",
+        salesId: "SID6697394843",
+        productName: "cake",
+        price_per_unit: 400,
+        quantity: 2,
+        date: "Sun Feb 05 2023",
+        createdAt: "2023-02-04T23:58:46.181Z",
+        updatedAt: "2023-02-04T23:58:46.181Z",
+        total_price: 800,
+        month: "Feb 2023",
+        week: 6,
+        __v: 0,
+        id: "63def13653e0d7ab61491219",
+      },
+    ],
+  },
+};
+
+export default function App() {
+  const [filter, setFilter] = useState("month");
+  const dispatch = useDispatch();
+  const staffs = useSelector((state) => state.staff.staffs);
+  const invoices = useSelector((state) => state.invoice.invoices);
+  const menus = useSelector((state) => state.menu.menus);
+  const revenues = useSelector((state) => state.revenue.revenues);
+  const sales = useSelector((state) => state.sale.sales);
+
+  // GET ALL STAFFS
+  useEffect(() => {
+    const getAllStaffs = async () => {
+      dispatch({
+        type: "GET_STAFFS",
+        payload: getStaffs.all_staff,
+      });
+      try {
+        const response = await axios.get("/staff/all");
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllStaffs();
+  }, [dispatch]);
+
+  // GET ALL INVOICES
+  useEffect(() => {
+    const getAllInvoices = async () => {
+      dispatch({
+        type: "GET_INVOICES",
+        payload: getInvoices.data.invoiceList,
+      });
+      try {
+        const response = await axios.get(
+          `/sales/invoices?page=&size=&filter=month&month=Feb 2023`
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllInvoices();
+  }, [dispatch]);
+
+  // GET ALL MENU LISTS
+  useEffect(() => {
+    const getLists = async () => {
+      dispatch({
+        type: "GET_MENUS",
+        payload: getListsData.data,
+      });
+      try {
+        const response = await axios.get("/menu/list");
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLists();
+  }, [dispatch]);
+
+  // GET ALL REVENUES
+  useEffect(() => {
+    const getLists = async () => {
+      dispatch({
+        type: "GET_REVENUES",
+        payload: getRevenues.data.sales,
+      });
+      try {
+        const response = await axios.get(
+          "/analytics/revenue?page=&size=&filter=date"
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLists();
+  }, [dispatch]);
+
+  // GET ALL SALES
+  useEffect(() => {
+    const getLists = async () => {
+      dispatch({
+        type: "GET_SALES",
+        payload: getSales.data.salesList,
+      });
+      try {
+        const response = await axios.get(
+          "sales?page=&size=&filter=month&month=Feb 2023"
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLists();
+  }, [dispatch]);
+
+  const totalCost = sales.reduce(
+    (acc, array) =>
+      acc + array.reduce((arrayAcc, obj) => arrayAcc + obj.total_price, 0),
+    0
+  );
+
+  return (
+    <ThemeProvider>
+      <LoaderProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* master Pages */}
+            <Route
+              path="/dashboard"
+              element={
+                <Ecommerce
+                  staffs={staffs}
+                  filter={filter}
+                  setFilter={setFilter}
+                  invoices={invoices}
+                  menus={menus}
+                  revenues={revenues}
+                  sales={totalCost}
+                />
+              }
+            />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/crm" element={<CRM />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login-forgot" element={LoginForgot} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/user-list" element={<UserList />} />
+            <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/my-account" element={<MyAccount />} />
+            <Route path="/product-list" element={<ProductList />} />
+            <Route path="/product-view" element={<ProductView />} />
+            <Route path="/product-upload" element={<ProductUpload />} />
+            <Route path="/invoice-list" element={<InvoiceList />} />
+            <Route path="/invoice-details" element={<InvoiceDetails />} />
+            <Route path="/order-list" element={<OrderList />} />
+            <Route path="/message" element={<Message />} />
+            <Route path="/notification" element={<Notification />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/blank-page" element={<BlankPage />} />
+
+            {/* Blocks Pages */}
+            <Route path="/headings" element={<Headings />} />
+            <Route path="/buttons" element={<Buttons />} />
+            <Route path="/avatars" element={<Avatars />} />
+            <Route path="/colors" element={<Colors />} />
+            <Route path="/charts" element={<Charts />} />
+            <Route path="/tables" element={<Tables />} />
+            <Route path="/fields" element={<Fields />} />
+            <Route path="/alerts" element={<Alerts />} />
+
+            {/* Supports Pages */}
+            <Route path="*" element={<Error />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/documentation" element={<Documentation />} />
+            <Route path="/changelog" element={<ChangeLog />} />
+          </Routes>
+        </BrowserRouter>
+      </LoaderProvider>
+    </ThemeProvider>
+  );
+}

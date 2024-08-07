@@ -1,0 +1,40 @@
+{
+    "pageTitle": "order list",
+    "breadcrumb": [
+        { "path": "/", "text": "home" },
+        { "text": "order-list" }
+    ],
+    "dotsMenu": {
+        "dots": "more_horiz",
+        "dropdown": [
+            { "icon": "edit", "text": "edit" },
+            { "icon": "delete", "text": "delete" },
+            { "icon": "download", "text": "download" }
+        ]
+    },
+    "float": [
+        { "title": "pending orders", "digit": "547", "icon": "pending", "variant": "lg purple" }, 
+        { "title": "shipped orders", "digit": "398", "icon": "local_shipping", "variant": "lg blue" },
+        { "title": "recieved orders", "digit": "605", "icon": "shopping_bag", "variant": "lg green" },
+        { "title": "cancelled orders", "digit": "249", "icon": "remove_circle", "variant": "lg red" }
+    ],
+    "filter":[
+        { "label": "show by", "option": ["12 row", "24 row", "36 row"] },
+        { "label": "status by", "option": ["pending", "shipped", "recieved", "cancelled"] },
+        { "label": "issued by", "type": "date" },
+        { "label": "search by", "type": "search", "placeholder": "id / name / email" }
+    ],
+    "table":{
+        "thead": ["client", "product", "amount", "payment", "status", "date time", "action"],
+        "tbody": [
+            {
+                "_id": "63ee7f7ee095b3e3a1b00752",
+                "phoneNumber": "08078653421",
+                "amount": 29400,
+                "createdAt": "2023-02-16T19:09:50.340Z",
+                "updatedAt": "2023-02-16T19:11:34.777Z",
+                "__v": 0
+            }
+        ]
+    }
+}

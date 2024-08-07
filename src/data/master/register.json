@@ -1,0 +1,62 @@
+{
+    "logo": {
+        "path": "/ecommerce",
+        "src": "images/logo.webp",
+        "alt": "blue",
+        "name": "hotash"
+    },
+    "pattern": { 
+        "src": "images/pattern.webp", 
+        "alt": "line-pattern" 
+    },
+    "title": {
+        "banner": "Laundry System",
+        "from": "Register a new account"
+    },
+    "descrip": "Attention all staff members! We encourage you to create an account on our website's admin dashboard to access important resources and tools. By doing so, you'll have the ability to manage your profile, update your information, and stay up-to-date on company transactions. It's quick, easy, and secure, so don't delay - sign up today and start taking advantage of everything our website has to offer!",
+    "anchor": { "icon": "home", "text": "Back to Home", "path": "/" },
+    "input": [
+        { 
+            "icon": "phone", 
+            "type": "number", 
+            "placeholder": "Enter your phone number",
+            "fieldSize": "h-sm"
+        },
+        { 
+            "icon": "lock", 
+            "type": "password", 
+            "placeholder": "Enter your password",
+            "fieldSize": "h-sm",
+            "passwordVisible" : true
+        },
+        { 
+            "icon": "verified_user", 
+            "type": "password", 
+            "placeholder": "Enter your code",
+            "fieldSize": "h-sm",
+            "passwordVisible" : true
+        }
+    ],
+    "checkLabel": "I agree to the all Terms & Condiotions",
+    "button": { "type": "button", "text": "sign up", "fieldSize": "h-sm" },
+    "divide": { "text": "or" },
+    "connect": [
+        { 
+            "path": "#", 
+            "classes": "twitter h-sm", 
+            "icon": "icofont-twitter", 
+            "text": "Continue with Twitter" 
+        },
+        { 
+            "path": "#", 
+            "classes": "facebook h-sm", 
+            "icon": "icofont-facebook", 
+            "text": "Continue with Facebook" 
+        }
+    ],
+    "navigate": {
+        "title": "Already have an account?",
+        "path": "/",
+        "text": "login"
+    }
+}
