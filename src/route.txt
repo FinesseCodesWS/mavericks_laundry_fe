@@ -1,0 +1,92 @@
+
+
+
+
+
+                    <BrowserRouter>
+                        <Routes>
+                            {/* master Pages */}
+
+
+
+                            <Route path="/" element={ !user ? <Login /> : <Ecommerce /> } />
+                                <Route path="/forgot-password" element={<ForgotPassword />} />
+                                <Route path="/register" element={<Register />} />
+
+                                {/* <Route path="/" element={ <Ecommerce /> } /> */}
+                                <Route path="/analytics" element={<Analytics /> } />
+                                <Route path="/crm" element={<CRM /> } />
+                                {/* <Route path="/login" element={<Login />} /> */}
+                                <Route path="/complete_registration" element={<CompleteAccount/>} />
+                                <Route path="/user-list" element={<UserList />} />
+                                <Route path="/user-profile" element={<UserProfile />} />
+                                <Route path="/my-account" element={<MyAccount />} />
+                                <Route path="/product-list" element={<ProductList />} />
+                                <Route path="/product-view" element={<ProductView />} />
+                                <Route path="/product-upload" element={<ProductUpload />} />
+                                <Route path="/new-orders" element={<NewSales />} />
+                                <Route path="/orders-list" element={<SalesList />} />
+                                <Route path="/sales-details" element={<SalesDetails />} />
+                                <Route path="/invoice-list" element={<InvoiceList />} />
+                                <Route path="/invoice-details" element={<InvoiceDetails />} />
+                                <Route path="/order-list" element={<OrderList />} />
+                                <Route path="/message" element={<Message />} />
+                                <Route path="/notification" element={<Notification />} />
+                                <Route path="/my-account" element={<Settings />} />
+                                <Route path="/blank-page" element={<BlankPage />} />
+
+                                {/* Blocks Pages */} 
+                                <Route path="/headings" element={<Headings />} />
+                                <Route path="/buttons" element={<Buttons />} />
+                                <Route path="/avatars" element={<Avatars />} />
+                                <Route path="/colors" element={<Colors />} />
+                                <Route path="/charts" element={<Charts />} />
+                                <Route path="/tables" element={<Tables />} />
+                                <Route path="/fields" element={<Fields />} />
+                                <Route path="/alerts" element={<Alerts />} />
+
+                                {/* Supports Pages */}
+                                <Route path="*" element={<Error />} />
+
+
+                   
+
+                            {/* <Route path="/" element={<Overview />} /> */}
+                            {/* <Route path="/documentation" element={<Documentation />} />
+                            <Route path="/changelog" element={<ChangeLog />} /> */}
+                        </Routes>
+                    </BrowserRouter>
+              
+
+
+
+
+NEWSALE TABLE DATA
+
+                      // { 
+        //     "item_name": { "icon": "edit", "text": "Apple PC fffffffffffffffff" },
+        //     "stock": "6.00", 
+        //     "quantity": "8", 
+        //     "price": "872", 
+        //     "discount": "10",
+        //     "subtotal": "5540", 
+        //     "delete": { "icon": "delete", "text": "delete" }
+        // },
+        // { 
+        //     "item_name": { "icon": "edit", "text": "Window PC" },
+        //     "stock": "6.00", 
+        //     "quantity": "8", 
+        //     "price": "872", 
+        //     "discount": "10",
+        //     "subtotal": "5540", 
+        //     "delete": { "icon": "delete", "text": "delete" }
+        // },
+        // { 
+        //     "item_name": { "icon": "edit", "text": "T-shirt" },
+        //     "stock": "6.00", 
+        //     "quantity": "8", 
+        //     "price": "872", 
+        //     "discount": "10",
+        //     "subtotal": "5540", 
+        //     "delete": { "icon": "delete", "text": "delete" }
+        // },

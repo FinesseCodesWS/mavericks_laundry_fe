@@ -1,0 +1,65 @@
+{
+    "logo": {
+        "path": "/ecommerce",
+        "src": "images/logo.webp",
+        "alt": "blue",
+        "name": "hotash"
+    },
+    "pattern": { 
+        "src": "images/pattern.webp", 
+        "alt": "line-pattern" 
+    },
+    "title": {
+        "banner": "Best ux/ui fashion ecommerce dashboard & admin panel",
+        "from": "Register a new account"
+    },
+    "descrip": "Elit Iusto dolore libero recusandae dolor dolores explicabo ullam cum facilis aperiam   alias odio quam excepturi molestiae omnis inventore. Repudiandae officia placeat amet consectetur dicta dolorem quo",
+    "anchor": { "icon": "home", "text": "Back to Home", "path": "/ecommerce" },
+    "input": [
+        { 
+            "icon": "phone", 
+            "type": "number", 
+            "placeholder": "Enter your number",
+            "fieldSize": "h-sm",
+            "name": "phoneNumber"
+        },
+        { 
+            "icon": "verified_user", 
+            "type": "number", 
+            "placeholder": "Enter the code",
+            "fieldSize": "h-sm",
+            "passwordVisible" : true,
+            "name": "code"
+        },
+        { 
+            "icon": "lock", 
+            "type": "password", 
+            "placeholder": "Enter your password",
+            "fieldSize": "h-sm",
+            "passwordVisible" : true,
+            "name": "password"
+        }
+    ],
+    "checkLabel": "I agree to the all Terms & Condiotions",
+    "button": { "type": "button", "text": "sign up", "fieldSize": "h-sm" },
+    "divide": { "text": "or" },
+    "connect": [
+        { 
+            "path": "#", 
+            "classes": "twitter h-sm", 
+            "icon": "icofont-twitter", 
+            "text": "Continue with Twitter" 
+        },
+        { 
+            "path": "#", 
+            "classes": "facebook h-sm", 
+            "icon": "icofont-facebook", 
+            "text": "Continue with Facebook" 
+        }
+    ],
+    "navigate": {
+        "title": "Already have an account?",
+        "path": "/login",
+        "text": "login"
+    }
+}

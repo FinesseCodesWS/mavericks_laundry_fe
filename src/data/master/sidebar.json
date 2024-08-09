@@ -1,0 +1,50 @@
+{
+    "navs": [
+        {
+            "title": "Pages",
+            "menu": [
+                { 
+                    "icon": "dashboard", 
+                    "text": "dashboard",
+                    "href": "/"
+                },
+              
+              
+                { 
+                    "icon": "store", 
+                    "text": "items",
+                    "href": "/items-list"
+                },
+
+                { 
+                    "href": "#",
+                    "icon": "article", 
+                    "text": "orders",
+                    "submenu": [
+                        { "href": "/new-orders", "text": "new orders" },
+                        { "href": "/orders-list", "text": "orders list" }
+                    ]
+                },
+                { 
+                    "icon": "layers", 
+                    "text": "invoices",
+                    "href": "/invoice-list"
+                },
+                { 
+                    "icon": "money", 
+                    "text": "Orders Inventory",
+                    "href": "/sales-inventory-list"
+                },
+                
+                { 
+                    "href": "/my-account",
+                    "icon": "settings", 
+                    "text": "Profile" 
+                }
+               
+            ]
+        }
+    ],
+    "button": { "icon": "lock", "path": "/login", "text": "logout" }
+
+}

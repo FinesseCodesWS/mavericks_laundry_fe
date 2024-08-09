@@ -1,0 +1,54 @@
+{
+    "logo": {
+        "path": "/ecommerce",
+        "src": "images/logo.webp",
+        "alt": "blue",
+        "name": "hotash"
+    },
+    "pattern": { 
+        "src": "images/pattern.webp", 
+        "alt": "line-pattern" 
+    },
+    "title": "Login to Maverick's",
+    "input": [
+        { 
+            "icon": "phone", 
+            "type": "number", 
+            "placeholder": "Enter your phone number",
+            "fieldSize": "w-100 h-sm",
+            "name": "phoneNumber"
+
+        },
+        { 
+            "icon": "lock", 
+            "type": "password", 
+            "placeholder": "Enter your password",
+            "fieldSize": "w-100 h-sm",
+            "passwordVisible" : true,
+            "name": "password"
+        }
+       
+    ],
+    "button": { "type": "button", "text": "sign in", "fieldSize": "h-sm" },
+    "forgot": { "path": "/forgot-password", "text": "forgot password?" },
+    "divide": { "text": "or" },
+    "connect": [
+        { 
+            "path": "#", 
+            "classes": "twitter h-sm", 
+            "icon": "icofont-twitter", 
+            "text": "Continue with Twitter" 
+        },
+        { 
+            "path": "#", 
+            "classes": "facebook h-sm", 
+            "icon": "icofont-facebook", 
+            "text": "Continue with Facebook" 
+        }
+    ],
+    "navigate": {
+        "title": "Don't have an account?",
+        "path": "/register",
+        "text": "register"
+    }
+}

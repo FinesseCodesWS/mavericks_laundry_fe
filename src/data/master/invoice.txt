@@ -1,0 +1,222 @@
+
+
+from invoice filter {
+       // { "label": "show by", "option": ["12 row", "24 row", "36 row"] },
+}
+
+
+
+
+from login.json
+
+third input field =>  {
+            "icon": "verified_user",
+            "fieldSize": "w-100 h-sm",
+            "option": ["select user role", "admin", "member", "client", "manager", "vendor"]
+        }
+
+
+
+
+
+
+from register =>         { 
+            "icon": "account_circle", 
+            "type": "text", 
+            "placeholder": "Enter your name",
+            "fieldSize": "h-sm"
+        },
+
+
+
+
+
+
+
+from side nav route =>   { 
+                    "icon": "lock", 
+                    "text": "authentication",
+                    "submenu": [
+                        { "href": "/login", "text": "login" },
+                        { "href": "/register", "text": "registration" },
+                        { "href": "/forgot-password", "text": "forgot password" }
+                    ]
+                },
+                  { 
+                    "icon": "account_circle", 
+                    "text": "users", 
+                    "badge": { "text": "hot", "variant": "red square" },
+                    "submenu": [
+                        { "href": "/user-list", "text": "user list" },
+                        { "href": "/user-profile", "text": "user profile" },
+                        { "href": "/my-account", "text": "my account" }
+                    ]
+                },
+
+                                { 
+                    "icon": "pix", 
+                    "text": "products",
+                    "badge": { "text": "new", "variant": "purple square" },
+                    "submenu": [
+                        { "href": "/product-list", "text": "product list" },
+                        { "href": "/product-view", "text": "product view" },
+                        { "href": "/product-upload", "text": "product upload" }
+                    ]
+                },
+                { 
+                    "href": "/order-list",
+                    "icon": "shopping_cart", 
+                    "text": "orders",
+                    "badge": { "text": "05", "variant": "primary round" }
+                },
+                 { 
+                    "href": "/blank-page",
+                    "icon": "class", 
+                    "text": "blank page" 
+                }
+
+
+                ,
+                
+                { 
+                    "href": "/message",
+                    "icon": "email", 
+                    "text": "customer"
+                },
+                { 
+                    "href": "/notification",
+                    "icon": "notifications", 
+                    "text": "notifications",
+                    "badge": { "text": "9+", "variant": "primary round" }
+                },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        {
+            "title": "blocks",
+            "menu": [
+                { 
+                    "href": "/alerts",
+                    "icon": "report", 
+                    "text": "alerts"
+                },
+                { 
+                    "href": "/avatars",
+                    "icon": "collections", 
+                    "text": "avatars"
+                },
+                {
+                    "href": "/headings",
+                    "icon": "text_fields", 
+                    "text": "headings"
+                },
+                { 
+                    "href": "/buttons",
+                    "icon": "mouse", 
+                    "text": "buttons"
+                },
+                { 
+                    "href": "/colors",
+                    "icon": "palette", 
+                    "text": "colors"
+                },
+                { 
+                    "href": "/charts",
+                    "icon": "donut_small", 
+                    "text": "charts"
+                },
+                {
+                    "href": "/fields",
+                    "icon": "feed", 
+                    "text": "fields"
+                },
+                { 
+                    "href": "/tables",
+                    "icon": "grid_on", 
+                    "text": "tables"
+                }
+            ]
+        },
+        {
+            "title": "supports",
+            "menu": [
+                {
+                    "href": "/",
+                    "icon": "streetview",
+                    "text": "overview"
+                },
+                { 
+                    "href": "/documentation",
+                    "icon": "menu_book", 
+                    "text": "Documentation"
+                },
+                { 
+                    "href": "/changelog",
+                    "icon": "layers", 
+                    "text": "change log",
+                    "badge": { "text": "v1.0", "variant": "primary square" }
+                }
+            ]
+        }
+
+
+
+
+product sub menu => "submenu": [
+                        { "href": "/product-list", "text": "product list" },
+                        { "href": "/product-view", "text": "product view" },
+                        { "href": "/product-upload", "text": "product upload" }
+                    ]
+
+invoice sub menu => =>,
+                    "submenu": [
+                        { "href": "/invoice-list", "text": "invoice list" },
+                        { "href": "/invoice-details", "text": "invoice details" }
+                    ]
+
+
+
+                      // "newPassword":"superman", "phoneNumber":"09012345674", "resetToken":"070702"
+
+
+invoice =>       { "title": "Total Received Amount", "digit": "$24,950.00", "icon": "account_balance", "variant": "lg yellow" },
+        { "title": "Total Sales Due", "digit": "$3,617.00", "icon": "pending", "variant": "lg red" } 
+
+
+
+
+
+
+
+            { "path": "/forgot-password", "icon": "privacy_tip", "text": "reset password" },
+
+
+
+
+
+
+
+
+
+
+
+
+              product  { 
+                    "icon": "pix", 
+                    "text": "products",
+                    "href": "/product-view"
+                    
+                },
