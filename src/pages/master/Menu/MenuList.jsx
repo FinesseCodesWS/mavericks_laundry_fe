@@ -591,10 +591,10 @@ export default function MenuList() {
                 <Col xl={12}>
 
                     <CardLayout>
-                        <Breadcrumb title={ "Clothing List" } subtitle={' view/search clothing item'}>
+                        <Breadcrumb title={ "Clothing Items" } subtitle={' view/search clothing item'}>
                             {data?.breadcrumb.map((item, index) => (
                                 <Item key={ index } className="mc-breadcrumb-item">
-                                    {item.path ? <Anchor className="mc-breadcrumb-link" href={ item.path }>{ item.text }</Anchor> : 'Menu' }
+                                    {item.path ? <Anchor className="mc-breadcrumb-link" href={ item.path }>{ item.text }</Anchor> : 'Items' }
                                 </Item>
                             ))}
                         </Breadcrumb>
@@ -605,7 +605,7 @@ export default function MenuList() {
                         <FloatCard 
                             variant = { item.variant }
                             digit = { item.digit }
-                            title = { "Total Clothes" }
+                            title = { "Total Clothing Items" }
                             icon = { item.icon }
                         />
                     </Col>
@@ -630,7 +630,7 @@ export default function MenuList() {
 
 
                         <div className="d-flex justify-content-between">
-                        <CardHeader title="Clothing List"/>
+                        <CardHeader title="Clothing Items"/>
 
 
                             <Dropdown bsPrefix="mc-dropdown">

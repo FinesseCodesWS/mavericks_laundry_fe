@@ -878,10 +878,10 @@ const getTrendingAnaliticsForYear = async (page, year, limit)=>{
                 <Col xl={12}>
 
                     <CardLayout>
-                        <Breadcrumb title={ "Sales Inventory List" } subtitle={' view/search sold item'}>
+                        <Breadcrumb title={ "Orders Inventory List" } subtitle={' view/search ordered item'}>
                             {data?.breadcrumb.map((item, index) => (
                                 <Item key={ index } className="mc-breadcrumb-item">
-                                    {item.path ? <Anchor className="mc-breadcrumb-link" href={ item.path }>{ item.text }</Anchor> : 'Sales Inventory' }
+                                    {item.path ? <Anchor className="mc-breadcrumb-link" href={ item.path }>{ item.text }</Anchor> : 'Orders Inventory' }
                                 </Item>
                             ))}
                         </Breadcrumb>
@@ -905,7 +905,7 @@ const getTrendingAnaliticsForYear = async (page, year, limit)=>{
                                 <FloatCard 
                                     variant = { item.variant }
                                     digit = { item.digit }
-                                    title = { item.title }
+                                    title = { "Total Quantity Ordered"}
                                     icon = { item.icon }
                                 />
                             )
@@ -918,7 +918,7 @@ const getTrendingAnaliticsForYear = async (page, year, limit)=>{
 
                         <div  className="d-flex justify-content-between">
                             <CardHeader 
-                            title="Sales Inventory List"/>
+                            title="Orders Inventory List"/>
                         <Dropdown bsPrefix="mc-dropdown">
                             <Dropdown.Toggle bsPrefix="mc-dropdown-toggle"><Icon style={{fontSize: '40px'}} type="more_horiz"></Icon ></Dropdown.Toggle>
                             <Dropdown.Menu align="end" className="mc-dropdown-paper">
