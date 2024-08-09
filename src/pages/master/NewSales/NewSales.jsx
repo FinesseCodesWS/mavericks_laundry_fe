@@ -329,7 +329,7 @@ const NewSales = () => {
     const res = await getAllMenuAction();
     if (res) {
 
-        const filteredMenu = await  res?.data?.filter(val => val?.quantity > 0)
+        const filteredMenu = await  res?.data;
 
 
 
@@ -389,7 +389,7 @@ const NewSales = () => {
 
 
         
-        const filteredMenu = await  res?.data?.filter(val => val?.quantity > 0)
+        const filteredMenu = await  res?.data;
 
         let vl = filteredMenu?.map((val) => {
           val["discount"] = 0;
@@ -655,9 +655,9 @@ const NewSales = () => {
 
   const addOrUpdateProduct = (product) => {
     const checkExistence = tableList?.tbody?.find((e) => e._id === product._id);
-
+    console.log(product)
     if (!checkExistence) {
-      if (product.quantity !== 0) {
+      // if (product.quantity !== 0) {
         let theProduct = { ...product };
         theProduct.quantity_bought = 1;
 
@@ -668,10 +668,10 @@ const NewSales = () => {
         setTableList(setValue);
 
         localStorage.setItem("salesLocalData", JSON.stringify(setValue));
-      }
+      // }
     } else {
       if (
-        product.quantity !== 0 &&
+        // product.quantity !== 0 &&
         product.quantity > checkExistence.quantity_bought
       ) {
         let setValue = {
@@ -767,7 +767,7 @@ const NewSales = () => {
     const product = tableList?.tbody?.find((e) => e._id === productId);
 
     if (isIncrement) {
-      if (product.quantity > product.quantity_bought) {
+      // if (product.quantity > product.quantity_bought) {
         product.quantity_bought++;
 
         let setValue = {
@@ -779,7 +779,7 @@ const NewSales = () => {
 
         setTableList(setValue);
         localStorage.setItem("salesLocalData", JSON.stringify(setValue));
-      }
+      // }
     } else {
       if (product.quantity_bought > 1) {
         product.quantity_bought--;
@@ -1237,26 +1237,26 @@ const NewSales = () => {
             }}
           >
             <div className="title-left">
-              <div>Sales POS</div>
+              <div>Laundry Orders</div>
               <div className="d-flex">
                 <span></span>
                 <Link to={"/orders-list"} className="text-white">
-                  <span style={{ fontSize: "16px" }}>Sales List</span>
+                  <span style={{ fontSize: "16px" }}>Orders List</span>
                 </Link>
               </div>
-              <div
+              {/* <div
                 className="d-flex align-items-center"
                 style={{ cursor: "pointer" }}
                 onClick={saveDraft}
               >
                 <span style={{ fontSize: "16px" }}>New Invoice</span>
-              </div>
+              </div> */}
               <div
                 className="d-flex align-items-center"
                 style={{ cursor: "pointer" }}
                 onClick={() => setAlModal(true)}
               >
-                <span style={{ fontSize: "16px" }}>New User</span>
+                <span style={{ fontSize: "16px" }}>New Customer</span>
               </div>
             </div>
 

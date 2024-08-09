@@ -193,7 +193,7 @@ invoice sub menu => =>,
 
 
 invoice =>       { "title": "Total Received Amount", "digit": "$24,950.00", "icon": "account_balance", "variant": "lg yellow" },
-        { "title": "Total Sales Due", "digit": "$3,617.00", "icon": "pending", "variant": "lg red" } 
+        { "title": "Total Orders Due", "digit": "$3,617.00", "icon": "pending", "variant": "lg red" } 
 
 
 

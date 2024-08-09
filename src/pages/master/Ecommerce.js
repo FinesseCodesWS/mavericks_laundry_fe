@@ -16,7 +16,7 @@ import { getAllSalesAction, getAllSalesByDateAction } from "../../API/sales";
 const analyticsHeroes =  [
     {
         "variant": "yellow",
-        "title": "Today Total Sales",
+        "title": "Today Total Orders",
         "number": "",
         "icon": "shopping_bag",
         "trend": "trending_up",
@@ -52,7 +52,7 @@ const analyticsHeroes =  [
     },
     {
         "variant": "green",
-        "title": "Total Sales",
+        "title": "Total Orders",
         "number": "",
         "icon": "shopping_bag",
         "trend": "trending_up",
@@ -150,7 +150,7 @@ const trending = {
 
 
 const todayTrending = {
-    "title": "Today Trending Sales",
+    "title": "Today Trending Orders",
     "dotsMenu": {
         "dots": "more_horiz",
         "dropdown": [
@@ -291,7 +291,7 @@ export default function Ecommerce() {
                 setSalesAmount(sAmount)
 
                 setAnalyticsHeroesUi([...analyticsHeroesUi?.map(e=>{
-                    if(e.title ===  "Total Sales"){
+                    if(e.title ===  "Total Orders"){
                         e.number = res?.count
                         return e
                     }
@@ -323,7 +323,7 @@ export default function Ecommerce() {
                         if (e.title === "Today Total Revenue"){
                             e.number = sAmount
                                 return e    
-                        } else if (e.title === "Today Total Sales"){
+                        } else if (e.title === "Today Total Orders"){
                             e.number = sCount 
                             return e    
                             }  

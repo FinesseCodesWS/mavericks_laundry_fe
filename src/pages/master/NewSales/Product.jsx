@@ -19,7 +19,7 @@ const Product = ({productData, addoRUpdateProduct}) => {
   return (
     <div  style={{cursor: 'pointer'}} onClick={pickProduct}>
       <div className="card">
-        <span>Qty: {productData?.quantity}.00</span>
+        {/* <span>Qty: {productData?.quantity}.00</span> */}
         <div className="images">
           <Image
             src={productData?.image || productData?.default_image}

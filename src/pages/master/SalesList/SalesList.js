@@ -318,7 +318,7 @@ const salesListData = {
 
 
 const float =  [
-    { "title": "Total Sales", "digit": "0", "icon": "account_balance", "variant": "lg green" },
+    { "title": "Total Orders", "digit": "0", "icon": "account_balance", "variant": "lg green" },
     // { "title": "Total Sales Amount", "digit": "0", "icon": "account_balance", "variant": "lg blue" }
 ]
 
@@ -423,10 +423,10 @@ export default function SalesList() {
         setSalesAmount(totalA)
 
         setSaleAnalytics([...salesAnalytics?.map(e=>{
-            if(e.title ===  "Total Sales"){
+            if(e.title ===  "Total Orders"){
                 e.digit = res?.count
                 return e
-            }else if (e.title === 'Total Sales Amount'){
+            }else if (e.title === 'Total Orders Amount'){
                 e.digit = totalA
             }  
             return e
@@ -747,7 +747,7 @@ export default function SalesList() {
                         </div>
 
                         <div className="d-flex justify-content-end">
-                            <button onClick={toSales} className="btn btn-primary">New Sales</button>
+                            <button onClick={toSales} className="btn btn-primary">New Orders</button>
                         </div>
                         <Row xs={1} sm={2} lg={4} className="mb-4">
                             {invoiceList?.filter.map((item, index)=> (
