@@ -69,19 +69,7 @@ export default function ProductsTable({ thead, tbody, loading }) {
       <Table className="mc-table product">
         <Thead className="mc-table-head primary">
           <Tr>
-            <Th>
-              <Box className="mc-table-check">
-                <Input
-                  type="checkbox"
-                  name="allCheck"
-                  checked={
-                    data?.filter((item) => item.isChecked !== true).length < 1
-                  }
-                  onChange={handleCheckbox}
-                />
-                <Text>uid</Text>
-              </Box>
-            </Th>
+            
             {thead.map((item, index) => (
               <Th key={index}>{item}</Th>
             ))}
@@ -102,17 +90,6 @@ export default function ProductsTable({ thead, tbody, loading }) {
           ) : (
             data?.map((item, index) => (
               <Tr key={index}>
-                <Td title={index + 1}>
-                  <Box className="mc-table-check">
-                    <Input
-                      type="checkbox"
-                      name={item.name}
-                      checked={item?.isChecked || false}
-                      onChange={handleCheckbox}
-                    />
-                    <Text>#{index + 1}</Text>
-                  </Box>
-                </Td>
                 <Td>
                   <Box className="mc-table-product md">
                     {/* <Image src="" alt={item?.category} /> */}
@@ -129,20 +106,20 @@ export default function ProductsTable({ thead, tbody, loading }) {
                     <Text>{item?.unitPrice}</Text>
                   </Box>
                 </Td>
-                <Td>{item?.quantity}</Td>
+                {/* <Td>{item?.quantity}</Td> */}
                 {/* <Td>{ item.order }</Td> */}
                 {/* <Td>{ item.sales }</Td> */}
                 <Td>
                   <Box className="mc-table-action">
                     <Anchor
-                      href={`/food-view/${item?._id}`}
+                      href={`/product-view/${item?._id}`}
                       title="View"
                       className="material-icons view"
                     >
                       visibility
                     </Anchor>
                     <Anchor
-                      href={`/food-upload/${item?._id}`}
+                      href={`/product-upload/${item?._id}`}
                       title="Edit"
                       className="material-icons edit"
                     >

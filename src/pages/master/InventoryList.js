@@ -50,16 +50,16 @@ export default function InventoryList({
   const [getVAT, setGetVAT] = useState({});
   const navigate = useNavigate();
   const [searchKeyword, setSearchKeyword] = useState("");
-  const filteredData = inventories.filter((item) =>
-    item?.status.toLowerCase().includes(searchKeyword.toLowerCase())
+  const filteredData = inventories?.filter((item) =>
+    item?.status?.toLowerCase().includes(searchKeyword.toLowerCase())
   );
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value);
   };
   const [searchKeywordItem, setSearchKeywordItem] = useState("");
-  const filteredDataItem = inventories.filter((item) =>
-    item?.itemName.toLowerCase().includes(searchKeywordItem.toLowerCase())
+  const filteredDataItem = inventories?.filter((item) =>
+    item?.itemName?.toLowerCase().includes(searchKeywordItem?.toLowerCase())
   );
 
   const handleInputChangeItem = (event) => {

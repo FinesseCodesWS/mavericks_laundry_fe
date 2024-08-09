@@ -302,7 +302,7 @@ export default function App() {
       const getLists = async () => {
         try {
           const response = await axios.get(`/menu/list`);
-          setPageCountMenu(response.data.count);
+          setPageCountMenu(response.data.count)
           return dispatch({
             type: "GET_MENUS",
             payload: response.data.data,
@@ -658,7 +658,7 @@ export default function App() {
         }
       />
       <Route path="/product-view" element={<ProductView />} />
-      <Route path="/food-view/:id" element={<ProductViewItem />} />
+      <Route path="/product-view/:id" element={<ProductViewItem />} />
       <Route path="/product-upload" element={<ProductUpload />} />
       <Route path="/food-upload/:id" element={<ProductUploadItem />} />
       {/* <Route path="/food-upload/:id" element={<ProductUpload />} /> */}

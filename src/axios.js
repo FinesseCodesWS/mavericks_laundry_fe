@@ -1,6 +1,6 @@
 import axiosReal from "axios";
 
-const baseURL = "https://maverick-be.onrender.com/api";
+const baseURL = "https://maverick-laundry.onrender.com/api";
 const axiosInstance = axiosReal.create({
   baseURL,
   headers: {

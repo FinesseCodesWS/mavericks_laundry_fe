@@ -61,24 +61,6 @@
           ]
         },
         {
-          "href": "/inventories",
-          "icon": "inventory",
-          "text": "inventory list",
-          "badge": {
-            "text": "",
-            "variant": ""
-          }
-        },
-        {
-          "href": "/sales",
-          "icon": "trending_down",
-          "text": "sales inventory",
-          "badge": {
-            "text": "",
-            "variant": ""
-          }
-        },
-        {
           "href": "/coupon",
           "icon": "class",
           "text": "Coupon",

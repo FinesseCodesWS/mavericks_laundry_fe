@@ -69,20 +69,6 @@ export default function ProductList({
           <CardLayout>
             <Row>
               <Col xs={12} sm={6} md={4} lg={3}>
-                <Label className="mc-label-field-title">Filter by Status</Label>
-                <Select
-                  name="category_id"
-                  onChange={(e) => setFilterCategory(e.target.value)}
-                  className="mc-label-field-select w-100 h-md"
-                >
-                  <Option value="">Select Option</Option>
-                  <Option value="ALL">All</Option>
-                  <Option value="AVAILABLE">Available</Option>
-                  <Option value="OUT OF STOCK">Out of Stock</Option>
-                </Select>
-              </Col>
-
-              <Col xs={12} sm={6} md={4} lg={3}>
                 <Label className="mc-label-field-title">
                   Filter by Category
                 </Label>
@@ -101,7 +87,7 @@ export default function ProductList({
 
               <Col xl={12}>
                 <ProductsTable
-                  thead={["item", "category", "price", "stock", "action"]}
+                  thead={["item", "category", "price", "action"]}
                   tbody={menus}
                   loading={isFilteredCategory}
                 />

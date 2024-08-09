@@ -23,9 +23,10 @@ import axiosMain from "axios";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function ProductUpload() {
+  const dispatch = useDispatch()
   const menus = useSelector((state) => state.menu.menus);
   const [loading, setLoading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
@@ -120,7 +121,6 @@ export default function ProductUpload() {
       unitPrice: sendData.unitPrice,
       image: sendData.image,
       category_id: sendData.category_id,
-      countable: sendData?.countable === true ? true : false,
     };
 
     try {
@@ -142,6 +142,20 @@ export default function ProductUpload() {
         text: "You have successfully created a menu.",
       });
       setLoading(false);
+const uploadedData = {
+  _id: response.data.data._id,
+  itemName: response.data.data.itemName,
+  category: response.data.data.category.category,
+  createdBy: response.data.data.createdBy._id,
+  unitPrice: response.data.data.unitPrice,
+  image: response.data.data.image,
+  createdAt: response.data.data.createdAt,
+  updatedAt: response.data.data.updatedAt
+}
+       dispatch({
+        type: "GET_MENUS",
+        payload: [...menus, uploadedData],
+      });
       navigate("/product-list");
     } catch (error) {
       setLoading(true);
@@ -295,29 +309,6 @@ export default function ProductUpload() {
                       </Col>
                     ))}
                   </Row>
-                </Box>
-              </Col>
-            </Row>
-          </CardLayout>
-          <CardLayout>
-            <CardHeader title="specification" />
-            <Row>
-              <Col xl={12}>
-                {/* <LabelField
-                  type="text"
-                  label="stock / quantity"
-                  fieldSize="w-100 h-md"
-                /> */}
-                <Box className={`mc-label-field-group label-col`}>
-                  <Label className="mc-label-field-title">Countable</Label>
-                  <Select
-                    name="countable"
-                    onChange={handleChange}
-                    className="mc-label-field-select w-100 h-md"
-                  >
-                    <Option value={true}>True</Option>
-                    <Option value={false}>False</Option>
-                  </Select>
                 </Box>
               </Col>
             </Row>

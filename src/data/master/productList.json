@@ -1,8 +1,8 @@
 {
-    "pageTitle": "menu list",
+    "pageTitle": "product list",
     "breadcrumb": [
         { "path": "/", "text": "home" },
-        { "text": "menu" },
+        { "text": "product" },
         { "text": "list" }
     ],
     "dotsMenu": {

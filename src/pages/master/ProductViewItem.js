@@ -101,18 +101,6 @@ export default function ProductView({ data, width, height }) {
                 <Text as="span">:</Text>
                 <Text as="p">{menu?.unitPrice}</Text>
               </Box>
-              <Box className="mc-product-view-meta">
-                <Icon type="store" />
-                <Heading as="h5">Quantity</Heading>
-                <Text as="span">:</Text>
-                <Text as="p">{menu?.quantity}</Text>
-              </Box>
-              <Box className="mc-product-view-meta">
-                <Icon type="sell" />
-                <Heading as="h5">Countable</Heading>
-                <Text as="span">:</Text>
-                <Text as="p">{menu?.countable?.toString()}</Text>
-              </Box>
             </Box>
           </Col>
         </Row>

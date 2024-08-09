@@ -96,17 +96,7 @@ export default function Ecommerce({
                 compare="last month"
               />
             </Col>
-            <Col>
-              <EcommerceCard
-                variant="yellow"
-                title="total log"
-                icon="money"
-                number={pageCountLog ? pageCountLog : 0}
-                trend=""
-                percent=""
-                compare="last month"
-              />
-            </Col>
+            
           </Row>
         </Col>
         <Col xs={12} xl={4}>
