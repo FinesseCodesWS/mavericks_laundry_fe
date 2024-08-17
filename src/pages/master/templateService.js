@@ -9,35 +9,76 @@ import {
   sendSmsRequest,
   sendSmsSuccess,
   smsHistoryRequest,
-  smsHistorySuccess
+  smsHistorySuccess,
 } from "../../store/smsActions";
+import Swal from "sweetalert2";
 
 export const fetchTemplates = async (dispatch) => {
-  dispatch(getTemplatesRequest());
-  const response = await api.get("/sms/template");
-  dispatch(getTemplatesSuccess(response?.data?.data));
+  try {
+    dispatch(getTemplatesRequest());
+    const response = await api.get("/sms/template");
+    dispatch(getTemplatesSuccess(response?.data?.data));
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error?.response?.data?.message
+        ? error?.response?.data?.message
+        : "Something went wrong!",
+    });
+  }
 };
 
 export const createTemplate = async (dispatch, template) => {
-  dispatch(createTemplateRequest());
-  const response = await api.post("/sms/template", template);
-  dispatch(createTemplateSuccess(response.data.data));
+  try {
+    dispatch(createTemplateRequest());
+    const response = await api.post("/sms/template", template);
+    dispatch(createTemplateSuccess(response.data.data));
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error?.response?.data?.message
+        ? error?.response?.data?.message
+        : "Something went wrong!",
+    });
+  }
 };
 
 export const deleteTemplate = async (dispatch, id) => {
+  try {
     dispatch(deleteTemplateRequest());
     await api.delete(`/sms/template?id=${id}`);
     dispatch(deleteTemplateSuccess(id));
-  };
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error?.response?.data?.message
+        ? error?.response?.data?.message
+        : "Something went wrong!",
+    });
+  }
+};
 
-  export const sendSms = async (dispatch, data) => {
+export const sendSms = async (dispatch, data) => {
+  try {
     dispatch(sendSmsRequest());
     const response = await api.post("/sms", data);
     dispatch(sendSmsSuccess(response.data.data));
-  };
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error?.response?.data?.message
+        ? error?.response?.data?.message
+        : "Something went wrong!",
+    });
+  }
+};
 
-  export const fetchSmsHistory = async (dispatch) => {
-    dispatch(smsHistoryRequest());
-    const response = await api.get("/sms");
-    dispatch(smsHistorySuccess(response?.data?.data));
-  };
+export const fetchSmsHistory = async (dispatch) => {
+  dispatch(smsHistoryRequest());
+  const response = await api.get("/sms");
+  dispatch(smsHistorySuccess(response?.data?.data));
+};

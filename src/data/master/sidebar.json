@@ -89,7 +89,7 @@
         },
         {
           "href": "/sms",
-          "icon": "contacts",
+          "icon": "inbox",
           "text": "Send SMS",
           "badge": {
             "text": "",
@@ -162,7 +162,7 @@
         },
         {
           "href": "/sms",
-          "icon": "contacts",
+          "icon": "inbox",
           "text": "Send SMS",
           "badge": {
             "text": "",

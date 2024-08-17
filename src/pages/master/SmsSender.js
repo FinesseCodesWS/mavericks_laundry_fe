@@ -19,7 +19,7 @@ import {
   createTemplate,
   deleteTemplate,
   sendSms,
-  fetchSmsHistory
+  fetchSmsHistory,
 } from "./templateService";
 
 const SMSManagementSystem = () => {
@@ -39,7 +39,7 @@ const SMSManagementSystem = () => {
 
   useEffect(() => {
     fetchTemplates(dispatch);
-    fetchSmsHistory(dispatch)
+    fetchSmsHistory(dispatch);
   }, [dispatch]);
 
   const defaultTemplates = [
@@ -54,6 +54,10 @@ const SMSManagementSystem = () => {
       category: "Holiday",
     },
   ];
+
+  const handleInputChange = (event) => {
+    setMessage(event.target.value.slice(0, 50));
+  };
 
   const handleTabSelect = (tab) => setActiveTab(tab);
 
@@ -140,17 +144,17 @@ const SMSManagementSystem = () => {
 
   const handleSendSMS = () => {
     if (message.trim()) {
-        const data = {
-          message,
-          phoneNumbers: customerNumbers
-        };
-        sendSms(dispatch, data);
-        setMessage("");
-        setTemplateCategory("");
-        reverseCustomTemplate();
-        handleModalClose();
-      }
-    alert("SMS Sent!");
+      const data = {
+        message,
+        phoneNumbers: customerNumbers,
+      };
+      sendSms(dispatch, data);
+      alert("SMS Sent!");
+      setMessage("");
+      setTemplateCategory("");
+      reverseCustomTemplate();
+      handleModalClose();
+    }
     handleModalClose();
   };
 
@@ -201,33 +205,33 @@ const SMSManagementSystem = () => {
             <ul className="nav nav-tabs mt-3">
               <li className="nav-item">
                 <a
-                  className={`nav-link ${
+                  style={{ cursor: "pointer" }}
+                  className={`nav-link cursor-pointer ${
                     activeTab === "templates" ? "active" : ""
                   }`}
                   onClick={() => handleTabSelect("templates")}
-                  href="#"
                 >
                   Templates
                 </a>
               </li>
               <li className="nav-item">
                 <a
-                  className={`nav-link ${
+                  style={{ cursor: "pointer" }}
+                  className={`nav-link cursor-pointer ${
                     activeTab === "segmentation" ? "active" : ""
                   }`}
                   onClick={() => handleTabSelect("segmentation")}
-                  href="#"
                 >
                   Customer Segmentation
                 </a>
               </li>
               <li className="nav-item">
                 <a
-                  className={`nav-link ${
+                  style={{ cursor: "pointer" }}
+                  className={`nav-link cursor-pointer ${
                     activeTab === "history" ? "active" : ""
                   }`}
                   onClick={() => handleTabSelect("history")}
-                  href="#"
                 >
                   SMS History
                 </a>
@@ -367,12 +371,8 @@ const SMSManagementSystem = () => {
                                 type="checkbox"
                                 className="form-check-input"
                                 id="male"
-                                onChange={() =>
-                                  handleSegmentChange("male")
-                                }
-                                checked={customerSegment.includes(
-                                  "male"
-                                )}
+                                onChange={() => handleSegmentChange("male")}
+                                checked={customerSegment.includes("male")}
                               />
                               <label
                                 className="form-check-label"
@@ -386,12 +386,8 @@ const SMSManagementSystem = () => {
                                 type="checkbox"
                                 className="form-check-input"
                                 id="female"
-                                onChange={() =>
-                                  handleSegmentChange("female")
-                                }
-                                checked={customerSegment.includes(
-                                  "female"
-                                )}
+                                onChange={() => handleSegmentChange("female")}
+                                checked={customerSegment.includes("female")}
                               />
                               <label
                                 className="form-check-label"
@@ -462,6 +458,21 @@ const SMSManagementSystem = () => {
                             </div>
                           )}
                         </form>
+
+                        <Button
+                          onClick={() => {
+                            if (isSendDisabled) {
+                              return alert(
+                                "Please select at least one customer segment or enter valid 11-digit phone numbers to proceed."
+                              );
+                            } else {
+                              setActiveTab("templates");
+                            }
+                          }}
+                          className="my-3 btn btn-primary"
+                        >
+                          Choose template?
+                        </Button>
                       </div>
                     </CardLayout>
                   </div>
@@ -470,36 +481,43 @@ const SMSManagementSystem = () => {
 
               {/* SMS History Tab */}
               {activeTab === "history" && (
-  <div className="row">
-    <div className="col">
-      <CardLayout className="mb-3">
-      <CardHeader title="SMS History"></CardHeader>
-        <div className="card-body">
-          {smsData?.length > 0 ? (
-            <ul className="list-group">
-              {smsData.map((data, index) => (
-                <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                  <div>
-                    <p className="mb-1">{data.message}</p>
-                    <small className="text-muted">
-                      Sent to {data.recipients?.length || 0} {data.recipients?.length === 1 ? 'person' : 'people'}
-                    </small>
+                <div className="row">
+                  <div className="col">
+                    <CardLayout className="mb-3">
+                      <CardHeader title="SMS History"></CardHeader>
+                      <div className="card-body">
+                        {smsData?.length > 0 ? (
+                          <ul className="list-group">
+                            {smsData.map((data, index) => (
+                              <li
+                                key={index}
+                                className="list-group-item d-flex justify-content-between align-items-center"
+                              >
+                                <div>
+                                  <p className="mb-1">{data.message}</p>
+                                  <small className="text-muted">
+                                    Sent to {data.recipients?.length || 0}{" "}
+                                    {data.recipients?.length === 1
+                                      ? "person"
+                                      : "people"}
+                                  </small>
+                                </div>
+                                <small className="text-muted">
+                                  {new Date(data.createdAt).toLocaleString()}
+                                </small>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-center text-muted">
+                            No SMS history available.
+                          </p>
+                        )}
+                      </div>
+                    </CardLayout>
                   </div>
-                  <small className="text-muted">
-                    {new Date(data.createdAt).toLocaleString()}
-                  </small>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-center text-muted">No SMS history available.</p>
-          )}
-        </div>
-      </CardLayout>
-    </div>
-  </div>
-)}
-
+                </div>
+              )}
             </div>
           </CardLayout>
         </Col>
@@ -508,7 +526,7 @@ const SMSManagementSystem = () => {
       {/* Modal for composing SMS */}
       <Modal show={showModal} onHide={handleModalClose}>
         <Box className="mc-alert-modal">
-          <Icon type="" />
+          <Icon type="info" />
           <Heading as="h3">
             {selectedTemplate === "compose"
               ? "Compose SMS"
@@ -519,29 +537,32 @@ const SMSManagementSystem = () => {
           <Modal.Body>
             <Form>
               <Form.Group controlId="message">
-                <Form.Label>Message</Form.Label>
+                <Form.Label>Message (Max 50 words)</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={3}
                   placeholder="Type your message here..."
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={handleInputChange}
                 />
+                <Form.Text className="text-muted">
+                  Character count: {message.length} / 50
+                </Form.Text>
               </Form.Group>
               {addTemplate && (
-                  <Form.Group controlId="templateCategory">
-                    <Form.Label>Category</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter category"
-                      value={templateCategory}
-                      onChange={(e) => setTemplateCategory(e.target.value)}
-                    />
-                  </Form.Group>
+                <Form.Group className="my-1" controlId="templateCategory">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter category"
+                    value={templateCategory}
+                    onChange={(e) => setTemplateCategory(e.target.value)}
+                  />
+                </Form.Group>
               )}
               <Button
                 variant="primary"
-                className="btn btn-info my-3"
+                className="btn btn-info my-2"
                 onClick={
                   addTemplate === false
                     ? addCustomTemplate
@@ -569,20 +590,23 @@ const SMSManagementSystem = () => {
                 {"Save template"}
               </Button>
             ) : (
-              <OverlayTrigger
-                placement="top"
-                overlay={isSendDisabled ? renderTooltip : <></>}
+              <Button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => {
+                  if (isSendDisabled) {
+                    alert(
+                      "Please select at least one customer segment or enter valid 11-digit phone numbers to send."
+                    );
+                    setActiveTab("segmentation");
+                    handleModalClose();
+                  } else {
+                    handleSendSMS();
+                  }
+                }}
               >
-                <Button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleSendSMS}
-                  disabled={isSendDisabled}
-                  style={isSendDisabled ? { pointerEvents: "none" } : {}}
-                >
-                  {"Send SMS"}
-                </Button>
-              </OverlayTrigger>
+                {"Send SMS"}
+              </Button>
             )}
           </Modal.Footer>
         </Box>
