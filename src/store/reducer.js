@@ -8,6 +8,7 @@ import saleReducer from "./saleReducer";
 import inventoryReducer from "./inventoryReducer";
 import couponReducer from "./couponReducer";
 import customersReducer from "./customersReducer"
+import {smsReducer} from "./smsReducer"
 
 const reducer = combineReducers({
   user: userReducer,
@@ -18,7 +19,8 @@ const reducer = combineReducers({
   sale: saleReducer,
   inventory: inventoryReducer,
   coupon: couponReducer,
-  customer: customersReducer
+  customer: customersReducer,
+  sms: smsReducer
 });
 
 export default reducer;

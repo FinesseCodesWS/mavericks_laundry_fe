@@ -86,6 +86,15 @@
             "text": "",
             "variant": ""
           }
+        },
+        {
+          "href": "/sms",
+          "icon": "contacts",
+          "text": "Send SMS",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
         }
       ]
     }
@@ -150,6 +159,15 @@
               "text": "invoice list"
             }
           ]
+        },
+        {
+          "href": "/sms",
+          "icon": "contacts",
+          "text": "Send SMS",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
         }
       ]
     }
