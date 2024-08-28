@@ -77,8 +77,24 @@ export const sendSms = async (dispatch, data) => {
   }
 };
 
-export const fetchSmsHistory = async (dispatch) => {
+export const sendSmsCategory = async (dispatch, data) => {
+  try {
+    dispatch(sendSmsRequest());
+    const response = await api.post("/sms/to-category", data);
+    dispatch(sendSmsSuccess(response.data.data));
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error?.response?.data?.message
+        ? error?.response?.data?.message
+        : "Something went wrong!",
+    });
+  }
+};
+
+export const fetchSmsHistory = async (dispatch, count, itemsPerPage) => {
   dispatch(smsHistoryRequest());
-  const response = await api.get("/sms");
-  dispatch(smsHistorySuccess(response?.data?.data));
+  const response = await api.get(`/sms?page=${count}&size=${itemsPerPage}`);
+  dispatch(smsHistorySuccess(response?.data));
 };

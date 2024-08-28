@@ -12,15 +12,17 @@ import PageLayout from "../../layouts/PageLayout";
 import { CardLayout, CardHeader } from "../../components/cards";
 import { Breadcrumb } from "../../components";
 import data from "../../data/master/sms.json";
-import { Anchor, Button, Heading, Box, Icon } from "../../components/elements";
+import { Anchor, Button, Heading, Box, Icon, Text } from "../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTemplates,
   createTemplate,
   deleteTemplate,
   sendSms,
+  sendSmsCategory,
   fetchSmsHistory,
 } from "./templateService";
+import CustomPagination from "../../components/SmsPagination";
 
 const SMSManagementSystem = () => {
   const [activeTab, setActiveTab] = useState("templates");
@@ -37,10 +39,17 @@ const SMSManagementSystem = () => {
   const templates = useSelector((state) => state.sms.templates);
   const smsData = useSelector((state) => state.sms.smsHistory);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [count, setCount] = useState(smsData?.data?.count);
+  const [itemsPerPage] = useState(10);
+
   useEffect(() => {
     fetchTemplates(dispatch);
-    fetchSmsHistory(dispatch);
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchSmsHistory(dispatch, currentPage, itemsPerPage);
+  }, [dispatch, currentPage, itemsPerPage]);
 
   const defaultTemplates = [
     {
@@ -76,11 +85,12 @@ const SMSManagementSystem = () => {
   };
 
   const handleSegmentChange = (segment) => {
-    setCustomerSegment((prev) =>
-      prev.includes(segment)
-        ? prev.filter((s) => s !== segment)
-        : [...prev, segment]
-    );
+    setCustomerSegment(segment ? [segment] : []);
+    // setCustomerSegment((prev) =>
+    //   prev.includes(segment)
+    //     ? prev.filter((s) => s !== segment)
+    //     : [...prev, segment]
+    // );
 
     if (segment === "Unknown Customer") {
       setIsUnknownCustomer(!isUnknownCustomer);
@@ -144,16 +154,29 @@ const SMSManagementSystem = () => {
 
   const handleSendSMS = () => {
     if (message.trim()) {
-      const data = {
-        message,
-        phoneNumbers: customerNumbers,
-      };
-      sendSms(dispatch, data);
-      alert("SMS Sent!");
-      setMessage("");
-      setTemplateCategory("");
-      reverseCustomTemplate();
-      handleModalClose();
+      if (customerSegment.join("") !== "Unknown Customer") {
+        const data = {
+          message,
+          category: customerSegment.join(""),
+        };
+        sendSmsCategory(dispatch, data);
+        alert("SMS Sent!");
+        setMessage("");
+        setTemplateCategory("");
+        reverseCustomTemplate();
+        handleModalClose();
+      } else {
+        const data = {
+          message,
+          phoneNumbers: customerNumbers,
+        };
+        sendSms(dispatch, data);
+        alert("SMS Sent!");
+        setMessage("");
+        setTemplateCategory("");
+        reverseCustomTemplate();
+        handleModalClose();
+      }
     }
     handleModalClose();
   };
@@ -304,14 +327,14 @@ const SMSManagementSystem = () => {
                   <div className="col">
                     <CardLayout className="mb-3">
                       <div className="card-header mb-3">
-                        Select Customer Segments
+                        Select Customer Segments (Only One Allowed)
                       </div>
                       <div className="card-body">
                         <form>
                           <div className="form-group">
                             <div className="form-check">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 className="form-check-input"
                                 id="newCustomers"
                                 onChange={() =>
@@ -330,7 +353,7 @@ const SMSManagementSystem = () => {
                             </div>
                             <div className="form-check">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 className="form-check-input"
                                 id="activeLaundry"
                                 onChange={() =>
@@ -349,7 +372,7 @@ const SMSManagementSystem = () => {
                             </div>
                             <div className="form-check">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 className="form-check-input"
                                 id="zeroTransaction"
                                 onChange={() =>
@@ -368,7 +391,7 @@ const SMSManagementSystem = () => {
                             </div>
                             <div className="form-check">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 className="form-check-input"
                                 id="male"
                                 onChange={() => handleSegmentChange("male")}
@@ -383,7 +406,7 @@ const SMSManagementSystem = () => {
                             </div>
                             <div className="form-check">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 className="form-check-input"
                                 id="female"
                                 onChange={() => handleSegmentChange("female")}
@@ -398,7 +421,7 @@ const SMSManagementSystem = () => {
                             </div>
                             <div className="form-check">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 className="form-check-input"
                                 id="unknownCustomer"
                                 onChange={() =>
@@ -486,9 +509,9 @@ const SMSManagementSystem = () => {
                     <CardLayout className="mb-3">
                       <CardHeader title="SMS History"></CardHeader>
                       <div className="card-body">
-                        {smsData?.length > 0 ? (
+                        {smsData?.data?.messages?.length > 0 ? (
                           <ul className="list-group">
-                            {smsData.map((data, index) => (
+                            {smsData?.data?.messages?.map((data, index) => (
                               <li
                                 key={index}
                                 className="list-group-item d-flex justify-content-between align-items-center"
@@ -513,6 +536,14 @@ const SMSManagementSystem = () => {
                             No SMS history available.
                           </p>
                         )}
+                      </div>
+                      <div className="mt-3">
+                        <CustomPagination
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          count={count}
+                          itemsPerPage={itemsPerPage}
+                        />
                       </div>
                     </CardLayout>
                   </div>
