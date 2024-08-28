@@ -1,0 +1,180 @@
+{
+  "navs": [
+    {
+      "title": "master",
+      "menu": [
+        {
+          "icon": "dashboard",
+          "text": "dashboard",
+          "submenu": [
+            {
+              "href": "/dashboard",
+              "text": "home"
+            }
+          ]
+        },
+        {
+          "icon": "account_circle",
+          "text": "staffs",
+          "badge": {
+            "text": "",
+            "variant": "red square"
+          },
+          "submenu": [
+            {
+              "href": "/staff-list",
+              "text": "staff list"
+            },
+            {
+              "href": "/my-account",
+              "text": "my account"
+            }
+          ]
+        },
+        {
+          "icon": "pix",
+          "text": "product",
+          "badge": {
+            "text": "",
+            "variant": "purple square"
+          },
+          "submenu": [
+            {
+              "href": "/product-list",
+              "text": "product list"
+            },
+            {
+              "href": "/product-upload",
+              "text": "product upload"
+            }
+          ]
+        },
+        {
+          "href": "#",
+          "icon": "article",
+          "text": "invoices",
+          "submenu": [
+            {
+              "href": "/invoice-list",
+              "text": "invoice list"
+            }
+          ]
+        },
+        {
+          "href": "/coupon",
+          "icon": "class",
+          "text": "Coupon",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
+        },
+        {
+          "href": "/customers",
+          "icon": "contacts",
+          "text": "Customers Information",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
+        },
+        {
+          "href": "/vat-revenue",
+          "icon": "attach_money",
+          "text": "V.A.T Revenue",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
+        },
+        {
+          "href": "/sms",
+          "icon": "inbox",
+          "text": "Send SMS",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
+        }
+      ]
+    }
+  ],
+  "navsRestrict": [
+    {
+      "title": "master",
+      "menu": [
+        {
+          "icon": "dashboard",
+          "text": "dashboard",
+          "submenu": [
+            {
+              "href": "/dashboard",
+              "text": "home"
+            }
+          ]
+        },
+        {
+          "icon": "account_circle",
+          "text": "staffs",
+          "badge": {
+            "text": "",
+            "variant": "red square"
+          },
+          "submenu": [
+            {
+              "href": "/staff-list",
+              "text": "staff list"
+            },
+            {
+              "href": "/my-account",
+              "text": "my account"
+            }
+          ]
+        },
+        {
+          "icon": "pix",
+          "text": "product",
+          "badge": {
+            "text": "",
+            "variant": "purple square"
+          },
+          "submenu": [
+            {
+              "href": "/product-list",
+              "text": "product list"
+            },
+            {
+              "href": "/product-upload",
+              "text": "product upload"
+            }
+          ]
+        },
+        {
+          "href": "#",
+          "icon": "article",
+          "text": "invoices",
+          "submenu": [
+            {
+              "href": "/invoice-list",
+              "text": "invoice list"
+            }
+          ]
+        },
+        {
+          "href": "/sms",
+          "icon": "inbox",
+          "text": "Send SMS",
+          "badge": {
+            "text": "",
+            "variant": ""
+          }
+        }
+      ]
+    }
+  ],
+  "button": {
+    "icon": "lock",
+    "path": "/?logout",
+    "text": "logout"
+  }
+}

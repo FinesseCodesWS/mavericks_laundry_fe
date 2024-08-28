@@ -1,0 +1,43 @@
+{
+  "logo": {
+    "path": "/ecommerce",
+    "src": "images/logo.webp",
+    "alt": "blue",
+    "name": "hotash"
+  },
+  "pattern": {
+    "src": "images/pattern.webp",
+    "alt": "line-pattern"
+  },
+  "title": "Reset the Password",
+  "input": [
+    {
+      "icon": "lock",
+      "type": "text",
+      "placeholder": "Enter your new password",
+      "fieldSize": "h-sm"
+    },
+    {
+      "icon": "phone",
+      "type": "number",
+      "placeholder": "Enter your phone number",
+      "fieldSize": "h-sm"
+    },
+    {
+      "icon": "lock",
+      "type": "text",
+      "placeholder": "Enter your reset token",
+      "fieldSize": "h-sm"
+    }
+  ],
+  "button": {
+    "type": "button",
+    "text": "gain access",
+    "fieldSize": "h-sm"
+  },
+  "navigate": {
+    "title": "Remember the password?",
+    "path": "/",
+    "text": "login"
+  }
+}
