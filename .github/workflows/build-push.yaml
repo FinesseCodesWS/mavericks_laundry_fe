@@ -31,7 +31,7 @@ jobs:
       run: |
         mkdir laundry-client
         cp -r package.* yarn.lock ./build ./laundry-client/
-        tar -czf build.tar.gz ./laundry-client
+        tar -czf client-build.tar.gz ./laundry-client
 
     - name: Transfer build to remote server
       uses: appleboy/scp-action@v0.1.7
