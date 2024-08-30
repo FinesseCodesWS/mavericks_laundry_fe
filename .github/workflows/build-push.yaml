@@ -1,44 +1,54 @@
-# Kubernetes App Docker image build for hub.docker.com
-name: Maverick sales CI
+name: Deploy Client
 
-# Run this Build for all pushes to 'main' branch, or tagged releases.
 on:
   push:
     branches:
-      - maverick-sales
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-env: 
-  SHORT_SHA: $(echo ${{ github.sha }} | cut -c 1-8)
+      - laundry-client
 
 jobs:
-  docker-build-push:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      # https://github.com/actions/checkout
-      - name: Checkout codebase
-        uses: actions/checkout@v3.3.0
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # https://github.com/docker/setup-buildx-action
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
 
-      # https://github.com/docker/login-action
-      - name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+    - name: Install dependencies
+      run: yarn install
 
-      - name: Build, tag, and push image to Docker hub
-        id: build-image
-        run: |
-          docker image build \
-          --tag ${{ secrets.DOCKER_USERNAME }}/maverick_user:v1 \
-          --tag ${{ secrets.DOCKER_USERNAME }}/maverick_user:${{ env.SHORT_SHA }} \
-          .
-          docker push ${{ secrets.DOCKER_USERNAME }}/maverick_user:v1
-          docker push ${{ secrets.DOCKER_USERNAME }}/maverick_user:${{ env.SHORT_SHA }}      
+    - name: Build the project
+      run: yarn build
+
+    - name: Archive build artifacts
+      run: |
+        mkdir laundry-client
+        cp -r package.* yarn.lock ./build ./laundry-client/
+        tar -czf build.tar.gz ./laundry-client
+
+    - name: Transfer build to remote server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        target: /home/${{ secrets.SERVER_USER }}/
+        source: client-build.tar.gz
+
+    - name: Extract and run build on server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          tar -xzf client-build.tar.gz
+          rm client-build.tar.gz
+          ./start-laundry-client.sh
