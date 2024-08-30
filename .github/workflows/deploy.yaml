@@ -1,0 +1,54 @@
+name: Deploy Admin
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build the project
+      run: yarn build
+
+    - name: Archive build artifacts
+      run: |
+        mkdir laundry-admin
+        cp -r package.* yarn.lock ./build ./laundry-admin/
+        tar -czf build.tar.gz ./laundry-admin
+
+    - name: Transfer build to remote server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        target: /home/${{ secrets.SERVER_USER }}/
+        source: admin-build.tar.gz
+
+    - name: Extract and run build on server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+          tar -xzf admin-build.tar.gz
+          rm admin-build.tar.gz
+          ./start-laundry-admin.sh
