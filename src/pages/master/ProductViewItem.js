@@ -73,7 +73,7 @@ export default function ProductView({ data, width, height }) {
       <CardLayout className="p-lg-5">
         <Row>
           <Col xl={5}>
-            <DivideTitle title="food gallery" className="mb-4" />
+            <DivideTitle title="laundry gallery" className="mb-4" />
             <Box className="mc-product-view-gallery">
               <Image src={menu?.image} alt="product image" />
 
@@ -84,7 +84,7 @@ export default function ProductView({ data, width, height }) {
             </Box>
           </Col>
           <Col xl={7}>
-            <DivideTitle title="food details" className="mb-4" />
+            <DivideTitle title="laundry details" className="mb-4" />
             <Box className="mc-product-view-info-group">
               <Heading as="h2" className="mc-product-view-info-title">
                 {menu?.itemName}
