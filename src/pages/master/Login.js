@@ -25,14 +25,6 @@ export default function Login() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("pos-token")) {
-  //     return history("/dashboard");
-  //   } else {
-  //     return history("/");
-  //   }
-  // }, []);
-
   const [sendData, setSendData] = useState({
     phoneNumber: "",
     password: "",

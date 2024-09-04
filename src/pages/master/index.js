@@ -27,3 +27,4 @@ export { default as Customers } from "./Customers";
 export { default as VATRevenue } from "./VATRevenue";
 export { default as Reward } from "./Reward";
 export { default as Sale } from "./Sale";
+export { default as SmsSender } from "./SmsSender"

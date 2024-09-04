@@ -41,6 +41,7 @@ import {
   VATRevenue,
   Reward,
   Sale,
+  SmsSender
 } from "./pages/master";
 import axios from "./axios";
 import axiosMain from "axios";
@@ -637,6 +638,7 @@ export default function App() {
           />
         }
       />
+      <Route path="/sms" element={<SmsSender />} />
       <Route path="/staff-profile/:id" element={<UserProfile />} />
       <Route path="/my-account" element={<MyAccount />} />
       <Route
