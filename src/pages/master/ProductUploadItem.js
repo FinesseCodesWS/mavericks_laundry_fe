@@ -30,7 +30,7 @@ export default function ProductUploadItem() {
   const access = JSON.parse(localStorage.getItem("pos-token"));
   const { id } = useParams();
   const dispatch = useDispatch();
-  const menu = useSelector((state) => state.menu.menu);
+  const {menus, menu} = useSelector((state) => state.menu);
   const [menuItem, setMenuItem] = useState({});
   const [uploadFile, setUploadFile] = React.useState("");
   const [dataUri, setDataUri] = useState("");
@@ -40,8 +40,20 @@ export default function ProductUploadItem() {
     itemName: "",
     unitPrice: "",
     image: ``,
-    category_id: "",
+    category: "",
     countable: true,
+    adultMalePrice: {
+      ordinary: "",
+      ironed: "",
+    },
+    adultFemalePrice: {
+      ordinary: "",
+      ironed: "",
+    },
+    childrenPrice: {
+      ordinary: "",
+      ironed: "",
+    },
   });
 
   useEffect(() => {
@@ -92,21 +104,29 @@ export default function ProductUploadItem() {
     });
   };
 
-  const handleRemove = async (id) => {
-    try {
-      const response = await axios.delete(`/menu/category/${id}`);
-      console.log(response.data);
-      setCategories((prevItems) => prevItems.filter((item) => item._id !== id));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    const nameParts = name.split(".");
+    if (name === "image") {
+      return setSendData({
+        ...sendData,
+        [name]: files[0],
+      });
+    }
+    if (nameParts.length > 1) {
+      const [mainField, subField] = nameParts;
+  
+      return setSendData({
+        ...sendData,
+        [mainField]: {
+          ...sendData[mainField],
+          [subField]: value,
+        },
+      });
+    }
     return setSendData({
       ...sendData,
-      [e.target.name]:
-        e.target.name === "image" ? e.target.files[0] : e.target.value,
+      [name]: value,
     });
   };
 
@@ -122,50 +142,58 @@ export default function ProductUploadItem() {
     getCategories();
   }, []);
 
-  const handleEditCategory = async (id) => {
-    try {
-      const response = await axios.post(`/menu/category/${id}`, {
-        category: sendData.category,
-      });
-      Swal.fire({
-        icon: "success",
-        title: "Success...",
-        text: `You have successfully edited this category.`,
-      });
-      setCategories([...categories, response.data.data]);
-    } catch (error) {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error?.response?.data?.message
-          ? error?.response?.data?.message
-          : "Something went wrong!",
-      });
-    }
-  };
 
   const handleSubmitMenu = async () => {
     const jsonFormat = {
       itemName: sendData.itemName ? sendData.itemName : menuItem?.itemName,
-      unitPrice: sendData.unitPrice ? sendData.unitPrice : menuItem?.unitPrice,
+      // unitPrice: sendData.unitPrice ? +sendData.unitPrice : menuItem?.unitPrice,
       image: sendData.image ? sendData.image : menuItem?.image,
-      category_id: sendData.category_id
-        ? sendData.category_id
-        : menuItem?.category_id,
-      countable:
-        sendData?.countable === true
-          ? true
-          : false
-          ? sendData?.countable === true
-            ? true
-            : false
-          : menuItem?.countable,
+      // countable:
+      //   sendData?.countable === true
+      //     ? true
+      //     : false
+      //     ? sendData?.countable === true
+      //       ? true
+      //       : false
+      //     : menuItem?.countable,
+      category: sendData.category ? sendData.category : menuItem?.category_id,
+      adultMalePrice: {
+        ordinary: sendData.adultMalePrice.ordinary
+          ? sendData.adultMalePrice.ordinary
+          : menuItem?.adultMalePrice.ordinary,
+        ironed: sendData.adultMalePrice.ironed
+          ? sendData.adultMalePrice.ironed
+          : menuItem?.adultMalePrice.ironed,
+      },
+      adultFemalePrice: {
+        ordinary: sendData.adultFemalePrice.ordinary
+          ? sendData.adultFemalePrice.ordinary
+          : menuItem?.adultFemalePrice.ordinary,
+        ironed: sendData.adultFemalePrice.ironed
+          ? sendData.adultFemalePrice.ironed
+          : menuItem.adultFemalePrice.ironed,
+      },
+      childrenPrice: {
+        ordinary: sendData.childrenPrice.ordinary
+          ? sendData.childrenPrice.ordinary
+          : menuItem.childrenPrice.ordinary,
+        ironed: sendData.childrenPrice.ironed
+          ? sendData.childrenPrice.ironed
+          : menuItem.childrenPrice.ironed,
+      },
     };
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_URL}/menu/list/${menu?._id}`,
         jsonFormat
       );
+      dispatch({
+        type: "EDIT_MENU",
+        payload: {
+          ...response.data.data,
+          category: response.data.data.category.category
+        },
+      });
       Swal.fire({
         icon: "success",
         title: "Success",
@@ -223,12 +251,11 @@ export default function ProductUploadItem() {
                     Select Category
                   </Label>
                   <Select
-                    name="category_id"
+                    name="category"
                     onChange={handleChange}
                     className="mc-label-field-select w-100 h-md"
-                    // defaultValue={menuItem?.category}
+                    defaultValue={menuItem?.category_id}
                   >
-                    <Option value="">Select Category</Option>
                     {categories.map((item, index) => (
                       <Option key={index} value={item?._id}>
                         {item?.category}
@@ -237,7 +264,7 @@ export default function ProductUploadItem() {
                   </Select>
                 </Box>
               </Col>
-              <Col xl={12}>
+              {/* <Col xl={12}>
                 <LabelField
                   type="text"
                   label="regular price"
@@ -246,33 +273,91 @@ export default function ProductUploadItem() {
                   onChange={handleChange}
                   defaultValue={menuItem?.unitPrice}
                 />
+              </Col> */}
+              {/* Adult Male Price Fields */}
+              <Col xl={12}>
+                <CardHeader title="Adult Male Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ordinary Price"
+                      fieldSize="w-100 h-md"
+                      name="adultMalePrice.ordinary"
+                      onChange={handleChange}
+                      defaultValue={menuItem?.adultMalePrice?.ordinary}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ironed Price"
+                      fieldSize="w-100 h-md"
+                      name="adultMalePrice.ironed"
+                      onChange={handleChange}
+                      defaultValue={menuItem?.adultMalePrice?.ironed}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+
+              {/* Adult Female Price Fields */}
+              <Col xl={12}>
+                <CardHeader title="Adult Female Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ordinary Price"
+                      fieldSize="w-100 h-md"
+                      name="adultFemalePrice.ordinary"
+                      onChange={handleChange}
+                      defaultValue={menuItem?.adultFemalePrice?.ordinary}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ironed Price"
+                      fieldSize="w-100 h-md"
+                      name="adultFemalePrice.ironed"
+                      onChange={handleChange}
+                      defaultValue={menuItem?.adultFemalePrice?.ironed}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+
+              {/* Children Price Fields */}
+              <Col xl={12}>
+                <CardHeader title="Children Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ordinary Price"
+                      fieldSize="w-100 h-md"
+                      name="childrenPrice.ordinary"
+                      onChange={handleChange}
+                      defaultValue={menuItem?.childrenPrice?.ordinary}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ironed Price"
+                      fieldSize="w-100 h-md"
+                      name="childrenPrice.ironed"
+                      onChange={handleChange}
+                      defaultValue={menuItem?.childrenPrice?.ironed}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </CardLayout>
         </Col>
         <Col xl={5}>
-          <CardLayout className="mb-4">
-            <CardHeader title="organization" />
-            <Row>
-              <Col xl={12}>
-                <Box className="mc-product-upload-organize mb-4">
-                  <LabelField
-                    type="text"
-                    label="edit category selected"
-                    name="category"
-                    fieldSize="w-100 h-sm"
-                    onChange={handleChange}
-                  />
-                  <Button
-                    onClick={() => handleEditCategory(sendData?.category_id)}
-                    className="mc-btn primary"
-                  >
-                    edit
-                  </Button>
-                </Box>
-              </Col>
-            </Row>
-          </CardLayout>
           <CardLayout>
             <CardHeader title="specification" />
             <Row>

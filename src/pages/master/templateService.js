@@ -65,8 +65,16 @@ export const sendSms = async (dispatch, data) => {
   try {
     dispatch(sendSmsRequest());
     const response = await api.post("/sms", data);
+    console.log(response)
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "SMS sent successfully!",
+    });
     dispatch(sendSmsSuccess(response.data.data));
+    
   } catch (error) {
+    console.log(error)
     Swal.fire({
       icon: "error",
       title: "Oops...",
@@ -81,7 +89,13 @@ export const sendSmsCategory = async (dispatch, data) => {
   try {
     dispatch(sendSmsRequest());
     const response = await api.post("/sms/to-category", data);
+    console.log(response)
     dispatch(sendSmsSuccess(response.data.data));
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "SMS sent successful!",
+    });
   } catch (error) {
     Swal.fire({
       icon: "error",
@@ -93,8 +107,9 @@ export const sendSmsCategory = async (dispatch, data) => {
   }
 };
 
-export const fetchSmsHistory = async (dispatch, count, itemsPerPage) => {
+export const fetchSmsHistory = async (dispatch, count, itemsPerPage, setCount) => {
   dispatch(smsHistoryRequest());
   const response = await api.get(`/sms?page=${count}&size=${itemsPerPage}`);
-  dispatch(smsHistorySuccess(response?.data));
+  setCount(response.data.data.count)
+  dispatch(smsHistorySuccess(response?.data?.data?.messages));
 };

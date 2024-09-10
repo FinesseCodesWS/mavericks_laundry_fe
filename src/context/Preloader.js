@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { Box, Image, Heading } from "../components/elements";
 import PulseLoader from "react-spinners/PulseLoader";
-import image from "../assets/logo.png";
+import image from "../assets/logo1.png";
 
 export const LoaderContext = createContext();
 

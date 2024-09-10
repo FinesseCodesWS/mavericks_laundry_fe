@@ -11,6 +11,8 @@ import {
   Text,
   Select,
   Option,
+  List,
+  Item,
 } from "../../components/elements";
 import { LabelField, LabelTextarea } from "../../components/fields";
 import { CardLayout, CardHeader } from "../../components/cards";
@@ -19,14 +21,13 @@ import PageLayout from "../../layouts/PageLayout";
 import data from "../../data/master/productUpload.json";
 import axios from "../../axios";
 import axiosMain from "axios";
-// ALERT
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function ProductUpload() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const menus = useSelector((state) => state.menu.menus);
   const [loading, setLoading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
@@ -39,15 +40,93 @@ export default function ProductUpload() {
   const [previewImage, setPreviewImage] = useState("");
   const [previewOffline, setPreviewOffline] = useState(null);
   const [binaryString, setBinaryString] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState({});
   const [sendData, setSendData] = useState({
     itemName: "",
     unitPrice: "",
     image: ``,
-    category_id: "",
+    category: "",
     countable: true,
+    adultMalePrice: {
+      ordinary: "",
+      ironed: "",
+    },
+    adultFemalePrice: {
+      ordinary: "",
+      ironed: "",
+    },
+    childrenPrice: {
+      ordinary: "",
+      ironed: "",
+    },
   });
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState(null); // State to track selected category
+  const [categoryAmount, setCategoryAmount] = useState({});
+  const [newCategory, setNewCategory] = useState("");
+  const [editingCategory, setEditingCategory] = useState(null); // State for category being edited
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+
+  const handleAddCategory = async () => {
+    try {
+      const response = await axios.post("/menu/category", {
+        category: newCategory,
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `You have successfully created a category.`,
+      });
+      setCategories([...categories, response.data.data]);
+      setNewCategory("");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Something went wrong!",
+      });
+    }
+  };
+
+  const handleEditCategory = (category) => {
+    setEditingCategory(category._id);
+    setEditedCategoryName(category.category);
+  };
+
+  const handleUpdateCategory = async () => {
+    try {
+      const response = await axios.post(`/menu/category/${editingCategory}`, {
+        category: editedCategoryName,
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Updated",
+        text: "Category has been successfully updated.",
+      });
+
+      // Update the category in the state
+      setCategories(
+        categories.map((cat) =>
+          cat._id === editingCategory
+            ? { ...cat, category: editedCategoryName }
+            : cat
+        )
+      );
+
+      setEditingCategory(null);
+      setEditedCategoryName("");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Could not update category.",
+      });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCategory(null);
+    setEditedCategoryName("");
+  };
 
   const fileToDataUri = (file) =>
     new Promise((resolve, reject) => {
@@ -76,12 +155,31 @@ export default function ProductUpload() {
   };
 
   const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    const nameParts = name.split(".");
+    if (name === "image") {
+      return setSendData({
+        ...sendData,
+        [name]: files[0],
+      });
+    }
+    if (nameParts.length > 1) {
+      const [mainField, subField] = nameParts;
+  
+      return setSendData({
+        ...sendData,
+        [mainField]: {
+          ...sendData[mainField],
+          [subField]: value,
+        },
+      });
+    }
     return setSendData({
       ...sendData,
-      [e.target.name]:
-        e.target.name === "image" ? e.target.files[0] : e.target.value,
+      [name]: value,
     });
   };
+  
 
   useEffect(() => {
     const getCategories = async () => {
@@ -118,9 +216,21 @@ export default function ProductUpload() {
   const handleSubmitMenu = async () => {
     const jsonFormat = {
       itemName: sendData.itemName,
-      unitPrice: sendData.unitPrice,
+      // unitPrice: sendData.unitPrice,
       image: sendData.image,
-      category_id: sendData.category_id,
+      category: sendData.category,
+      adultMalePrice: {
+        ordinary: sendData.adultMalePrice.ordinary,
+        ironed: sendData.adultMalePrice.ironed,
+      },
+      adultFemalePrice: {
+        ordinary: sendData.adultFemalePrice.ordinary,
+        ironed: sendData.adultFemalePrice.ironed,
+      },
+      childrenPrice: {
+        ordinary: sendData.childrenPrice.ordinary,
+        ironed: sendData.childrenPrice.ironed,
+      },
     };
 
     try {
@@ -142,19 +252,31 @@ export default function ProductUpload() {
         text: "You have successfully created a menu.",
       });
       setLoading(false);
-const uploadedData = {
-  _id: response.data.data._id,
-  itemName: response.data.data.itemName,
-  category: response.data.data.category.category,
-  createdBy: response.data.data.createdBy._id,
-  unitPrice: response.data.data.unitPrice,
-  image: response.data.data.image,
-  createdAt: response.data.data.createdAt,
-  updatedAt: response.data.data.updatedAt
-}
-       dispatch({
+      const uploadedData = {
+        _id: response.data.data._id,
+        itemName: response.data.data.itemName,
+        category: response.data.data.category.category,
+        adultMalePrice: {
+          ordinary: response.data.data.adultMalePrice.ordinary,
+          ironed: response.data.data.adultMalePrice.ironed,
+        },
+        adultFemalePrice: {
+          ordinary: response.data.data.adultFemalePrice.ordinary,
+          ironed: response.data.data.adultFemalePrice.ironed,
+        },
+        childrenPrice: {
+          ordinary: response.data.data.childrenPrice.ordinary,
+          ironed: response.data.data.childrenPrice.ironed,
+        },
+        createdBy: response.data.data.createdBy._id,
+        // unitPrice: response.data.data.unitPrice,
+        image: response.data.data.image,
+        createdAt: response.data.data.createdAt,
+        updatedAt: response.data.data.updatedAt,
+      };
+      dispatch({
         type: "GET_MENUS",
-        payload: [...menus, uploadedData],
+        payload: [uploadedData, ...menus],
       });
       navigate("/product-list");
     } catch (error) {
@@ -203,7 +325,6 @@ const uploadedData = {
           ...sendData,
           image: res,
         });
-        // setImageLoading(false);
       }, 2000);
     };
     reader.readAsDataURL(file);
@@ -229,7 +350,7 @@ const uploadedData = {
             </Breadcrumb>
           </CardLayout>
         </Col>
-        <Col xl={7}>
+        <Col xl={8}>
           <CardLayout>
             <CardHeader title="basic information" />
             <Row>
@@ -240,16 +361,18 @@ const uploadedData = {
                   fieldSize="w-100 h-md"
                   name="itemName"
                   onChange={handleChange}
+                  defaultValue={sendData.itemName}
                 />
               </Col>
+
               <Col xl={6}>
                 <Box className={`mc-label-field-group label-col`}>
                   <Label className="mc-label-field-title">Category</Label>
                   <Select
-                    name="category_id"
+                    name="category"
                     onChange={handleChange}
                     className="mc-label-field-select w-100 h-md"
-                    defaultValue={category}
+                    defaultValue={sendData.category}
                   >
                     <Option value="">Select Option</Option>
                     {categories.map((item, index) => (
@@ -260,58 +383,185 @@ const uploadedData = {
                   </Select>
                 </Box>
               </Col>
+
+              {/* <Col xl={12}>
+        <LabelField
+          type="text"
+          label="regular price"
+          fieldSize="w-100 h-md"
+          name="unitPrice"
+          onChange={handleChange}
+          defaultValue={sendData.unitPrice}
+        />
+      </Col> */}
+
+              {/* Adult Male Price Fields */}
               <Col xl={12}>
-                <LabelField
-                  type="text"
-                  label="regular price"
-                  fieldSize="w-100 h-md"
-                  name="unitPrice"
-                  onChange={handleChange}
-                />
+                <CardHeader title="Adult Male Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ordinary Price"
+                      fieldSize="w-100 h-md"
+                      name="adultMalePrice.ordinary"
+                      onChange={handleChange}
+                      defaultValue={sendData.adultMalePrice?.ordinary}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ironed Price"
+                      fieldSize="w-100 h-md"
+                      name="adultMalePrice.ironed"
+                      onChange={handleChange}
+                      defaultValue={sendData.adultMalePrice?.ironed}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+
+              {/* Adult Female Price Fields */}
+              <Col xl={12}>
+                <CardHeader title="Adult Female Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ordinary Price"
+                      fieldSize="w-100 h-md"
+                      name="adultFemalePrice.ordinary"
+                      onChange={handleChange}
+                      defaultValue={sendData.adultFemalePrice?.ordinary}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ironed Price"
+                      fieldSize="w-100 h-md"
+                      name="adultFemalePrice.ironed"
+                      onChange={handleChange}
+                      defaultValue={sendData.adultFemalePrice?.ironed}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+
+              {/* Children Price Fields */}
+              <Col xl={12}>
+                <CardHeader title="Children Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ordinary Price"
+                      fieldSize="w-100 h-md"
+                      name="childrenPrice.ordinary"
+                      onChange={handleChange}
+                      defaultValue={sendData.childrenPrice?.ordinary}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Ironed Price"
+                      fieldSize="w-100 h-md"
+                      name="childrenPrice.ironed"
+                      onChange={handleChange}
+                      defaultValue={sendData.childrenPrice?.ironed}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </CardLayout>
         </Col>
-        <Col xl={5}>
+
+        <Col xl={4}>
           <CardLayout className="mb-4">
-            <CardHeader title="organization" />
-            <Row>
-              <Col xl={12}>
-                <Box className="mc-product-upload-organize mb-4">
-                  <LabelField
-                    type="text"
-                    label="add category"
-                    name="category"
-                    fieldSize="w-100 h-sm"
-                    onChange={handleChange}
-                  />
-                  <Button
-                    onClick={() => handleSubmitCategory()}
-                    className="mc-btn primary"
-                  >
-                    add
-                  </Button>
-                </Box>
-                <Box className="mc-product-upload-organize p-2">
-                  <Row>
-                    {categories?.map((category, index) => (
-                      <Col xl={6}>
-                        <span>{category.category}</span>
-                        <span
-                          style={{
-                            cursor: "pointer",
-                            marginLeft: ".2rem",
-                          }}
-                          onClick={() => handleRemove(category?._id)}
+            <CardHeader title="Categories" />
+            <Box className="mb-4">
+              <Label>Add Category</Label>
+              <LabelField
+                type="textfield"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="Enter new category"
+              />
+              <Button
+                onClick={handleAddCategory}
+                className="mc-btn primary mt-2"
+              >
+                Add Category
+              </Button>
+            </Box>
+            <Box className="mc-product-upload-organize p-2">
+              <Row>
+                {categories.map((cat) => (
+                  <Col xl={12} key={cat._id} className="mb-2">
+                    {editingCategory === cat._id ? (
+                      <>
+                        {/* Input field for editing category */}
+                        <LabelField
+                          type="text"
+                          value={editedCategoryName}
+                          onChange={(e) =>
+                            setEditedCategoryName(e.target.value)
+                          }
+                          placeholder="Edit category name"
+                        />
+                        <div className="d-flex gap-1 align-items-center">
+                        <Button
+                          onClick={handleUpdateCategory}
+                          className="mc-btn primary mt-2"
                         >
-                          <i className="fa fa-trash">x</i>
-                        </span>
-                      </Col>
-                    ))}
-                  </Row>
-                </Box>
-              </Col>
-            </Row>
+                          Save
+                        </Button>
+                        <Button
+                          onClick={handleCancelEdit}
+                          className="mc-btn btn btn-danger mt-2"
+                        >
+                          Cancel
+                        </Button>
+                        </div>
+                        
+                      </>
+                    ) : (
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div
+                          style={{
+                            display: "inline-block",
+                            marginRight: "10px",
+                          }}
+                        >
+                          {cat.category}
+                        </div>
+                        <div>
+                          <span
+                            style={{
+                              cursor: "pointer",
+                              marginRight: "10px",
+                              color: "blue",
+                            }}
+                            onClick={() => handleEditCategory(cat)}
+                          >
+                            <i className="fa fa-edit">✎</i>
+                          </span>
+                          <span
+                            style={{ cursor: "pointer", color: "red" }}
+                            onClick={() => handleRemove(cat._id)}
+                          >
+                            <i className="fa fa-trash">x</i>
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </Col>
+                ))}
+              </Row>
+            </Box>
           </CardLayout>
         </Col>
         <Col xl={12}>
@@ -333,11 +583,8 @@ const uploadedData = {
                 <Input
                   type="file"
                   id="product"
-                  // onChange={(e) => setUploadFile(e.target.files[0])}
-                  // onChange={(event) => onChange(event.target.files[0] || null)}
                   type="file"
                   name="image"
-                  // onChange={handleChange}
                   onChange={(e) => handleUrlImage(e.target.files[0])}
                 />
                 <Label htmlFor="product">
