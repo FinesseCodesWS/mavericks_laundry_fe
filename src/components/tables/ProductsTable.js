@@ -100,12 +100,12 @@ export default function ProductsTable({ thead, tbody, loading }) {
                   </Box>
                 </Td>
                 <Td>{item?.category}</Td>
-                <Td>
+                {/* <Td>
                   <Box className="mc-table-price">
-                    {/* <del>{ item.price.previous }</del> */}
+                    <del>{ item.price.previous }</del>
                     <Text>{item?.unitPrice}</Text>
                   </Box>
-                </Td>
+                </Td> */}
                 {/* <Td>{item?.quantity}</Td> */}
                 {/* <Td>{ item.order }</Td> */}
                 {/* <Td>{ item.sales }</Td> */}

@@ -4,7 +4,7 @@ const initialState = {
   templates: [],
   loading: false,
   error: null,
-  smsHistory: {},
+  smsHistory: [],
 };
 
 export const smsReducer = (state = initialState, action) => {

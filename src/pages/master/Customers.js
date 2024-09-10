@@ -28,7 +28,6 @@ export default function Customers({
     { label: "Amount", key: "amount" },
     { label: "Status", key: "status" },
     { label: "Registered Date", key: "createdAt" },
-    { label: "Updated At", key: "updatedAt" },
   ];
   const headersPDF = [
     [
@@ -37,7 +36,6 @@ export default function Customers({
       "Amount",
       `Status`,
       `Registered Date`,
-      `Updated At`,
     ],
   ];
   const user = useSelector((state) => state.user.user);
@@ -53,7 +51,6 @@ export default function Customers({
       obj?.amount,
       obj?.status,
       obj?.createdAt,
-      obj?.updatedAt,
     ]);
 
     doc.autoTable({
@@ -122,7 +119,6 @@ export default function Customers({
                 "amount",
                 "status",
                 "registered date",
-                "updated at",
               ]}
               tbody={customers}
               loading={isFilteredCategory}

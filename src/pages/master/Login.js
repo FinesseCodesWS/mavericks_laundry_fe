@@ -14,7 +14,7 @@ import data from "../../data/master/login.json";
 import axios from "../../axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import LogoImage from "../../assets/logo.png";
+import LogoImage from "../../assets/logo1.png";
 
 // ALERT
 import Swal from "sweetalert2/dist/sweetalert2.js";
@@ -78,9 +78,13 @@ export default function Login() {
           alt={data?.logo.alt}
           href={data?.logo.path}
           className="mc-auth-logo"
+          style={{
+            width: "100px",
+            height: "100px"
+          }}
         />
         <Heading as="h4" className="mc-auth-title">
-          Login to Laundry System
+          Login to Maverick Laundry System
         </Heading>
         <Form onSubmit={onSubmit} className="mc-auth-form">
           <IconField

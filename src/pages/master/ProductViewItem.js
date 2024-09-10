@@ -11,38 +11,19 @@ import {
   Heading,
   Button,
 } from "../../components/elements";
-import { CustomerReview, RatingAnalytics } from "../../components/review";
 import { Breadcrumb, DivideTitle } from "../../components";
 import PageLayout from "../../layouts/PageLayout";
-import LabelTextarea from "../../components/fields/LabelTextarea";
 import CardLayout from "../../components/cards/CardLayout";
 import data from "../../data/master/productView.json";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "../../axios";
-// import Packer from "js-binary-packer";
 
-export default function ProductView({ data, width, height }) {
-  const [png, setPng] = useState(null);
+export default function ProductView({ data }) {
   const { id } = useParams();
   const dispatch = useDispatch();
   const menu = useSelector((state) => state.menu.menu);
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const getImage = async () => {
-  //     const response = await axios.get(`/menu/image/${menu?._id}`, {
-  //       responseType: "arraybuffer",
-  //     });
-  //     const blob = new Blob([response.data], {
-  //       type: response.headers["content-type"],
-  //     });
-  //     const url = URL.createObjectURL(blob);
-  //     setImageUrl(url);
-  //   };
-  //   getImage();
-  // }, [menu?._id]);
 
   useEffect(() => {
     if (id) {
@@ -75,33 +56,64 @@ export default function ProductView({ data, width, height }) {
           <Col xl={5}>
             <DivideTitle title="laundry gallery" className="mb-4" />
             <Box className="mc-product-view-gallery">
-              <Image src={menu?.image} alt="product image" />
-
-              {/* {menu?.image?.data?.map((item, index) => (
-                // <Image key={index} src={item} alt="product image" />
-                
-              ))} */}
+              <Image src={menu?.image ? menu?.image : "https://placeholder.com/500"} alt="product image" />
             </Box>
           </Col>
           <Col xl={7}>
             <DivideTitle title="laundry details" className="mb-4" />
-            <Box className="mc-product-view-info-group">
-              <Heading as="h2" className="mc-product-view-info-title">
-                {menu?.itemName}
-              </Heading>
-              <Box className="mc-product-view-meta">
-                <Icon type="pix" />
-                <Heading as="h5">Category</Heading>
-                <Text as="span">:</Text>
-                <Text as="p">{menu?.category}</Text>
-              </Box>
-              <Box className="mc-product-view-meta">
-                <Icon type="sell" />
-                <Heading as="h5">Prize</Heading>
-                <Text as="span">:</Text>
-                <Text as="p">{menu?.unitPrice}</Text>
-              </Box>
-            </Box>
+            <Heading as="h2" className="mc-product-view-info-title">
+              {menu?.itemName}
+            </Heading>
+            <Row className="mc-product-view-meta">
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>pix</Icon> {/* Replace with appropriate icon if needed */}
+                <h5 className="mb-0 ms-2">Category</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.category}</p>
+              </Col>
+
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>male</Icon>
+                <h5 className="mb-0 ms-2">Male Ordinary Price</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.adultMalePrice?.ordinary}</p>
+              </Col>
+
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>male</Icon>
+                <h5 className="mb-0 ms-2">Male Ironed Price</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.adultMalePrice?.ironed}</p>
+              </Col>
+
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>female</Icon>
+                <h5 className="mb-0 ms-2">Female Ordinary Price</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.adultFemalePrice?.ordinary}</p>
+              </Col>
+
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>female</Icon>
+                <h5 className="mb-0 ms-2">Female Ironed Price</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.adultFemalePrice?.ironed}</p>
+              </Col>
+
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>child_care</Icon>
+                <h5 className="mb-0 ms-2">Children Ordinary Price</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.childrenPrice?.ordinary}</p>
+              </Col>
+
+              <Col xs={12} md={6} className="d-flex align-items-center mb-3">
+                <Icon>child_care</Icon>
+                <h5 className="mb-0 ms-2">Children Ironed Price</h5>
+                <span className="mx-2">:</span>
+                <p className="mb-0">{menu?.childrenPrice?.ironed}</p>
+              </Col>
+            </Row>
           </Col>
         </Row>
         <br />

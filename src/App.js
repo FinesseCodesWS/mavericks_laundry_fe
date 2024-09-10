@@ -41,13 +41,13 @@ import {
   VATRevenue,
   Reward,
   Sale,
-  SmsSender
+  SmsSender,
+  Messaging
 } from "./pages/master";
 import axios from "./axios";
 import axiosMain from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-// ALERT
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import Coupon from "./pages/master/Coupon";
@@ -111,8 +111,6 @@ export default function App() {
   const [pageCountInventory, setPageCountInventory] = useState(0);
   const [currentPageTrending, setCurrentPageTrending] = useState(1);
   const [pageCountTrending, setPageCountTrending] = useState(0);
-
-  // FILTER
   const [filterCategory, setFilterCategory] = useState("");
   const [filteredCategory, setFilteredCategory] = useState("");
   const [isFilteredCategory, setIsFilteredCategory] = useState(false);
@@ -132,14 +130,6 @@ export default function App() {
   const [week, setWeek] = useState("");
   const [salesDate, setSalesDate] = useState("");
   const [salesMonth, setSalesMonth] = useState("");
-
-  // useEffect(() => {
-  //   // Remove token from localStorage in 24 hours
-  //   setTimeout(function () {
-  //     localStorage.removeItem("pos-token");
-  //   }, 24 * 60 * 60 * 1000);
-  //   return navigate("/");
-  // }, []);
 
   // LOGOUT A STAFF
   useEffect(() => {
@@ -599,7 +589,6 @@ export default function App() {
 
   return (
     <Routes>
-      {/* master Pages */}
       <Route
         path="/dashboard"
         element={
@@ -638,7 +627,7 @@ export default function App() {
           />
         }
       />
-      <Route path="/sms" element={<SmsSender />} />
+      <Route path="/sms" element={<Messaging />} />
       <Route path="/staff-profile/:id" element={<UserProfile />} />
       <Route path="/my-account" element={<MyAccount />} />
       <Route

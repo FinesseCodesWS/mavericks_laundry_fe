@@ -87,7 +87,7 @@ export default function ProductList({
 
               <Col xl={12}>
                 <ProductsTable
-                  thead={["item", "category", "price", "action"]}
+                  thead={["item", "category", "action"]}
                   tbody={menus}
                   loading={isFilteredCategory}
                 />

@@ -15,9 +15,22 @@ import moment from "moment";
 import { toDateString } from "../../utils/date";
 import Loader from "../../pages/master/Loader";
 
-export default function OrderTable({ thead, tbody, loading }) {
+export default function OrderTable({
+  thead,
+  tbody,
+  loading,
+  setActiveTab,
+  handleDeleteDraft,
+  navigate
+}) {
   const [alertModal, setAlertModal] = React.useState(false);
   const [data, setData] = useState([]);
+  const [id, setId] = useState("");
+
+  const handleDelete = (id) => {
+    setAlertModal(true);
+    setId(id);
+  };
 
   useEffect(() => {
     setData(tbody);
@@ -54,7 +67,7 @@ export default function OrderTable({ thead, tbody, loading }) {
                   }
                   onChange={handleCheckbox}
                 />
-                <Text>uid</Text>
+                <Text>s/n</Text>
               </Box>
             </Th>
             {thead.map((item, index) => (
@@ -88,11 +101,32 @@ export default function OrderTable({ thead, tbody, loading }) {
                     <Text>{index + 1}</Text>
                   </Box>
                 </Td>
-                <Td>{item?.fullName ? item?.fullName : `NO NAME`}</Td>
-                <Td>{item?.phoneNumber}</Td>
-                <Td>{item?.amount}</Td>
-                <Td>{item?.status}</Td>
+                <Td>
+                  {item?.selectedCustomers?.length > 1
+                    ? `${item?.selectedCustomers?.length} customers`
+                    : `${item?.selectedCustomers?.length} customer`}
+                </Td>
+                <Td>{item?.message}</Td>
                 <Td>{toDateString(item?.createdAt, true)}</Td>
+                <Td>
+                  <Box className="mc-table-action">
+                    <Anchor
+                      href={`/sms?draft=${item?.id}`}
+                      title="Edit"
+                      className="material-icons edit"
+                      onClick={() => setActiveTab("segmentation")}
+                    >
+                      edit
+                    </Anchor>
+                    <Button
+                      title="Delete"
+                      className="material-icons delete"
+                      onClick={() => handleDelete(item?.id)}
+                    >
+                      delete
+                    </Button>
+                  </Box>
+                </Td>
               </Tr>
             ))
           )}
@@ -102,7 +136,7 @@ export default function OrderTable({ thead, tbody, loading }) {
         <Box className="mc-alert-modal">
           <Icon type="new_releases" />
           <Heading as="h3">are your sure!</Heading>
-          <Text as="p">Want to delete this order?</Text>
+          <Text as="p">Want to delete this draft?</Text>
           <Modal.Footer>
             <Button
               type="button"
@@ -114,7 +148,10 @@ export default function OrderTable({ thead, tbody, loading }) {
             <Button
               type="button"
               className="btn btn-danger"
-              onClick={() => setAlertModal(false)}
+              onClick={() => {
+                setAlertModal(false);
+                handleDeleteDraft(id);
+              }}
             >
               yes, delete
             </Button>

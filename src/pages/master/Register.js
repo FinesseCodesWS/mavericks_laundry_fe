@@ -14,7 +14,7 @@ import {
 import IconField from "../../components/fields/IconField";
 import Logo from "../../components/Logo";
 import data from "../../data/master/register.json";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo1.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // ALERT
