@@ -578,7 +578,7 @@ export default function ProductUpload() {
                 onClick={handleAddCategory}
                 className="mc-btn primary mt-2"
               >
-                Add Category
+                Add
               </Button>
             </Box>
             <Box className="mc-product-upload-organize p-2">
