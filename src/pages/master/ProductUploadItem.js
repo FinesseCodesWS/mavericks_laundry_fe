@@ -254,8 +254,11 @@ export default function ProductUploadItem() {
                     name="category"
                     onChange={handleChange}
                     className="mc-label-field-select w-100 h-md"
-                    defaultValue={menuItem?.category_id}
+                    defaultValue={menuItem?.category}
                   >
+                    <Option value="">
+                        Select Option
+                      </Option>
                     {categories.map((item, index) => (
                       <Option key={index} value={item?._id}>
                         {item?.category}
@@ -357,37 +360,12 @@ export default function ProductUploadItem() {
             </Row>
           </CardLayout>
         </Col>
-        <Col xl={5}>
-          <CardLayout>
-            <CardHeader title="specification" />
-            <Row>
-              <Col xl={12}>
-                {/* <LabelField
-                  type="text"
-                  label="stock / quantity"
-                  fieldSize="w-100 h-md"
-                /> */}
-                <Box className={`mc-label-field-group label-col`}>
-                  <Label className="mc-label-field-title">Countable</Label>
-                  <Select
-                    name="countable"
-                    onChange={handleChange}
-                    className="mc-label-field-select w-100 h-md"
-                  >
-                    <Option value={true}>True</Option>
-                    <Option value={false}>False</Option>
-                  </Select>
-                </Box>
-              </Col>
-            </Row>
-          </CardLayout>
-        </Col>
         <Col xl={12}>
           <CardLayout>
             <CardHeader title="media &amp; published" />
             <Box className="mc-product-upload-media">
               <Box className="mc-product-upload-image">
-                {menu?.image && <Image src={menu?.image} alt="product image" />}
+                {menu?.image && <Image src={menu?.image ? menu?.image : "https://placeholder.com/500"} alt="product image" />}
               </Box>
               <Box className="mc-product-upload-file">
                 <Input

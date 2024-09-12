@@ -60,11 +60,84 @@ export default function ProductUpload() {
     },
   });
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState(null); // State to track selected category
+  const [category, setCategory] = useState(null);
   const [categoryAmount, setCategoryAmount] = useState({});
   const [newCategory, setNewCategory] = useState("");
-  const [editingCategory, setEditingCategory] = useState(null); // State for category being edited
+  const [editingCategory, setEditingCategory] = useState(null);
   const [editedCategoryName, setEditedCategoryName] = useState("");
+
+  const [addOns, setAddOns] = useState([]);
+  const [addOn, setaddOn] = useState(null);
+  const [newAddOn, setNewAddOn] = useState("");
+  const [editingAddOn, setEditingAddOn] = useState(null);
+  const [editedAddOnName, setEditedAddOnName] = useState("");
+  const [editedAddOnPrice, setEditedAddOnPrice] = useState("");
+
+  const handleAddAddOn = async () => {
+    try {
+      const response = await axios.post("/menu/category", {
+        category: newCategory,
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `You have successfully created an add-on.`,
+      });
+      setAddOns([...addOns, response.data.data]);
+      setNewAddOn("");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Something went wrong!",
+      });
+    }
+  };
+
+  const handleEditAddOn = (category) => {
+    setEditingAddOn(category._id);
+    setEditedAddOnName(category.name);
+    setEditedAddOnPrice(category.price);
+  };
+
+  const handleUpdateAddOn = async () => {
+    try {
+      const response = await axios.patch(`/menu/addons/${editingAddOn}`, {
+        name: editedAddOnName,
+        price: editedAddOnPrice
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Updated",
+        text: "Add-On has been successfully updated.",
+      });
+
+      // Update the category in the state
+      setAddOns(
+        addOns.map((cat) =>
+          cat._id === editingAddOn
+            ? response.data.data
+            : cat
+        )
+      );
+
+      setEditingAddOn(null);
+      setEditedAddOnName("");
+      setEditedAddOnPrice("");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Could not update add-on.",
+      });
+    }
+  };
+
+  const handleCancelEditAddOn = () => {
+    setEditingAddOn(null);
+    setEditedAddOnName("");
+    setEditedAddOnPrice("");
+  };
 
   const handleAddCategory = async () => {
     try {
@@ -179,6 +252,16 @@ export default function ProductUpload() {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    const getAddOns = async () => {
+      try {
+        const response = await axios.get("/menu/addons");
+        setAddOns(response.data.data);
+      } catch (error) {}
+    };
+    getAddOns();
+  }, []);
   
 
   useEffect(() => {
@@ -367,7 +450,7 @@ export default function ProductUpload() {
 
               <Col xl={6}>
                 <Box className={`mc-label-field-group label-col`}>
-                  <Label className="mc-label-field-title">Category</Label>
+                  <Label className="mc-label-field-title">Select Category</Label>
                   <Select
                     name="category"
                     onChange={handleChange}
@@ -486,6 +569,7 @@ export default function ProductUpload() {
               <Label>Add Category</Label>
               <LabelField
                 type="textfield"
+                fieldSize="w-100 h-md"
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
                 placeholder="Enter new category"
@@ -546,6 +630,98 @@ export default function ProductUpload() {
                               color: "blue",
                             }}
                             onClick={() => handleEditCategory(cat)}
+                          >
+                            <i className="fa fa-edit">✎</i>
+                          </span>
+                          <span
+                            style={{ cursor: "pointer", color: "red" }}
+                            onClick={() => handleRemove(cat._id)}
+                          >
+                            <i className="fa fa-trash">x</i>
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </Col>
+                ))}
+              </Row>
+            </Box>
+          </CardLayout>
+
+          <CardLayout className="mb-4">
+            <CardHeader title="Add Ons" />
+            <Box className="mb-4">
+              <Label>Add Add On</Label>
+              <LabelField
+                type="textfield"
+                fieldSize="w-100 h-md"
+                value={newAddOn}
+                onChange={(e) => setNewAddOn(e.target.value)}
+                placeholder="Enter new add-on"
+              />
+              <Button
+                onClick={handleAddAddOn}
+                className="mc-btn primary mt-2"
+              >
+                Add
+              </Button>
+            </Box>
+            <Box className="mc-product-upload-organize p-2">
+              <Row>
+                {addOns.map((cat) => (
+                  <Col xl={12} key={cat._id} className="mb-2">
+                    {editingAddOn === cat._id ? (
+                      <>
+                        <LabelField
+                          type="text"
+                          value={editedAddOnName}
+                          onChange={(e) =>
+                            setEditedAddOnName(e.target.value)
+                          }
+                          placeholder="Edit add-on name"
+                        />
+                        <LabelField
+                          type="number"
+                          value={editedAddOnPrice}
+                          onChange={(e) =>
+                            setEditedAddOnPrice(e.target.value)
+                          }
+                          placeholder="Edit add-on price"
+                        />
+                        <div className="d-flex gap-1 align-items-center">
+                        <Button
+                          onClick={handleUpdateAddOn}
+                          className="mc-btn primary mt-2"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          onClick={handleCancelEditAddOn}
+                          className="mc-btn btn btn-danger mt-2"
+                        >
+                          Cancel
+                        </Button>
+                        </div>
+                        
+                      </>
+                    ) : (
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div className="text-capitalize"
+                          style={{
+                            display: "inline-block",
+                            marginRight: "10px",
+                          }}
+                        >
+                          {cat.name} (<span className="text-danger mr-1">₦{cat.price}</span>)
+                        </div>
+                        <div>
+                          <span
+                            style={{
+                              cursor: "pointer",
+                              marginRight: "10px",
+                              color: "blue",
+                            }}
+                            onClick={() => handleEditAddOn(cat)}
                           >
                             <i className="fa fa-edit">✎</i>
                           </span>
