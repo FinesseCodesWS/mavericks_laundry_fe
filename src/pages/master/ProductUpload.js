@@ -69,22 +69,25 @@ export default function ProductUpload() {
   const [addOns, setAddOns] = useState([]);
   const [addOn, setaddOn] = useState(null);
   const [newAddOn, setNewAddOn] = useState("");
+  const [newAddOnPrice, setNewAddOnPrice] = useState("");
   const [editingAddOn, setEditingAddOn] = useState(null);
   const [editedAddOnName, setEditedAddOnName] = useState("");
   const [editedAddOnPrice, setEditedAddOnPrice] = useState("");
 
   const handleAddAddOn = async () => {
     try {
-      const response = await axios.post("/menu/category", {
-        category: newCategory,
+      const response = await axios.post("/menu/addons", {
+        name: newAddOn,
+        price: newAddOnPrice
       });
       Swal.fire({
         icon: "success",
         title: "Success",
         text: `You have successfully created an add-on.`,
       });
-      setAddOns([...addOns, response.data.data]);
+      setAddOns([response.data.data, ...addOns]);
       setNewAddOn("");
+      setNewAddOnPrice("");
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -137,6 +140,13 @@ export default function ProductUpload() {
     setEditingAddOn(null);
     setEditedAddOnName("");
     setEditedAddOnPrice("");
+  };
+
+  const handleRemoveAddOn = async (id) => {
+    try {
+      const response = await axios.delete(`/menu/addons/${id}`);
+      setAddOns((prevItems) => prevItems.filter((item) => item._id !== id));
+    } catch (error) {}
   };
 
   const handleAddCategory = async () => {
@@ -649,7 +659,7 @@ export default function ProductUpload() {
           </CardLayout>
 
           <CardLayout className="mb-4">
-            <CardHeader title="Add Ons" />
+            <CardHeader title="Add On" />
             <Box className="mb-4">
               <Label>Add Add On</Label>
               <LabelField
@@ -657,7 +667,14 @@ export default function ProductUpload() {
                 fieldSize="w-100 h-md"
                 value={newAddOn}
                 onChange={(e) => setNewAddOn(e.target.value)}
-                placeholder="Enter new add-on"
+                placeholder="Enter new add-on name"
+              />
+              <LabelField
+                type="number"
+                fieldSize="w-100 h-md"
+                value={newAddOnPrice}
+                onChange={(e) => setNewAddOnPrice(e.target.value)}
+                placeholder="Enter new add-on price"
               />
               <Button
                 onClick={handleAddAddOn}
@@ -727,7 +744,7 @@ export default function ProductUpload() {
                           </span>
                           <span
                             style={{ cursor: "pointer", color: "red" }}
-                            onClick={() => handleRemove(cat._id)}
+                            onClick={() => handleRemoveAddOn(cat._id)}
                           >
                             <i className="fa fa-trash">x</i>
                           </span>

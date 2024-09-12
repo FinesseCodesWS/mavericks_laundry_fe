@@ -257,7 +257,7 @@ export default function ProductUploadItem() {
                     defaultValue={menuItem?.category}
                   >
                     <Option value="">
-                        Select Option
+                        Select Optionw
                       </Option>
                     {categories.map((item, index) => (
                       <Option key={index} value={item?._id}>
