@@ -31,7 +31,9 @@ const MyAccount = () => {
     emagency_address: user?.emergencyContact?.address,
   });
   const [theImage, setTheImage] = useState("");
+  const [sex, setSex] = useState("");
 
+  console.log(user)
 
   // IMAGE
   const sendImage = async (val) => {
@@ -158,6 +160,21 @@ const MyAccount = () => {
     return () => {};
   }, []);
 
+  const genderOptions = [
+    { value: "F", label: "Female" },
+    { value: "M", label: "Male" },
+  ];
+
+  const selectGenderHandler = (e) => {
+    console.log(e.target.value);
+    if (e.target.value !== "O") {
+        setSex(e.target.value) 
+        // setError(false);
+    } else {
+        // setError(true);
+    }
+}
+
   return (
     <PageLayout>
       <Row>
@@ -222,6 +239,15 @@ const MyAccount = () => {
                             value={account?.address}
                           />
                         </Col>
+                        {/* <Col xl={12}>
+                          <LegendField
+                            option={genderOptions}
+                            onChange={selectGenderHandler}
+                            name="gender"
+                            title={'Gender'}
+                            value={sex}
+                          />
+                        </Col> */}
 
                         {/* <Col xl={6}><LegendField title={ data?.username.title } value={ data?.username.value } /></Col>
                                                     <Col xl={12}><LegendTextarea title={ data?.bio.title } longText={ data?.bio.longText } /></Col> */}

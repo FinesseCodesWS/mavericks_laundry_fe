@@ -464,7 +464,18 @@ export async function getSingleInvoiceAction( invoiceId) {
             export const createUserInfo = async (user) => {
          
                 const json = {
-                    "phoneNumber":user?.phone, "fullName":user?.name
+                    "phoneNumber":user?.phone, "fullName":user?.name, "sex":user?.sex, "email":user?.email, "amount":user?.amount
                 }
                 return await API.post(`user/detail`, json)
             }
+
+        // get add ons
+        
+        export const getAddOns  = async () => {
+            try {
+                const response = await API.get('menu/addons')
+                return response?.data?.data;
+            } catch (error) {
+                formatError(error?.response?.data);
+            }
+        }

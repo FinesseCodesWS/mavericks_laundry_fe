@@ -66,6 +66,7 @@ import { formatError, showWarning } from "../../../API/AuthService";
 import HoldView from "./HoldView";
 import { Anchor, Bookmark, Menu, X } from "react-feather";
 import Calculator from "./Calculator";
+import { type } from "@testing-library/user-event/dist/type";
 // import { Mail, User } from "react-feather";
 
 var profile = {
@@ -196,10 +197,16 @@ const NewSales = () => {
   const [invoice, setInvoice] = useState(null);
 
   const [couponVal, setCouponVal] = useState("");
+  const [clotheSize, setClotheSize] = useState("");
+  const [laundryOptions, setLaundryOptions] = useState("");
+  const [product, setProduct] = useState({});
+
 
   const [alertModal, setAlertModal] = React.useState(false);
   const [alModal, setAlModal] = React.useState(false);
   const [calModal, setCalModal] = React.useState(false);
+  const [genModal, setGenModal] = React.useState(false);
+  const [isSizeSelected, setIsSizeSelected] = React.useState(true);
 
   const [defaultValue, setDefaultValue] = useState({
     discount: 0,
@@ -227,6 +234,9 @@ const NewSales = () => {
 
     // console.log(userDetails)
   };
+
+  // clothe sizes
+  
 
   const sendNewUserData = async () => {
     if (userDetails?.name && userDetails.phone) {
@@ -512,22 +522,22 @@ const NewSales = () => {
 
         tableList?.tbody?.map((c) => {
           totalG += Number(
-            c.unitPrice * c.quantity_bought -
-              (c?.unitPrice * c?.quantity_bought * c?.discount) / 100
+            c.price.price * c.item.quantity_bought -
+              (c?.price?.price * c?.item?.quantity_bought * c?.item?.discount) / 100
           );
         });
         setGrandTotal(totalG);
 
         tableList?.tbody?.map((c) => {
-          totalQ += Number(c.quantity_bought);
+          totalQ += Number(c.item.quantity_bought);
         });
         setTotalQuantity(totalQ);
         tableList?.tbody?.map((c) => {
-          totalA += Number(c.unitPrice * c.quantity_bought);
+          totalA += Number(c.price.price * c.item.quantity_bought);
         });
         setTotalAmount(totalA);
         tableList?.tbody?.map((c) => {
-          totalD += Number(c.discount);
+          totalD += Number(c.item.discount);
         });
         setTotalDiscount(totalD);
       } else {
@@ -647,19 +657,43 @@ const NewSales = () => {
 
 
 
-
-
-
-
-
-
-  const addOrUpdateProduct = (product) => {
-    const checkExistence = tableList?.tbody?.find((e) => e._id === product._id);
+  const selectProduct = (product) => {
     console.log(product)
+    setGenModal(true)
+    setProduct(product)
+  }
+
+
+
+
+
+  const addOrUpdateProduct = (product, launType) => {
+    console.log(product)
+    let theProduct;
+    if (clotheSize === "adultMalePrice") {
+      const { childrenPrice, adultFemalePrice, ...Product } = product;
+      const {adultMalePrice, ...item} = Product
+      theProduct = {item, price: {_id: adultMalePrice._id, price: launType === "ordinary" ? adultMalePrice.ordinary : adultMalePrice.ironed, size: "Adult Male", laundryOptions: launType }, addons: []};
+      console.log(theProduct)
+    }else if (clotheSize === "adultFemalePrice"){
+      const { adultMalePrice, childrenPrice, ...Product } = product;
+      const {adultFemalePrice, ...item} = Product
+      theProduct = {item, price: {_id: adultFemalePrice._id, price: launType === "ordinary" ? adultFemalePrice.ordinary : adultFemalePrice.ironed, size: "Adult Female", laundryOptions: launType}, addons: []};
+      console.log(theProduct)
+    }else {
+      const { adultMalePrice, adultFemalePrice, ...Product } = product;
+      const {childrenPrice, ...item} = Product
+      theProduct = {item, price: {_id: childrenPrice._id, price: launType === "ordinary" ? childrenPrice.ordinary : childrenPrice.ironed, size: "Child", laundryOptions: launType}, addons: []};
+      console.log(theProduct)
+    }
+    
+    console.log(tableList?.tbody);
+
+    const checkExistence = tableList?.tbody?.find((e) => e?.item?._id === theProduct?.item?._id && e?.price?._id === theProduct.price._id && e?.price?.laundryOptions === theProduct.price.laundryOptions );
+    console.log(checkExistence)
     if (!checkExistence) {
       // if (product.quantity !== 0) {
-        let theProduct = { ...product };
-        theProduct.quantity_bought = 1;
+        theProduct.item.quantity_bought = 1;
 
         let setValue = {
           ...tableList,
@@ -672,14 +706,14 @@ const NewSales = () => {
     } else {
       if (
         // product.quantity !== 0 &&
-        product.quantity > checkExistence.quantity_bought
+        product.quantity > checkExistence?.item?.quantity_bought
       ) {
         let setValue = {
           ...tableList,
           tbody: [
             ...tableList.tbody.map((e) => {
-              if (e._id === product._id) {
-                e.quantity_bought++;
+              if (e?.item?._id === product._id) {
+                e.item.quantity_bought++;
                 return e;
               } else {
                 return e;
@@ -709,11 +743,15 @@ const NewSales = () => {
     });
   };
 
-  const deleteProduct = (productId) => {
+  const deleteProduct = (productId, sizeId, laundryOptions) => {
+    console.log(tableList?.tbody)
     if (tableList?.tbody?.length === 1) {
+      console.log(tableList?.tbody)
+      console.log("hi")
+      console.log(laundryOptions);
       let setValue = {
         ...tableList,
-        tbody: [...tableList.tbody.filter((e) => e._id !== productId)],
+        tbody: [...tableList.tbody.filter((e) => e?.item?._id !== productId || e?.price?._id !== sizeId || e?.price?.laundryOptions !== laundryOptions)],
       };
 
       setValue = {
@@ -733,10 +771,14 @@ const NewSales = () => {
 
       localStorage.setItem("salesLocalData", JSON.stringify(setValue));
     } else {
+      console.log(tableList?.tbody)
+      console.log("hey")
+      console.log(productId, sizeId, laundryOptions);
       let seValue = {
         ...tableList,
-        tbody: [...tableList.tbody.filter((e) => e._id !== productId)],
+        tbody: [...tableList.tbody.filter((e) => e?.item?._id !== productId || e?.price?._id !== sizeId || e?.price?.laundryOptions !== laundryOptions)],
       };
+      console.log([...tableList.tbody.filter((e) => e?.item?._id !== productId || e?.price?._id !== sizeId || e?.price?.laundryOptions !== laundryOptions)])
       setTableList(seValue);
 
       localStorage.setItem("salesLocalData", JSON.stringify(seValue));
@@ -761,19 +803,18 @@ const NewSales = () => {
     localStorage.setItem("salesLocalData", JSON.stringify(setValue));
   };
 
-  const alterProductQuantity = (productId, isIncrement) => {
+  const alterProductQuantity = (productId, isIncrement, sizeId, laundryOptions) => {
     // const productFromList = productList?.data?.find(e=> e._id === productId)
-
-    const product = tableList?.tbody?.find((e) => e._id === productId);
-
+    const product = tableList?.tbody?.find((e) => e?.item?._id === productId && e?.price?._id === sizeId && e?.price?.laundryOptions === laundryOptions);
     if (isIncrement) {
       // if (product.quantity > product.quantity_bought) {
-        product.quantity_bought++;
+        console.log(product)
+        product.item.quantity_bought++;
 
         let setValue = {
           ...tableList,
           tbody: [
-            ...tableList.tbody.map((e) => (e._id === productId ? product : e)),
+            ...tableList.tbody.map((e) => (e?.item?._id === productId && e?.price?._id === sizeId && e?.price?.laundryOptions === laundryOptions ? product : e)),
           ],
         };
 
@@ -781,13 +822,13 @@ const NewSales = () => {
         localStorage.setItem("salesLocalData", JSON.stringify(setValue));
       // }
     } else {
-      if (product.quantity_bought > 1) {
-        product.quantity_bought--;
+      if (product?.item?.quantity_bought > 1) {
+        product.item.quantity_bought--;
 
         let setValue = {
           ...tableList,
           tbody: [
-            ...tableList.tbody.map((e) => (e._id === productId ? product : e)),
+            ...tableList.tbody.map((e) => (e?.item?._id === productId && e?.price?._id && e?.price?.laundryOptions === laundryOptions === sizeId ? product : e)),
           ],
         };
 
@@ -1352,6 +1393,8 @@ const NewSales = () => {
                 updateField={updateField}
                 deleteProduct={deleteProduct}
                 alterProductQuantity={alterProductQuantity}
+                setTableList={setTableList}
+                tableList={tableList}
               />
             </div>
 
@@ -1395,8 +1438,8 @@ const NewSales = () => {
                                   <div> <span>Send SMS to Customer</span></div>
                               </div> */}
 
-                  {tableList?.tax?.amount >= 1 &&
-                    totalAmount >= tableList?.tax?.threshold && (
+                  {tableList?.tbody?.item?.tax?.amount >= 1 &&
+                    totalAmount >= tableList?.tbody?.item?.tax?.threshold && (
                       <Col
                         xs={12}
                         sm={6}
@@ -1414,7 +1457,7 @@ const NewSales = () => {
                           {" "}
                           {/* #${totalAmount * tableList?.tax?.amount/100 }   */}
                           <input
-                            value={`${tableList?.tax?.amount}%`}
+                            value={`${tableList?.tbody?.item?.tax?.amount}%`}
                             disabled
                             type="text"
                             placeholder="0%"
@@ -1422,7 +1465,7 @@ const NewSales = () => {
                         </div>
                       </Col>
                     )}
-                  {tableList?.coupon?.amount && (
+                  {tableList?.tbody?.item?.coupon?.amount && (
                     <Col xs={12} sm={6} md={5} xl={5} className="right-container">
                       <div style={{ marginRight: "3px" }}>
                         <span style={{ fontWeight: "bolder" }}>Coupon Value</span>{" "}
@@ -1433,10 +1476,10 @@ const NewSales = () => {
                         <input
                           disabled
                           value={
-                            tableList?.coupon.type === "percentage"
-                              ? `${tableList?.coupon?.amount}%`
-                              : tableList?.coupon.type === "absolute"
-                              ? `#${tableList?.coupon?.amount}`
+                            tableList?.tbody?.item?.coupon.type === "percentage"
+                              ? `${tableList?.tbody?.item?.coupon?.amount}%`
+                              : tableList?.tbody?.item?.coupon.type === "absolute"
+                              ? `#${tableList?.tbody?.item?.coupon?.amount}`
                               : ""
                           }
                           type="text"
@@ -1571,6 +1614,23 @@ const NewSales = () => {
                             </label>
                           </div>
                         </Col>
+                        <Col xs={12} sm={6} md={6} xl={6}>
+                          <div className="d-flex justify-content-start align-items-center">
+                            <input
+                              onChange={() => pickMode("paylater")}
+                              type="checkbox"
+                              name="paylater"
+                              id="paylater"
+                            />
+                            <label
+                              style={{ fontWeight: "bold" }}
+                              htmlFor="paylater"
+                              className="mx-1"
+                            >
+                              Pay later
+                            </label>
+                          </div>
+                        </Col>
                       </Row>
                     </Col>
                   </Row>
@@ -1697,14 +1757,14 @@ const NewSales = () => {
                 <Product
                   key={p._id}
                   productData={p}
-                  addoRUpdateProduct={addOrUpdateProduct}
+                  addoRUpdateProduct={selectProduct}
                 />
               )) : 
                   productList?.data?.map((p) => (
                 <Product
                   key={p._id}
                   productData={p}
-                  addoRUpdateProduct={addOrUpdateProduct}
+                  addoRUpdateProduct={selectProduct}
                 />
               ))}
             </Col>
@@ -1788,6 +1848,31 @@ const NewSales = () => {
               placeholder="Enter customer's phone number"
               className="form-control my-2"
             />
+            <input
+              onChange={setUserInfoDetails}
+              name="email"
+              type="email"
+              placeholder="Enter customer's email address"
+              className="form-control my-2"
+            />
+            <select
+              onChange={setUserInfoDetails}
+              name="sex"
+              placeholder="Select gender"
+              className="form-control my-2"
+              style={{fontSize: "15px", fontWeight: "normal"}}
+            >
+              <option value="None">Select gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+            <input
+              onChange={setUserInfoDetails}
+              name="amount"
+              type="number"
+              placeholder="Enter amount"
+              className="form-control my-2"
+            />
           </div>
 
           <div className="footer">
@@ -1844,6 +1929,61 @@ const NewSales = () => {
           {/* <Modal.Footer>
                        
                     </Modal.Footer> */}
+        </Box>
+      </Modal>
+      
+      {/* select adult or child */}
+      <Modal isOpen={genModal} onClosed={() => setGenModal(false)}>
+        <Box className="mc-alert-modal p-3 bg-light rounded" style={{minWidth: '350px'}}>
+          {/* <Icon type="add_user" /> */}
+          <Heading as="h3">
+            <span style={{textAlign: 'left'}} >
+               Size & Type
+            </span>
+
+            <i className="bg-light" style={{float: 'right', cursor: 'pointer'}}  onClick={() => setGenModal(false)}> <X size={30} style={{border: '1px solid grey', borderRadius: '50%'}} />  </i>
+          
+          </Heading>
+          {/* <Text as="p">Add New User</Text> */}
+
+          <div style={{minWidth: '350px'}}>
+          <select
+              onChange={(e) => {
+                if (e.target.value !== "" && e.target.value !== "None") {
+                  setClotheSize(e.target.value)
+                  setIsSizeSelected(false);
+                } else {
+                  setIsSizeSelected(true);
+                }  
+              }}
+              name="size"
+              className="form-control my-2"
+              style={{fontSize: "15px", fontWeight: "normal"}}
+            >
+              <option value="None">Select size</option>
+              <option value="adultMalePrice">Adult male</option>
+              <option value="adultFemalePrice">Adult female</option>
+              <option value="childrenPrice">Children</option>
+            </select>
+
+            <select
+              onChange={(e) => {
+                setGenModal(false);
+                addOrUpdateProduct(product, e.target.value);
+                setLaundryOptions(e.target.value);
+              }}
+              name="laundry-options"
+              className="form-control my-2"
+              style={{fontSize: "15px", fontWeight: "normal"}}
+              disabled={isSizeSelected}
+            >
+              <option value="None">Select laundry option</option>
+              <option value="ordinary">Wash only</option>
+              <option value="ironed">Wash and Iron</option>
+            </select>
+          </div>
+
+          
         </Box>
       </Modal>
     </div>

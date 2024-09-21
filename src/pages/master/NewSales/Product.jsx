@@ -27,15 +27,15 @@ const Product = ({productData, addoRUpdateProduct}) => {
             className="mainImg"
           />
         </div>
-        <h2>{productData?.itemName}</h2>
-        <div className="prices">
+        <h2 style={{marginBlock: '5px'}}>{productData?.itemName}</h2>
+        {/* <div className="prices">
           <h3>
           <Currency
               quantity={productData?.unitPrice}      
               currency="NGN"            
           />
            </h3>
-        </div>
+        </div> */}
       </div>
     </div>
   );
