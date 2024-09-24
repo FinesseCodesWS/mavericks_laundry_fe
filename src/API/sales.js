@@ -118,7 +118,7 @@ export async function getAllSalesByDateAction( page, date, limit) {
       
       export const makeSalesWithCoupon = async (sales, phoneNumber,  couponId, fullname, paymentMode) => {
         const json = {
-            "couponId": couponId,
+            // "couponId": couponId,
             "modeOfPayment": paymentMode,
             "items": sales,
             "phoneNumber": phoneNumber ? phoneNumber : null,

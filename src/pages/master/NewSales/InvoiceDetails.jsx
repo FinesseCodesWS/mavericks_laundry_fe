@@ -57,10 +57,11 @@ export default function InvoiceDetails({
   
   useEffect(() => {
     setDimension(componentRef?.current?.clientHeight)
-    setHeight(tableList?.tbody?.length  <= 2 ?  1.5 : tableList?.tbody?.length  <= 4   ? 1.8 : tableList?.tbody?.length  <= 7 ? 2 :  tableList?.tbody?.length  <= 10 ? 2.5 :  tableList?.tbody?.length  <= 15 ? 3 :  3.5)
+    setHeight(tableList?.tbody?.length  <= 2 ?  1.5 : tableList?.tbody?.item?.length  <= 4   ? 1.8 : tableList?.tbody?.length  <= 7 ? 2 :  tableList?.tbody?.length  <= 10 ? 2.5 :  tableList?.tbody?.length  <= 15 ? 3 :  3.5)
     // console.log(dimension, height)
 
     // console.log(componentRef?.current?.clientHeight)
+    console.log(paymentMode)
     return () => {
       setDimension(0)
       setHeight(0)
@@ -104,9 +105,10 @@ export default function InvoiceDetails({
     setIsLoading(true)
     const theUser = userPhoneNumber?.value === "Walk In Customer" ? null : userPhoneNumber?.value
 
-    if(tableList?.coupon?.couponId){
+    if(tableList?.item?.coupon?.couponId){
       // const res = await makeSalesWithCouponAction(tableList?.allSales, theUser, tableList?.coupon?.couponId);
-      const res = await makeSalesWithCouponAction(tableList?.allSales, userDetails?.phone, tableList?.coupon?.couponId, userDetails?.name, paymentMode);
+      const res = await makeSalesWithCouponAction(tableList?.allSales, userDetails?.phone, tableList?.coupon?.couponId, userDetails?.name, paymentMode[0]);
+      console.log(res);
       if (res) {
         let data = { ...tableList };
         data.invoiceId = res?.invoice?.invoiceId;
@@ -125,7 +127,7 @@ export default function InvoiceDetails({
         setIsLoading(false)
       }
     }else {
-      const ress = await makeSalesAction(tableList?.allSales, userDetails?.phone, userDetails?.name, paymentMode);
+      const ress = await makeSalesAction(tableList?.allSales, userDetails?.phone, userDetails?.name, paymentMode[0]);
       if (ress) {
         let data = { ...tableList };
         data.invoiceId = ress?.invoice?.invoiceId;
@@ -164,7 +166,7 @@ export default function InvoiceDetails({
               src={"images/product/single/maverick_logos_dark.png"}
               alt={data?.logo?.alt}
             /> */}
-            <Heading style={{fontWeight: 'bolder'}} as="h5">Maverick's</Heading>
+            <Heading style={{fontWeight: 'bolder'}} as="h5">Maverick's Laundry</Heading>
           </Box>
 
           <Box className="mc-invoice-group m-0">
@@ -198,16 +200,16 @@ export default function InvoiceDetails({
                         />
                       </Box> */}
                         {/* <Text>  {item?.itemName}</Text> */}
-                        {item?.itemName}
+                        {item?.item?.itemName}
                     </Td>
-                    <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.unitPrice}</Td>
+                    <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.price?.price}</Td>
                     {/* <Td>{item?.discount}</Td> */}
-                    <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.quantity_bought}</Td>
+                    <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.item?.quantity_bought}</Td>
                     <Td style={{fontWeight: 'bold',  fontSize: '9px'}} className='' >
-                      {Number(item?.unitPrice * item?.quantity_bought) -
-                        (item?.unitPrice *
-                          item?.quantity_bought *
-                          item?.discount) /
+                      {Number((item?.price?.price * item?.item?.quantity_bought) + (item?.addonPrice * item?.item?.quantity_bought)) -
+                        (item?.price?.price *
+                          item?.item?.quantity_bought *
+                          item?.item?.discount) /
                           100}
                     </Td>
                   </Tr>

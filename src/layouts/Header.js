@@ -33,7 +33,7 @@ export default function Header() {
     return (
         <Section as="header" className={`mc-header ${ scroll }`}>
             <Logo 
-                src = { 'images/product/single/maverick_logos.png' }
+                src = { 'images/product/single/mavericks laundry_blue.png' }
                 alt = { data?.logo.alt }
                 name = { "Maverick's" }
                 href = { '/' } 

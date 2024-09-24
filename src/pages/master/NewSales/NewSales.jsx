@@ -522,7 +522,7 @@ const NewSales = () => {
 
         tableList?.tbody?.map((c) => {
           totalG += Number(
-            c.price.price * c.item.quantity_bought -
+            ((c.price.price * c.item.quantity_bought) + (c.addonPrice * c.item.quantity_bought)) -
               (c?.price?.price * c?.item?.quantity_bought * c?.item?.discount) / 100
           );
         });
@@ -533,7 +533,7 @@ const NewSales = () => {
         });
         setTotalQuantity(totalQ);
         tableList?.tbody?.map((c) => {
-          totalA += Number(c.price.price * c.item.quantity_bought);
+          totalA += Number((c.price.price * c.item.quantity_bought)+ (c.addonPrice * c.item.quantity_bought));
         });
         setTotalAmount(totalA);
         tableList?.tbody?.map((c) => {
@@ -673,17 +673,17 @@ const NewSales = () => {
     if (clotheSize === "adultMalePrice") {
       const { childrenPrice, adultFemalePrice, ...Product } = product;
       const {adultMalePrice, ...item} = Product
-      theProduct = {item, price: {_id: adultMalePrice._id, price: launType === "ordinary" ? adultMalePrice.ordinary : adultMalePrice.ironed, size: "Adult Male", laundryOptions: launType }, addons: []};
+      theProduct = {item, price: {_id: adultMalePrice._id, price: launType === "ordinary" ? adultMalePrice.ordinary : adultMalePrice.ironed, size: "Adult Male", laundryOptions: launType }, addons: [], addonPrice: 0};
       console.log(theProduct)
     }else if (clotheSize === "adultFemalePrice"){
       const { adultMalePrice, childrenPrice, ...Product } = product;
       const {adultFemalePrice, ...item} = Product
-      theProduct = {item, price: {_id: adultFemalePrice._id, price: launType === "ordinary" ? adultFemalePrice.ordinary : adultFemalePrice.ironed, size: "Adult Female", laundryOptions: launType}, addons: []};
+      theProduct = {item, price: {_id: adultFemalePrice._id, price: launType === "ordinary" ? adultFemalePrice.ordinary : adultFemalePrice.ironed, size: "Adult Female", laundryOptions: launType}, addons: [], addonPrice: 0};
       console.log(theProduct)
     }else {
       const { adultMalePrice, adultFemalePrice, ...Product } = product;
       const {childrenPrice, ...item} = Product
-      theProduct = {item, price: {_id: childrenPrice._id, price: launType === "ordinary" ? childrenPrice.ordinary : childrenPrice.ironed, size: "Child", laundryOptions: launType}, addons: []};
+      theProduct = {item, price: {_id: childrenPrice._id, price: launType === "ordinary" ? childrenPrice.ordinary : childrenPrice.ironed, size: "Child", laundryOptions: launType}, addons: [], addonPrice: 0};
       console.log(theProduct)
     }
     
@@ -744,11 +744,7 @@ const NewSales = () => {
   };
 
   const deleteProduct = (productId, sizeId, laundryOptions) => {
-    console.log(tableList?.tbody)
     if (tableList?.tbody?.length === 1) {
-      console.log(tableList?.tbody)
-      console.log("hi")
-      console.log(laundryOptions);
       let setValue = {
         ...tableList,
         tbody: [...tableList.tbody.filter((e) => e?.item?._id !== productId || e?.price?._id !== sizeId || e?.price?.laundryOptions !== laundryOptions)],
@@ -771,9 +767,6 @@ const NewSales = () => {
 
       localStorage.setItem("salesLocalData", JSON.stringify(setValue));
     } else {
-      console.log(tableList?.tbody)
-      console.log("hey")
-      console.log(productId, sizeId, laundryOptions);
       let seValue = {
         ...tableList,
         tbody: [...tableList.tbody.filter((e) => e?.item?._id !== productId || e?.price?._id !== sizeId || e?.price?.laundryOptions !== laundryOptions)],
@@ -847,13 +840,19 @@ const NewSales = () => {
   const attemptCheckout = async () => {
     if (paymentMode.length > 0) {
       const allSales = tableList.tbody.map((data) => {
-        let requiredData = {};
-        requiredData.menuId = data?._id;
-        requiredData.quantity = data?.quantity_bought;
+        // let requiredData = {};
+        // requiredData.menuId = data?._id;
+        // requiredData.quantity = data?.quantity_bought;
 
-        return requiredData;
+        return {
+          menuId: data?.item?._id,
+          quantity: data?.item?.quantity_bought,
+          menuOption: data?.price?.size === "Adult Male" ? "adultMalePrice": data?.price?.size === "Adult Female" ? "adultFemalePrice" : "childrenPrice",
+          laundryOptions: data?.price?.laundryOptions,
+          addOns: data?.addons
+        };
       });
-
+      console.log(allSales);
       let data = { ...tableList };
       data.allSales = allSales;
       data.totalAmount = totalAmount;
@@ -863,7 +862,12 @@ const NewSales = () => {
         ? (totalAmount * tableList?.tax?.amount) / 100
         : 0;
 
+      if (tableList?.localUserData?.phone === "" || tableList?.localUserData?.name === "") {
+        showWarning("Please search and add a customer");
+        return;
+      }
       setConfirmPage(data);
+      // localUserData
     } else {
       showWarning("Please select payment method");
     }

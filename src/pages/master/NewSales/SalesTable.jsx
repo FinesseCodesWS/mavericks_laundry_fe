@@ -60,8 +60,9 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
     }
     
 
-    const handleAddOns = (e, item) => {
+    const handleAddOns = (e, item, addon_price) => {
         if (e.target.checked && !item?.addons?.includes(e.target.id)){
+            item.addonPrice += addon_price;
             item?.addons?.push(e.target.id)
             const prod = tableList?.tbody.map(e => {
               return e?.price?._id === item?.price?._id && e?.price?.laundryOptions === item?.price?.laundryOptions ? item : e;
@@ -73,6 +74,7 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
            setTableList(setValue);
             localStorage.setItem("salesLocalData", JSON.stringify(setValue));
         } else {
+             item.addonPrice -= addon_price;
              item.addons = item?.addons?.filter((add) => { return e.target.id !== add});
              const prod = tableList?.tbody.map(e => {
              return e?.price?._id === item?.price?._id && e?.price?.laundryOptions === item?.price?.laundryOptions ? item : e;
@@ -145,8 +147,8 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
                                    {addOns.map(addon => (
                                     <>
                                         <div key={addon._id} style={{display:"flex", alignItems: "center", gap: "5px"}}>
-                                            <input type="checkbox" id={addon._id} name={addon.price} onChange={(e) => handleAddOns(e, item)} checked={checkIfChecked(item, addon._id)} />
-                                            <label for={addon.name}>{`${addon.name}   ₦${addon.price}`}</label>
+                                            <input type="checkbox" id={addon._id} name={addon.price} onChange={(e) => handleAddOns(e, item, addon.price)} checked={checkIfChecked(item, addon._id)} />
+                                            <label for={addon.price}>{`${addon.name}   ₦${addon.price}`}</label>
                                         </div><br/>
                                     </>
                                    ))}
@@ -155,7 +157,7 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
                             <Td className='price-col'>{ item?.price?.price}</Td>
                             {/* <Td className='discount-col'>{ item?.discount }</Td> */}
                             {/* <Td className='discount-col'>{ item?.tax }</Td> */}
-                            <Td  className='subtotal-col'>{ Number(item?.price?.price * item?.item?.quantity_bought) - ( (item?.price?.price * item?.item?.quantity_bought) *item?.item?.discount/100) }</Td>
+                            <Td  className='subtotal-col'>{ Number((item?.price?.price * item?.item?.quantity_bought) + (item?.addonPrice * item?.item?.quantity_bought)) - ( (item?.price?.price * item?.item?.quantity_bought) *item?.item?.discount/100) }</Td>
                             <Td>
                                 <Box className="mc-table-icon d-flex justify-content-center">
                                     <Icon onClick={()=>removeProduct(item?.item?._id, item?.price?._id, item?.price?.laundryOptions)}  style={{color: 'red', cursor: 'pointer'}} type={ item?.item?.delete?.icon } />
