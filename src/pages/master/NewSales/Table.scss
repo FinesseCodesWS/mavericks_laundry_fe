@@ -176,3 +176,49 @@
     }
 
 }
+
+.popup-modal-overlay {
+    position: fixed; /* Fixed positioning for full screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center the modal content vertically and horizontally */
+    z-index: 1000; 
+}
+
+.popup-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  position: relative;
+}
+
+.addons-section {
+  width: 50%;
+  margin-inline: auto;
+  margin-top: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.pop-heading {
+  display: flex;
+  justify-content: space-between;  
+  margin-bottom: 20px;
+}
+
+.popup-item {
+    width: 100%;
+    display:flex; 
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    font-size: larger;
+    margin-bottom: 5px;
+}

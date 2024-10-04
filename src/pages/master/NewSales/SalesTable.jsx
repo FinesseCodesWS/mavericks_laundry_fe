@@ -140,18 +140,39 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
                             </Td>
                             <Td className='price-col'>
                                 <button id={`${item?.price?._id}_${item?.price?.laundryOptions}`} style={{border: "1px solid black", height: "30px", borderRadius: "3px", paddingInline: "4px"}} onClick={(e) => {
-                                    setShowAddOns(!showAddOns)
+                                    setShowAddOns(true)
                                     setButtonId(e.target.id)
                                     }}>Add Ons</button>
-                                <div style={{minWidth: "150px", zIndex: "200", position: "absolute", backgroundColor: "beige", padding: "5px", borderRadius: "4px", overflowY: "auto", visibility: `${showAddOns && `${item?.price?._id}_${item?.price?.laundryOptions}` === buttonId ? "visible" : "hidden"}`}}>
-                                   {addOns.map(addon => (
-                                    <>
-                                        <div key={addon._id} style={{display:"flex", alignItems: "center", gap: "5px"}}>
-                                            <input type="checkbox" id={addon._id} name={addon.price} onChange={(e) => handleAddOns(e, item, addon.price)} checked={checkIfChecked(item, addon._id)} />
-                                            <label for={addon.price}>{`${addon.name}   ₦${addon.price}`}</label>
-                                        </div><br/>
-                                    </>
-                                   ))}
+                                <div className="popup-modal-overlay" style={{ visibility: `${showAddOns && `${item?.price?._id}_${item?.price?.laundryOptions}` === buttonId ? "visible" : "hidden"}`}}>
+                                   <div className="popup-modal-content">
+                                    <div className="pop-heading">
+                                      <h3>Add-Ons</h3>
+                                      <button id={`${item?.price?._id}_${item?.price?.laundryOptions}`} onClick={(e) => {
+                                        setShowAddOns(false)
+                                        setButtonId(e.target.id)
+                                        }}><svg fill="#000000" height="20px" width="20px" version="1.1" id="Layer_1"  
+                                        viewBox="0 0 1792 1792">
+                                   <path d="M1082.2,896.6l410.2-410c51.5-51.5,51.5-134.6,0-186.1s-134.6-51.5-186.1,0l-410.2,410L486,300.4
+                                       c-51.5-51.5-134.6-51.5-186.1,0s-51.5,134.6,0,186.1l410.2,410l-410.2,410c-51.5,51.5-51.5,134.6,0,186.1
+                                       c51.6,51.5,135,51.5,186.1,0l410.2-410l410.2,410c51.5,51.5,134.6,51.5,186.1,0c51.1-51.5,51.1-134.6-0.5-186.2L1082.2,896.6z"/>
+                                   </svg></button>    
+                                    </div>
+                                    <div style={{display: "flex", justifyContent: 'space-between', gap: '5px', width: '45%', marginInline: 'auto', fontWeight: 'bold'}}>
+                                        <p>Name</p>
+                                        <p>Price</p>
+                                    </div>
+                                        <div className="addons-section">
+                                            {addOns.map(addon => (
+                                                <div style={{display: 'flex', gap: '3px'}}>
+                                                    <input style={{marginBottom: '2px'}} type="checkbox" id={addon._id} name={addon.price} onChange={(e) => handleAddOns(e, item, addon.price)} checked={checkIfChecked(item, addon._id)} />
+                                                    <div key={addon._id} className="popup-item">
+                                                        <p>{addon.name}</p>
+                                                        <p>₦{addon.price}</p>
+                                                    </div><br/>
+                                                </div>
+                                            ))}
+                                        </div>   
+                                   </div>
                                 </div>
                             </Td>
                             <Td className='price-col'>{ item?.price?.price}</Td>
