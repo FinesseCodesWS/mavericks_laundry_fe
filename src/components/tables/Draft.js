@@ -21,7 +21,6 @@ export default function OrderTable({
   loading,
   setActiveTab,
   handleDeleteDraft,
-  navigate
 }) {
   const [alertModal, setAlertModal] = React.useState(false);
   const [data, setData] = useState([]);
@@ -94,7 +93,7 @@ export default function OrderTable({
                   <Box className="mc-table-check">
                     <Input
                       type="checkbox"
-                      name={item.name}
+                      name={item._id}
                       checked={item?.isChecked || false}
                       onChange={handleCheckbox}
                     />
@@ -102,16 +101,23 @@ export default function OrderTable({
                   </Box>
                 </Td>
                 <Td>
-                  {item?.selectedCustomers?.length > 1
-                    ? `${item?.selectedCustomers?.length} customers`
-                    : `${item?.selectedCustomers?.length} customer`}
+                  {item?.data?.recipients &&
+                  item?.data?.selectedCustomers?.length === 0
+                    ? `Recipients, no customers`
+                    : item?.data?.selectedCustomers?.length > 0
+                    ? `${item?.data?.selectedCustomers?.length} ${
+                        item?.data?.selectedCustomers?.length > 1
+                          ? "customers"
+                          : "customer"
+                      }`
+                    : `No data`}
                 </Td>
-                <Td>{item?.message}</Td>
+                <Td>{item?.data?.message}</Td>
                 <Td>{toDateString(item?.createdAt, true)}</Td>
                 <Td>
                   <Box className="mc-table-action">
                     <Anchor
-                      href={`/sms?draft=${item?.id}`}
+                      href={`/sms?draft=${item?._id}`}
                       title="Edit"
                       className="material-icons edit"
                       onClick={() => setActiveTab("segmentation")}
@@ -121,7 +127,7 @@ export default function OrderTable({
                     <Button
                       title="Delete"
                       className="material-icons delete"
-                      onClick={() => handleDelete(item?.id)}
+                      onClick={() => handleDelete(item?._id)}
                     >
                       delete
                     </Button>

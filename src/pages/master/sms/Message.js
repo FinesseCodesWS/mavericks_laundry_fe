@@ -50,12 +50,12 @@ const ComposeMessage = ({
     const urlParams = new URLSearchParams(window.location.search);
     const draftId = urlParams.get("draft");
 
-    if (draftId && drafts.length > 0) {
-      const matchingDraft = drafts.find((draft) => draft.id === draftId);
+    if (draftId && drafts?.length > 0) {
+      const matchingDraft = drafts?.find((draft) => draft?._id === draftId);
       if (matchingDraft) {
-        setRecipients(matchingDraft.recipients);
-        setSelectedCustomers([...matchingDraft.selectedCustomers]);
-        setMessage(matchingDraft.message);
+        setRecipients(matchingDraft?.data?.recipients);
+        setSelectedCustomers([...matchingDraft?.data?.selectedCustomers]);
+        setMessage(matchingDraft?.data?.message);
       }
     }
   }, [drafts, setMessage]);
@@ -114,16 +114,17 @@ const ComposeMessage = ({
     let updatedDrafts;
 
     if (draftId) {
+      const response = await axios.patch(`/sms/draft?id=${draftId}`, {
+        data: {
+          recipients,
+          message,
+          selectedCustomers,
+          customerSegment,
+        }
+      })
       updatedDrafts = drafts.map((draft) => {
-        if (draft.id === draftId) {
-          return {
-            ...draft,
-            recipients,
-            message,
-            selectedCustomers,
-            customerSegment,
-            updatedAt: new Date().toISOString(),
-          };
+        if (draft?._id === draftId) {
+          return response.data.data;
         }
         return draft;
       });
@@ -135,15 +136,14 @@ const ComposeMessage = ({
         selectedCustomers,
         customerSegment,
       };
-      await axios.post("/sms/draft", {
+      const response = await axios.post("/sms/draft", {
         data: newDraft
       })
-      updatedDrafts = [...drafts, newDraft];
+      updatedDrafts = [response.data.data, ...drafts];
       alert("Draft saved successfully!");
     }
 
     setDrafts(updatedDrafts);
-    localStorage.setItem("smsDrafts", JSON.stringify(updatedDrafts));
   };
 
   const handleSend = async (e) => {

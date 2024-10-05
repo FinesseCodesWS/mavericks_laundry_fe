@@ -21,17 +21,18 @@ import {
   fetchSmsHistory,
   createTemplate,
   sendSms,
-  sendSmsCategory
+  sendSmsCategory,
 } from "../templateService";
 import Templates from "./Templates";
 import History from "./History";
 import Message from "./Message";
 import Draft from "./Draft";
+import axios from "../../../axios";
 
 const SMSManagementSystem = () => {
-  const [templateContact, setTemplateContact] = useState(null)
+  const [templateContact, setTemplateContact] = useState(null);
   const [lastSelectedCustomer, setLastSelectedCustomer] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("templates");
   const [showModal, setShowModal] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState("");
@@ -48,12 +49,16 @@ const SMSManagementSystem = () => {
   const [itemsPerPage] = useState(10);
 
   useEffect(() => {
-    const savedDraft = localStorage.getItem("smsDrafts");
-    if (savedDraft) {
-      const draftData = JSON.parse(savedDraft);
-      setDrafts(draftData);
-    }
-  }, [localStorage.getItem("smsDrafts")]);
+    const getDrafts = async () => {
+      try {
+        const response = await axios.get(`/sms/draft`);
+        setDrafts(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getDrafts();
+  }, []);
 
   useEffect(() => {
     fetchTemplates(dispatch);
@@ -66,27 +71,32 @@ const SMSManagementSystem = () => {
   const defaultTemplates = [
     {
       title: "Newly Registered Users (Within 7 Days)",
-      message: "Welcome to Maverick Laundry Services! Enjoy our offer on your first order. Let's get your laundry sparkling clean!",
+      message:
+        "Welcome to Maverick Laundry Services! Enjoy our offer on your first order. Let's get your laundry sparkling clean!",
       category: "New Customer Welcome",
     },
     {
       title: "Users With Active Laundry Being Processed",
-      message: "Your laundry order is being processed! We'll keep you updated on its status. Thank you for choosing Maverick Laundry Services.",
+      message:
+        "Your laundry order is being processed! We'll keep you updated on its status. Thank you for choosing Maverick Laundry Services.",
       category: "Processed",
     },
     {
       title: "Users Who Have Not Performed A Transaction",
-      message: "We miss you! Haven't used our services lately? Enjoy our offer on your next order. Let's get your laundry fresh and clean again.",
+      message:
+        "We miss you! Haven't used our services lately? Enjoy our offer on your next order. Let's get your laundry fresh and clean again.",
       category: "Inactive",
     },
     {
       title: "Male Users",
-      message: "Looking for a reliable laundry service? We specialize in specific services for men, e.g., suit cleaning, shirt ironing. Enjoy our offere on your first order.",
+      message:
+        "Looking for a reliable laundry service? We specialize in specific services for men, e.g., suit cleaning, shirt ironing. Enjoy our offere on your first order.",
       category: "Male",
     },
     {
       title: "Female Users",
-      message: "Pamper yourself with our premium laundry services. We offer specific services for women, e.g., delicate fabric care, dress alterations. Enjoy our offer on your first order. ",
+      message:
+        "Pamper yourself with our premium laundry services. We offer specific services for women, e.g., delicate fabric care, dress alterations. Enjoy our offer on your first order. ",
       category: "Female",
     },
   ];
@@ -110,18 +120,19 @@ const SMSManagementSystem = () => {
     });
   };
 
-  const handleDeleteDraft = (draftId) => {
-    const updatedDrafts = drafts.filter((draft) => draft.id !== draftId);
-    setDrafts(updatedDrafts);
-    localStorage.setItem("smsDrafts", JSON.stringify(updatedDrafts));
-    navigate("/sms")
+  const handleDeleteDraft = async (draftId) => {
+    try {
+      await axios.delete(`sms/draft?id=${draftId}`);
+      const updatedDrafts = drafts.filter((draft) => draft._id !== draftId);
+      setDrafts(updatedDrafts);
+      navigate("/sms");
+    } catch (error) {}
   };
 
   const handleTemplateSelect = (template) => {
     setMessage(template.message);
     setActiveTab("segmentation");
   };
-  
 
   return (
     <PageLayout>
@@ -223,7 +234,14 @@ const SMSManagementSystem = () => {
               )}
 
               {/* Draft Tab */}
-              {activeTab === "draft" && <Draft drafts={drafts} setActiveTab={setActiveTab} handleDeleteDraft={handleDeleteDraft} navigate={navigate} />}
+              {activeTab === "draft" && (
+                <Draft
+                  drafts={drafts}
+                  setActiveTab={setActiveTab}
+                  handleDeleteDraft={handleDeleteDraft}
+                  navigate={navigate}
+                />
+              )}
 
               {/* SMS History Tab */}
               {activeTab === "history" && (
