@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Segment from "./Segment";
 import { useSelector } from "react-redux";
 import { CardLayout } from "../../../components/cards";
+import axios from "../../../axios";
 
 const ComposeMessage = ({
   drafts,
@@ -18,16 +19,14 @@ const ComposeMessage = ({
   dispatch,
 }) => {
   const { customers } = useSelector((state) => state.customer);
-  const [sender, setSender] = useState("");
   const [recipients, setRecipients] = useState("");
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [customerSegment, setCustomerSegment] = useState([]);
-  const [customer, setCustomer] = useState("");
+  const [ setCustomer] = useState("");
   const [activeTab, setActiveTab] = useState("customers");
   const [currentPage, setCurrentPage] = useState(1);
   const maxCharactersPerPage = [160, 306];
   const [saveAsTemplate, setSaveAsTemplate] = useState(false);
-  const [category, setCategory] = useState("");
   const [personalizedMessage, setPersonalizedMessage] = useState(message);
 
   const replaceName = (message, customerName) => {
@@ -41,7 +40,7 @@ const ComposeMessage = ({
     const customerName = lastSelectedCustomer?.fullName;
     const updatedMessage = replaceName(message, customerName);
     setPersonalizedMessage(updatedMessage);
-  }, [message, lastSelectedCustomer, selectedCustomers, customerSegment]);
+  }, [message, lastSelectedCustomer, selectedCustomers, customerSegment, replaceName]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -59,7 +58,7 @@ const ComposeMessage = ({
         setMessage(matchingDraft.message);
       }
     }
-  }, [drafts]);
+  }, [drafts, setMessage]);
 
   useEffect(() => {
     if (selectedCustomers?.length > 0) {
@@ -108,7 +107,7 @@ const ComposeMessage = ({
     }
   };
 
-  const handleSaveAsDraft = () => {
+  const handleSaveAsDraft = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const draftId = urlParams.get("draft");
 
@@ -131,13 +130,14 @@ const ComposeMessage = ({
       alert("Draft updated successfully!");
     } else {
       const newDraft = {
-        id: Math.random().toString(36).substring(2, 15),
         recipients,
         message,
         selectedCustomers,
         customerSegment,
-        createdAt: new Date().toISOString(),
       };
+      await axios.post("/sms/draft", {
+        data: newDraft
+      })
       updatedDrafts = [...drafts, newDraft];
       alert("Draft saved successfully!");
     }
@@ -146,7 +146,7 @@ const ComposeMessage = ({
     localStorage.setItem("smsDrafts", JSON.stringify(updatedDrafts));
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (recipients?.length > 0) {
       const data = {
