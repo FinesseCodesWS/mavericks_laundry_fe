@@ -21,11 +21,12 @@ import CardLayout from "../../components/cards/CardLayout";
 import Breadcrumb from "../../components/Breadcrumb";
 import PageLayout from "../../layouts/PageLayout";
 import data from "../../data/master/invoiceDetails.json";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import jsPDF from "jspdf";
 
 export default function InvoiceDetails() {
+  const navigate = useNavigate()
   const { id } = useParams();
   const dispatch = useDispatch();
   const invoice = useSelector((state) => state.invoice.invoice);
@@ -36,6 +37,8 @@ export default function InvoiceDetails() {
       setTotalAmount(
         invoice?.items?.reduce((acc, item) => acc + item.totalPrice, 0)
       );
+    } else {
+      navigate("/invoice-list")
     }
   }, [invoice]);
 
@@ -183,7 +186,11 @@ export default function InvoiceDetails() {
                     className={`digit
                             }`}
                   >
-                    {totalAmount}
+                    {new Intl.NumberFormat("en-NG", {
+                          style: "currency",
+                          currency: "NGN",
+                        }).format(totalAmount)}
+                    
                   </Text>
 
                   {/* {invoice?.items?.map((item, index) => (
