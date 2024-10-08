@@ -129,7 +129,6 @@ export default function InvoiceDetails() {
                       // "uid",
                       "product name",
                       "price per unit",
-                      "add ons",
                       "total amount",
                       "quantity",
                       "created by",
@@ -143,24 +142,14 @@ export default function InvoiceDetails() {
                     <Tr key={index}>
                       {/* <Td>{item?.salesId}</Td> */}
                       <Td>{item?.menuId?.itemName}</Td>
-                      <Td>
-                        {new Intl.NumberFormat("en-NG", {
-                          style: "currency",
-                          currency: "NGN",
-                        }).format(item?.unitPrice)}
-                      </Td>
-                      <Td>
-                        {item?.addOns.map((addOn, index) => (
-                          <Text className="text-capitalize" key={index}>{addOn.name}</Text>
-                        ))}
-                      </Td>
-
-                      <Td>
-                        {new Intl.NumberFormat("en-NG", {
-                          style: "currency",
-                          currency: "NGN",
-                        }).format(item?.totalPrice)}
-                      </Td>
+                      <Td>{new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(item?.totalPrice) item??.unitPrice}</Td>
+                      <Td>{new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(item?.totalPrice)}</Td>
                       <Td>{item?.quantity}</Td>
                       <Td>{item?.createdBy}</Td>
                     </Tr>
