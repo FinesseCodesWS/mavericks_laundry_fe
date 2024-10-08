@@ -90,7 +90,10 @@ export default function OrderTable({ thead, tbody, loading }) {
                 </Td>
                 <Td>{item?.fullName ? item?.fullName : `NO NAME`}</Td>
                 <Td>{item?.phoneNumber}</Td>
-                <Td>{item?.amount}</Td>
+                <Td>{new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(item?.amount)}</Td>
                 <Td>{item?.status}</Td>
                 <Td>{toDateString(item?.createdAt, true)}</Td>
               </Tr>
