@@ -13,7 +13,14 @@ const invoiceReducer = (state = initialState, action) => {
     case "GET_INVOICE":
       return {
         ...state,
-        invoice: state.invoices.find((item, i) => item._id === action.payload),
+        invoice: state.invoices.find((item) => item._id === action.payload),
+      };
+    case "EDIT_INVOICE":
+      return {
+        ...state,
+        invoices: state.invoices.map((invoice) =>
+          invoice._id === action.payload._id ? action.payload : invoice
+        ),
       };
     default:
       return state;

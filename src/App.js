@@ -232,10 +232,11 @@ export default function App() {
                 filterMonth?.split("-")[0]
               }&year=${filterMonth?.split("-")[0]}`
             );
+            console.log(response.data)
             setPageCountInvoice(response.data.count);
             dispatch({
               type: "GET_INVOICES",
-              payload: response.data.data.invoiceList,
+              payload: response.data.data,
             });
             setIsFilteredCategory(false);
           } catch (error) {}
@@ -249,7 +250,7 @@ export default function App() {
             setPageCountInvoice(response.data.count);
             dispatch({
               type: "GET_INVOICES",
-              payload: response.data.data.invoiceList,
+              payload: response.data.data,
             });
             setIsFilteredCategory(false);
           } catch (error) {}

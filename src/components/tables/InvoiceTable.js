@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { Table, Thead, Tbody, Th, Tr, Td } from "../elements/Table";
-import {
-  Heading,
-  Anchor,
-  Icon,
-  Box,
-  Text,
-  Input,
-  Image,
-  Button,
-} from "../elements";
+import { Heading, Anchor, Icon, Box, Text, Input, Button } from "../elements";
 import { toDateString } from "../../utils/date";
-import axios from "../../axios";
-
-import Loader from "../../pages/master/Loader";
-// ALERT
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
+import axios from "../../axios";
+import { useDispatch } from "react-redux";
+
+import Loader from "../../pages/master/Loader";
 
 export default function InvoiceTable({ thead, tbody, loading }) {
+  const dispatch = useDispatch();
+  const [status, setStatus] = useState("");
+  const [payment, setPayment] = useState("");
+  const [deleteId, setDeleteId] = useState("");
   const [alertModal, setAlertModal] = React.useState(false);
   const [data, setData] = useState([]);
 
@@ -94,7 +89,6 @@ export default function InvoiceTable({ thead, tbody, loading }) {
                 </Td>
                 <Td>
                   <Box className="mc-table-profile">
-                    {/* <Image src={item?.src} alt={item?.alt} /> */}
                     {item?.items?.length > 1 ? (
                       <Text>{`+${item?.items?.length}`} items</Text>
                     ) : (
@@ -104,34 +98,17 @@ export default function InvoiceTable({ thead, tbody, loading }) {
                     )}
                   </Box>
                 </Td>
-                <Td>{item?.totalPrice}</Td>
-                {/* <Td>{item?.month}</Td> */}
                 <Td>
-                  {item?.modeOfPayment?.length > 1 ? (
-                    <Text>
-                      {`+${item?.modeOfPayment?.length}`} modes of payment
-                    </Text>
-                  ) : (
-                    item?.modeOfPayment?.map((mode, index) => (
-                      <Text key={index} className={`mc-table-badge`}>
-                        {mode}
-                      </Text>
-                    ))
-                  )}
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(item?.totalPrice)}
+                </Td>
+                <Td className="text-capitalize">
+                  {item?.modeOfPayment}
                 </Td>
                 <Td>
-                  {/* <Image src={item?.src} alt={item?.alt} /> */}
-                  {item?.items?.length > 1 ? (
-                    <Text>{`+${item?.items?.length}`} statuses</Text>
-                  ) : (
-                    item.items?.map((item, index) => (
-                      <Text
-                        className={`mc-table-badge ${item?.status?.variant}`}
-                      >
-                        {item?.menuId?.status}
-                      </Text>
-                    ))
-                  )}
+                  <Text className="text-capitalize">{item?.status}</Text>
                 </Td>
                 <Td>{toDateString(item?.createdAt, true)}</Td>
                 <Td>
@@ -143,21 +120,15 @@ export default function InvoiceTable({ thead, tbody, loading }) {
                     >
                       visibility
                     </Anchor>
-                    {/* <Anchor
-                    title="Download"
-                    href="#"
-                    className="material-icons download"
-                    download
-                  >
-                    download
-                  </Anchor> */}
-                    {/* <Button
-                    title="Delete"
-                    className="material-icons delete"
-                    onClick={() => setAlertModal(true)}
-                  >
-                    delete
-                  </Button> */}
+                    <Anchor
+                      title="Edit"
+                      className="material-icons edit"
+                      onClick={() =>
+                        setAlertModal(true, setDeleteId(item?._id))
+                      }
+                    >
+                      edit
+                    </Anchor>
                   </Box>
                 </Td>
               </Tr>
@@ -166,28 +137,112 @@ export default function InvoiceTable({ thead, tbody, loading }) {
         </Tbody>
       </Table>
       <Modal show={alertModal} onHide={() => setAlertModal(false)}>
-        <Box className="mc-alert-modal">
-          <Icon type="new_releases" />
-          <Heading as="h3">are your sure!</Heading>
-          <Text as="p">Want to delete this invoice?</Text>
-          <Modal.Footer>
-            <Button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => setAlertModal(false)}
-            >
-              nop, close
-            </Button>
-            <Button
-              type="button"
-              className="btn btn-danger"
-              onClick={() => setAlertModal(false)}
-            >
-              yes, delete
-            </Button>
-          </Modal.Footer>
-        </Box>
-      </Modal>
+  <Box className="mc-alert-modal">
+    <Icon type="edit" />
+    <Heading as="h3">Edit Invoice</Heading>
+
+    <div className="mb-3">
+      <label htmlFor="laundryOptions" className="form-label">
+        Laundry Status
+      </label>
+      <select
+        value={status}
+        onChange={async (e) => {
+          const newStatus = e.target.value;
+          setStatus(newStatus);
+
+          try {
+            const response = await axios.patch(`/sales/invoices`, {
+              status: newStatus,
+              invoiceId: deleteId
+            });
+            dispatch({
+              type: "EDIT_INVOICE",
+              payload: response.data.data,
+            });
+            return Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Status updated successfully!",
+            });
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error?.response?.data?.message || "Failed to update status.",
+            });
+          }
+        }}
+        className="form-select"
+        id="laundryOptions"
+      >
+        <option value="">Select an option</option>
+        <option value="new">New</option>
+        <option value="delivered">Delivered</option>
+        <option value="washed">Washed</option>
+        <option value="sorted">Sorted</option>
+        <option value="ironed">Ironed</option>
+        <option value="packaged">Packaged</option>
+        <option value="picked up">Picked Up</option>
+        <option value="dispatched">Dispatched</option>
+      </select>
+    </div>
+
+    <div className="mb-3">
+      <label htmlFor="modeOfPayment" className="form-label">
+        Payment Method
+      </label>
+      <select
+        value={payment}
+        onChange={async (e) => {
+          const newPayment = e.target.value;
+          setPayment(newPayment);
+
+          try {
+            const response = await axios.patch(`/sales/invoices`, {
+              modeOfPayment: newPayment,
+              invoiceId: deleteId
+            });
+            dispatch({
+              type: "EDIT_INVOICE",
+              payload: response.data.data,
+            });
+            return Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Payment method updated successfully!",
+            });
+          } catch (error) {
+            return Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: error?.response?.data?.message || "Failed to update payment method.",
+            });
+          }
+        }}
+        className="form-select"
+        id="modeOfPayment"
+      >
+        <option value="">Select an option</option>
+        <option value="cash">Cash</option>
+        <option value="transfer">Transfer</option>
+        <option value="pos">POS</option>
+        <option value="pay later">Pay Later</option>
+      </select>
+    </div>
+
+    <Modal.Footer>
+      <Button
+        type="button"
+        className="btn btn-secondary"
+        onClick={() => setAlertModal(false)}
+      >
+        Close
+      </Button>
+    </Modal.Footer>
+  </Box>
+</Modal>
+
     </Box>
   );
 }

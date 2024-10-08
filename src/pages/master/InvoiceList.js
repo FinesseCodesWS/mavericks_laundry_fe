@@ -34,7 +34,7 @@ export default function InvoiceList({
     setCurrentPageInvoice(e.target.value);
   };
   const [searchKeyword, setSearchKeyword] = useState("");
-  const filteredData = invoices.filter((item) =>
+  const filteredData = invoices?.filter((item) =>
     item?.totalPrice === parseInt(searchKeyword)
       ? item?.totalPrice === parseInt(searchKeyword)
       : item
@@ -112,7 +112,7 @@ export default function InvoiceList({
                 "issue date",
                 "action",
               ]}
-              tbody={filteredData ? filteredData : invoices}
+              tbody={invoices}
               loading={isFilteredCategory}
             />
             {/* <Pagination
