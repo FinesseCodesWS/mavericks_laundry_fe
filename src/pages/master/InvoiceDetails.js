@@ -131,7 +131,6 @@ export default function InvoiceDetails() {
                     {[
                       // "uid",
                       "product name",
-                      "price per unit",
                       "add ons",
                       "total amount",
                       "quantity",
@@ -146,12 +145,6 @@ export default function InvoiceDetails() {
                     <Tr key={index}>
                       {/* <Td>{item?.salesId}</Td> */}
                       <Td>{item?.menuId?.itemName}</Td>
-                      <Td>
-                        {new Intl.NumberFormat("en-NG", {
-                          style: "currency",
-                          currency: "NGN",
-                        }).format(item?.unitPrice)}
-                      </Td>
                       <Td>
                         {item?.addOns.map((addOn, index) => (
                           <Text className="text-capitalize" key={index}>{addOn.name}</Text>
