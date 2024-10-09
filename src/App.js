@@ -232,7 +232,7 @@ export default function App() {
           if (mode || filterMonthDate || filterMonth || status) {
             const year = filterMonth ? filterMonth.split("-")[0] : null;
             const month = filterMonth ? `${filterMonthDate} ${year}` : null;
-            url += `?status=${mode || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
+            url += `?orderStatus=${status || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
           }
   
           const response = await axios.get(url);

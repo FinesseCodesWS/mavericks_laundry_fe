@@ -80,7 +80,7 @@ export default function InvoiceList({
                     onChange={(e) => setFilterMonth(e.target.value)}
                   />
               </Col>
-              {/* <Col xs={1} sm={2} lg={4} className="mb-4">
+              <Col xs={1} sm={2} lg={4} className="mb-4">
                 <Label className="mc-label-field-title">
                   Filter by Status
                 </Label>
@@ -99,8 +99,8 @@ export default function InvoiceList({
               <Option value="picked up">Picked Up</Option>
               <Option value="dispatched">Dispatched</Option>
                 </Select>
-              </Col> */}
-              {/* <Col xs={1} sm={2} lg={4} className="mb-4">
+              </Col>
+              <Col xs={1} sm={2} lg={4} className="mb-4">
                 <Label className="mc-label-field-title">
                   Filter by Mode of Payment
                 </Label>
@@ -114,7 +114,7 @@ export default function InvoiceList({
                   <Option value="cash">Cash</Option>
                   <Option value="pos">POS</Option>
                 </Select>
-              </Col> */}
+              </Col>
               {/* <Col lg={12} className="mb-4">
                 <LegendField
                   type="number"
