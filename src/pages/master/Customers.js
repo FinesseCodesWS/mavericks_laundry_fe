@@ -116,7 +116,7 @@ export default function Customers({
               thead={[
                 "full name",
                 "phone number",
-                "amount",
+                "total bill",
                 "status",
                 "registered date",
               ]}
