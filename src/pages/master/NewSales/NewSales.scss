@@ -27,9 +27,10 @@
 }
 
 .title-left {
-    width: 45%;
+    width: 65%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .title-right{
@@ -38,38 +39,9 @@
     justify-content: space-around;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .product-table{
   margin-top: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .saleContainer{
     // max-height: 100vh;
@@ -164,28 +136,23 @@
         justify-content: space-between;
         color: #333;
         padding: 10px;
-
+        
 
         .button-col{
-            text-align: right;
-
+            width: 130px;
+            white-space: nowrap;
         }
-    }
-    .b-containers{
-        width: 100%;
-        display: flex;
-        justify-content:flex-end;
-        // min-height: 50px;
-        padding:5px 10px;
 
-        .arrangediv{
-            width: 80%;
+        .button-col-2{
+            width: 160px;
+            white-space: nowrap;
         }
     }
 
     .displayy{
         display: flex
     }
+
 
     .nameTemplate{
 
@@ -209,11 +176,135 @@
     
 }
 
+.harmburger-btn {
+    display: none;
+    justify-self: start;
+}
 
-@media screen and (max-width: 600px) {
-    .b-containers{
-        justify-content:start;
+.order-wrapper {
+   display: flex; 
+}
+
+.action-container {
+   display: flex;
+   justify-content: space-evenly;
+   padding-left: 0;
+}
+
+.action-container2 {
+   display: flex;
+   justify-content: space-evenly;
+   padding-left: 0;
+}
+
+.action-btns {
+  width: 150px;
+  height: 30px;     
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+  color: var(--lightColor);
+  -webkit-box-shadow: var(--btnBoxShadow);
+          box-shadow: var(--btnBoxShadow);
+  transition: all linear 0.3s;
+  -webkit-transition: all linear 0.3s;
+  -moz-transition: all linear 0.3s;
+  -ms-transition: all linear 0.3s;
+  -o-transition: all linear 0.3s;
+}
+
+.anchor-class {
+  width: 200px;
+  height: 40px;
+  border-radius: 7px;
+  font-weight: bolder;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: white;
+  text-transform: uppercase;
+}
+
+.invoice-contain {
+    min-width: 25vw;
+    font-size: 15px;
+    max-width: 50vw;
+}
+
+@media screen and (max-width: 890px) {
+    .action-container2 { 
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+        padding-inline: 2%;
+     }
+}
+
+@media screen and (max-width: 700px) {
+    .invoice-contain {
+      min-width: 80vw;
     }
+
+    .invoice-heading {
+       font-size: 14px;
+    }
+
+    .action-btns{
+     width: 100%;
+     margin-inline: auto;
+    }
+
+    .anchor-class {
+      width: 100%;
+    }
+
+    .action-container { 
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+    }
+
+    .b-container {
+      justify-content: space-around;
+    }
+
+    .title {
+      width: 700px;
+      text-align: left;
+    }
+
+    .harmburger-btn {
+      display: block;
+    }
+
+    .title-left {
+        width: 170px;
+        height: 100px;
+        position: absolute;
+        top: 7%;
+        left: 1%;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: start;
+        justify-content: center;
+        background-color: rgb(31, 105, 117);
+        border-radius: 2px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        gap: 4px;
+    }
+
+    .pos-top-container {
+        justify-content: start;
+        gap: 20px;
+    }
+
         .arrangediv{
             width: 100%;
         }
@@ -222,6 +313,11 @@
         }
 }
 
+@media screen and (max-width: 1199px) { 
+    .order-wrapper {
+        flex-direction: column-reverse;
+    }
+}
 
 // @media screen and (min-width: 600px) {    
 //     .displayy{

@@ -67,7 +67,7 @@ const SalesInvoiceTable = ({ thead, tbody, actionhandler }) => {
     }
 
 
-
+   console.log(data)
     return (
         <Box className="mc-table-responsive">
 

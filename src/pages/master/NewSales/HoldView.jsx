@@ -41,7 +41,7 @@ export default function HoldView({draftData, onSelectDraft, onDeleteDraft, onDel
                 {/* <RoundAvatar src={ image } alt="avatar" size="xs" />
                 <DuelText title={ name } descrip={ username } size="xs" /> */}
                 <div  className="d-flex align-items-center" id='hold' style={{postion: 'absolute'}}>
-                        <span className="mx-1">
+                        <span className="mr-1">
 
                         Draft List
                         </span>

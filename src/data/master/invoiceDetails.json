@@ -23,7 +23,7 @@
     "recieved": { "title": "order recieved", "text": "Office 25/B, Road 30, West jalkuri, Fatullah, Narayanganj 1265. +8801838288389, support@miron.com" },
     "shipment": { "title": "shipment details", "text": "House 17/A, Road 09, West jalkuri, Fatullah, Narayanganj 1265. +8801838288389, support@miron.com" },
     "table": {
-        "thead": [ "product", "price", "qty", "Amt"],
+        "thead": [ "product", "price", "Add-Ons", "AddOns-Price", "qty", "Amt"],
         "tbody": [
             { 
                 "id": "#5768", 

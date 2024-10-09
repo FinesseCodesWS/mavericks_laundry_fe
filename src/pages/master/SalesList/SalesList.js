@@ -416,7 +416,7 @@ export default function SalesList() {
 
 
 
-
+        console.log(res?.data?.salesList)
         let totalA = 0
         res?.data?.salesList?.map((c)=>{
             totalA += Number(c.quantity  * c.menuId?.unitPrice) })

@@ -67,6 +67,7 @@ import HoldView from "./HoldView";
 import { Anchor, Bookmark, Menu, X } from "react-feather";
 import Calculator from "./Calculator";
 import { type } from "@testing-library/user-event/dist/type";
+import { getAddOns } from "../../../API/sales";
 // import { Mail, User } from "react-feather";
 
 var profile = {
@@ -207,6 +208,9 @@ const NewSales = () => {
   const [calModal, setCalModal] = React.useState(false);
   const [genModal, setGenModal] = React.useState(false);
   const [isSizeSelected, setIsSizeSelected] = React.useState(true);
+  const [addOnsList, setAddOnsList] = useState([]);
+  const [showOptions, setShowOptions] = useState(false);
+  const [screenSize, setScreenSize] = useState();
 
   const [defaultValue, setDefaultValue] = useState({
     discount: 0,
@@ -221,6 +225,28 @@ const NewSales = () => {
   const toggle = () => setIsOpen(!isOpen);
 
   const [clicked, setClicked] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth >= 700)
+    }
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [window.innerWidth])
+
+  useEffect(() => {
+    const addOns = async () => {
+        const res = await getAddOns()
+        console.log(res)
+        setAddOnsList(res);
+    }
+    addOns();
+  }, [])
 
   // modal
   const handleModal = () => {
@@ -1007,6 +1033,11 @@ const NewSales = () => {
     // modaltap
   };
 
+  const toggleOptions = () => {
+    setShowOptions(!showOptions)
+  }
+
+
   return (
     <div
     className=" g-0"
@@ -1022,250 +1053,7 @@ const NewSales = () => {
         overflowX : 'hidden'
       }}
     >
-      {/* nav test */}
-      {/* <>
-        <nav className="">
-          
-           <span className='title'>Sales POS</span>
-        
-
-
-          <div  className="">
-            <ul id="navbar"
-             className={clicked ? "#navbar active" : "#navbar  "}
-             
-            style={{
-              background: "blueviolet",
-              color: "#fff",
-              maxHeight: "60px",
-              textAlign: "center",
-            }}
-            
-            >
-              <li> 
-                  
-                    <span>Sales POS</span>
-              </li>
-
-
-              <li>
-                  <div className="d-flex">
-                    <span></span>
-                    <Link to={"/sales-list"} className="text-white">
-                      <span style={{ fontSize: "16px" }}>Sales List</span>
-                    </Link>
-                  </div>
-              </li>
-
-              <li>
-              <div
-                    className="d-flex align-items-center"
-                    style={{ cursor: "pointer" }}
-                    onClick={saveDraft}
-                  >
-                    <span style={{ fontSize: "16px" }}>New Invoice</span>
-                  </div>
-              </li>
-
-              <li>
-                 <div
-                    className="d-flex align-items-center"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setAlModal(true)}
-                  >
-                    <span style={{ fontSize: "16px" }}>New User</span>
-                  </div>
-              </li>
-              <li>
-                <span>
-                  <HoldView
-                        draftData={tableListDraft}
-                        onDeleteDraft={deleteADraft}
-                        onDeleteAllDraft={deleteAllDraft}
-                        onSelectDraft={selectDraft}
-                      />
-                </span>
-              </li>
-
-
-
-        
-
-              <li>
-                <div className=" d-flex align-items-center">
-                  <div className="d-flex align-items-center mx-5">
-                    <Link to={"/"} className="text-white">
-                      <span style={{ fontSize: "16px" }}>Dashboard</span>
-                    </Link>
-                  </div>
-                  <div className="">
-                    <ProfileDropdown
-                      fullName={user?.emergencyContact?.fullName}
-                      name={user?.role}
-                      image={profile.image}
-                      dropdown={profile.dropdown}
-                    />
-                  </div>
-                </div>
-              </li>
-
-            </ul>
-          </div>
-
-          <div id="mobile">
-            <i onClick={() => setClicked(!clicked)} id="bar">
-              {clicked ? <X size={40} /> : <Menu size={40} />}
-            </i>
-          </div>
-        </nav>
-      </> */}
-
-
-
-
-
-
-
-
-      {/* <div  style={{ maxHeight: "60px", background: "blueviolet" }} className='m-0 shadow p-0 mb-3 my-0'>
-        <Navbar color="faded"    style={{ maxHeight: "60px", background: "blueviolet" }}>
-          <NavbarBrand href="#">Sales POS</NavbarBrand>
-          <Nav style={{flex: 1}} className="me-auto d-lg-flex align-items-center displayy pos-top-container d-sm-none d-md-none">
-            <div className="title-left">
-         
-              <div className="d-flex">
-                <Link to={"/sales-list"} className="text-white">
-                  <span style={{ fontSize: "16px" }}>Sales List</span>
-                </Link>
-              </div>
-              <div
-                className="d-flex align-items-center"
-                style={{ cursor: "pointer" }}
-                onClick={saveDraft}
-              >
-
-                <span style={{ fontSize: "16px" }}>New Invoice</span>
-              </div>
-              <div
-                className="d-flex align-items-center"
-                style={{ cursor: "pointer" }}
-                onClick={()=>setAlModal(true)}
-              >
-
-                <span style={{ fontSize: "16px" }}>New User</span>
-              </div>
-            </div>
-
-            <div className="title-right d-flex align-items-center">
-              <HoldView
-                draftData={tableListDraft}
-                onDeleteDraft={deleteADraft}
-                onDeleteAllDraft={deleteAllDraft}
-                onSelectDraft={selectDraft}
-                />
-
-          
-              <div className="d-flex align-items-center">
-                
-                <Link to={"/"} className="text-white">
-                  <span style={{ fontSize: "16px" }}>Dashboard</span>
-                </Link>
-              </div>
-              <div>
-                <ProfileDropdown
-                fullName={user?.emergencyContact?.fullName}
-                  name={user?.role}
-                  image={profile.image}
-                  dropdown={profile.dropdown}
-                />
-              </div>
-            </div>
-             
-          </Nav>
-
-
-            <NavbarToggler className="d-md-none" onClick={handleModal} />
-
-          <Collapse isOpen={isOpen} navbar>
-            <Nav className="me-auto" navbar>
-              <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">
-                  GitHub
-                </NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>Option 1</DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-            <NavbarText>Simple Text</NavbarText>
-          </Collapse>
-  
-        </Navbar>
-      </div> */}
-      {/* <Modal
-      isOpen={open}
-      toggle={handleModal}
-      className='sidebar-sm'
-      modalClassName='modal-slide-in'
-      contentClassName='pt-0'
-      backdrop="static"
-      style={{display: 'absolute', right: 0}}
-    >
-      <ModalHeader className='mb-1' toggle={handleModal} close={handleModal} tag='div'>
-        <h5 className='modal-title'>New Record</h5>
-      </ModalHeader>
-      <ModalBody className='flex-grow-1'>
-
-        <div className='mb-1'>
-          <Label className='form-label' for='email'>
-            Email
-          </Label>
-          <InputGroup>
-            <InputGroupText>
-              <Mail size={15} />
-            </InputGroupText>
-        
-          </InputGroup>
-        </div>
-        <div className='mb-1'>
-          <Label className='form-label' for='role'>
-            Role
-          </Label>
-          <InputGroup>
-            <InputGroupText>
-              <User size={15} />
-            </InputGroupText>
-          
-          </InputGroup>
-        </div>
-
-        <div className='mb-1'>
-
-          <Button color='secondary' onClick={handleModal} outline>
-            Cancel
-          </Button>
-        </div>
-
-
-      </ModalBody>
-    </Modal> */}
-      {/* <RefreshCcw size={16} color={"gold"}></RefreshCcw> */}{" "}
-      {/* <AlignRight size={16} color={"gold"}></AlignRight> */}
-      {/* nav */}
-
-
-    {/* nav */}
+      
     <div className="row p-0 m-0 mb-4">
         <div
           xl={12}
@@ -1278,46 +1066,38 @@ const NewSales = () => {
               background: "blueviolet",
               color: "#fff",
               maxHeight: "60px",
-              textAlign: "center",
             }}
           >
-            <div className="title-left">
-              <div>Laundry Orders</div>
-              <div className="d-flex">
-                <span></span>
-                <Link to={"/orders-list"} className="text-white">
-                  <span style={{ fontSize: "16px" }}>Orders List</span>
-                </Link>
-              </div>
-              {/* <div
-                className="d-flex align-items-center"
-                style={{ cursor: "pointer" }}
-                onClick={saveDraft}
-              >
-                <span style={{ fontSize: "16px" }}>New Invoice</span>
-              </div> */}
-              <div
-                className="d-flex align-items-center"
-                style={{ cursor: "pointer" }}
-                onClick={() => setAlModal(true)}
-              >
-                <span style={{ fontSize: "16px" }}>New Customer</span>
-              </div>
+            <div className="harmburger-btn" onClick={toggleOptions} >
+              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 6.5H19V8H5V6.5Z" fill="#1F2328"/>
+              <path d="M5 16.5H19V18H5V16.5Z" fill="#1F2328"/>
+              <path d="M5 11.5H19V13H5V11.5Z" fill="#1F2328"/>
+              </svg>
             </div>
-
-            <div className="title-right d-flex align-items-center">
-              <HoldView
+            <div style={{whiteSpace: 'nowrap'}} className="title">Laundry Orders</div> 
+            {showOptions || screenSize ? (<div className="title-left" >
+                <div className="d-flex">
+                  <span></span>
+                  <Link to={"/orders-list"} className="text-white">
+                    <span style={{ fontSize: "16px" }}>Orders List</span>
+                  </Link>
+                </div>
+                <div
+                  className="d-flex align-items-center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setAlModal(true)}
+                >
+                  <span style={{ fontSize: "16px" }}>New Customer</span>
+                </div>
+                <HoldView
                 draftData={tableListDraft}
                 onDeleteDraft={deleteADraft}
                 onDeleteAllDraft={deleteAllDraft}
                 onSelectDraft={selectDraft}
               />
-
-              <div className="d-flex align-items-center">
-                <Link to={"/"} className="text-white">
-                  <span style={{ fontSize: "16px" }}>Dashboard</span>
-                </Link>
-              </div>
+              </div>) : ""
+              }
               <div>
                 <ProfileDropdown
                   fullName={user?.emergencyContact?.fullName}
@@ -1326,7 +1106,6 @@ const NewSales = () => {
                   dropdown={profile.dropdown}
                 />
               </div>
-            </div>
           </Box>
 
         </div>
@@ -1340,12 +1119,12 @@ const NewSales = () => {
 
 
 
-      <div className="row px-1">
+      <div className="order-wrapper px-1">
       {/* product table */}
         <Col
           xs={12}
           xl={7}
-          className="order-1 order-sm-1 order-md-0   product-table mb-3"
+          className="   product-table mb-3"
         >
           <Box
             className="mc-card p-2"
@@ -1469,10 +1248,10 @@ const NewSales = () => {
                         </div>
                       </Col>
                     )}
-                  {tableList?.tbody?.item?.coupon?.amount && (
+                  {tableList?.coupon?.amount && (
                     <Col xs={12} sm={6} md={5} xl={5} className="right-container">
                       <div style={{ marginRight: "3px" }}>
-                        <span style={{ fontWeight: "bolder" }}>Coupon Value</span>{" "}
+                        <span style={{ fontWeight: "bolder" }}>Coupon Value: </span>{" "}
                         <span className="text-danger"></span>
                       </div>
                       <div>
@@ -1480,10 +1259,10 @@ const NewSales = () => {
                         <input
                           disabled
                           value={
-                            tableList?.tbody?.item?.coupon.type === "percentage"
-                              ? `${tableList?.tbody?.item?.coupon?.amount}%`
-                              : tableList?.tbody?.item?.coupon.type === "absolute"
-                              ? `#${tableList?.tbody?.item?.coupon?.amount}`
+                            tableList?.coupon.type === "percentage"
+                              ? `${tableList?.coupon?.amount}%`
+                              : tableList?.coupon.type === "absolute"
+                              ? `#${tableList?.coupon?.amount}`
                               : ""
                           }
                           type="text"
@@ -1561,13 +1340,13 @@ const NewSales = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mb-1  mt-0">
+                  <Row className="mb-1  mt-0 mx-0">
                     <div style={{ fontWeight: "bolder", fontSize: "18px" }}>
                       <span>Payment Methods</span>
                     </div>
-                    <Col xs={12} md={12} xl={12} className=" p-0 m-0 px-3 ">
-                      <Row className="d-flex justify-content-start">
-                        <Col xs={10} sm={6} md={3} xl={3} className="">
+                    <Col xs={12} md={12} xl={12} className=" p-0 mr-0 ">
+                      <Row className="b-container">
+                        <Col xs={10} sm={6} md={3} xl={3} className="button-col-2">
                           <div className="d-flex justify-content-start align-items-center">
                             <input
                               onChange={() => pickMode("cash")}
@@ -1584,7 +1363,7 @@ const NewSales = () => {
                             </label>
                           </div>
                         </Col>
-                        <Col xs={12} sm={6} md={4} xl={4}>
+                        <Col xs={12} sm={6} md={4} xl={4} className="button-col-2">
                           <div className="d-flex justify-content-start align-items-center">
                             <input
                               onChange={() => pickMode("transfer")}
@@ -1601,7 +1380,7 @@ const NewSales = () => {
                             </label>
                           </div>
                         </Col>
-                        <Col xs={12} sm={6} md={5} xl={5}>
+                        <Col xs={12} sm={6} md={5} xl={5} className="button-col-2">
                           <div className="d-flex justify-content-start align-items-center">
                             <input
                               onChange={() => pickMode("pos")}
@@ -1618,59 +1397,55 @@ const NewSales = () => {
                             </label>
                           </div>
                         </Col>
-                        <Col xs={12} sm={6} md={6} xl={6}>
+                        <Col xs={12} sm={6} md={6} xl={6} className="button-col-2">
                           <div className="d-flex justify-content-start align-items-center">
                             <input
-                              onChange={() => pickMode("paylater")}
+                              onChange={() => pickMode("pay later")}
                               type="checkbox"
-                              name="paylater"
-                              id="paylater"
+                              name="pay later"
+                              id="pay later"
                             />
                             <label
                               style={{ fontWeight: "bold" }}
-                              htmlFor="paylater"
+                              htmlFor="pay later"
                               className="mx-1"
                             >
-                              Pay later
+                              PAY LATER
                             </label>
                           </div>
                         </Col>
                       </Row>
                     </Col>
                   </Row>
-                  <Row className="b-containers mb-3">
-                    <Col xs={12} md={12} xl={12} className=" p-0 m-0 px-5 ">
-                      <Row className=" arrangdiv d-flex justify-content-between">
+                  <Row className="b-containers mb-3 mx-0">
+                      <Row className="action-container mx-0">
 
-                        <Col xs={12} sm={6} md={4} xl={4}>
+                        
                           <Button
                             onClick={() => setCalModal(true)}
-                            className="mc-btn purple px-4 button  mx-2"
+                            className="action-btns"
+                            style={{backgroundColor: 'blueviolet'}}
                           >
                             Calculator
                           </Button>
-                        </Col>
 
-                        <Col xs={10} sm={6} md={4} xl={4} className="">
                           <Button
                             onClick={saveDraft}
-                            className="mc-btn green button px-4 mx-2  "
+                            className="action-btns"
+                            style={{backgroundColor: '#1a9f53'}}
                           >
                             Save To Draft
                           </Button>
-                        </Col>
 
-                        <Col xs={12} sm={6} md={4} xl={4}>
                           <Button
                             onClick={attemptCheckout}
-                            className="mc-btn primary px-5 button mx-2 "
+                            className="action-btns"
+                            style={{backgroundColor: '#0858f7'}}
                           >
                             Confirm
                           </Button>
-                        </Col>
 
                       </Row>
-                    </Col>
                   </Row>
                 </Row>
               </div>
@@ -1825,6 +1600,7 @@ const NewSales = () => {
           clearCurrentTable={clearCurrentTable}
           getAllMenu={getAllMenu}
           userPhoneNumber={currentUserNumber}
+          addOnsList={addOnsList}
         />
       </Modal>
 
@@ -1870,13 +1646,13 @@ const NewSales = () => {
               <option value="M">Male</option>
               <option value="F">Female</option>
             </select>
-            <input
+            {/* <input
               onChange={setUserInfoDetails}
               name="amount"
               type="number"
               placeholder="Enter amount"
               className="form-control my-2"
-            />
+            /> */}
           </div>
 
           <div className="footer">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import {
   Box,
@@ -39,7 +39,8 @@ export default function InvoiceDetails({
   userPhoneNumber,
   paymentMode,
   userDetails,
-  clearUserData
+  clearUserData,
+  addOnsList
 
 }) {
   // const [alertModal, setAlertModal] = React.useState(false);
@@ -53,7 +54,6 @@ export default function InvoiceDetails({
   // console.log(paymentMode, userDetails)
 
   const componentRef = useRef();
-
   
   useEffect(() => {
     setDimension(componentRef?.current?.clientHeight)
@@ -68,7 +68,6 @@ export default function InvoiceDetails({
     }
   }, [componentRef?.current?.clientHeight])
 
-  
 
   // setDimension(componentRef?.current?.clientHeight)
   // const list = [].l 
@@ -76,7 +75,7 @@ export default function InvoiceDetails({
     content: () => componentRef.current,
     pageStyle: `@media print{
       @page {
-        size: 80mm ${dimension / height }mm;
+        size: 150mm ${dimension / height }mm;
         margin: 0px !important;
         padding: 0px !important;
         font-size: 20px;
@@ -105,7 +104,7 @@ export default function InvoiceDetails({
     setIsLoading(true)
     const theUser = userPhoneNumber?.value === "Walk In Customer" ? null : userPhoneNumber?.value
 
-    if(tableList?.item?.coupon?.couponId){
+    if(tableList?.coupon?.couponId){
       // const res = await makeSalesWithCouponAction(tableList?.allSales, theUser, tableList?.coupon?.couponId);
       const res = await makeSalesWithCouponAction(tableList?.allSales, userDetails?.phone, tableList?.coupon?.couponId, userDetails?.name, paymentMode[0]);
       console.log(res);
@@ -153,10 +152,20 @@ export default function InvoiceDetails({
 
 
    
-  };     
-//  style={{ fontSize: '12px'}}
+  };
+
+  const getAddOnnames = (item) => {
+    const arr = [];
+    item?.addons.forEach(element => {
+        const addOn = addOnsList?.find((item) => { console.log(item); return item._id === element})
+        arr.push(addOn.name);
+    })
+    return arr.toString();
+  };
+
+  console.log(tableList.tbody, paymentMode)
   return (
-    <Row className="mt-0" style={{width:'25vw', fontSize: '15px' }}>
+    <Row className="mt-0 invoice-contain" >
       <Col className="mt-0 pt-0" xl={12} ref={componentRef} style={{ fontSize: '15px'}}>
         <CardLayout className=" mt-0 pt-3" style={{ fontSize: '15px'}}>
           <Box className="mc-invoice-head mt-0" style={{ fontSize: '12px'}}>
@@ -166,7 +175,7 @@ export default function InvoiceDetails({
               src={"images/product/single/maverick_logos_dark.png"}
               alt={data?.logo?.alt}
             /> */}
-            <Heading style={{fontWeight: 'bolder'}} as="h5">Maverick's Laundry</Heading>
+            <Heading style={{fontWeight: 'bolder', textAlign: 'center', width: '100%'}} as="h5" className='invoice-heading'>Maverick's Laundry</Heading>
           </Box>
 
           <Box className="mc-invoice-group m-0">
@@ -193,17 +202,12 @@ export default function InvoiceDetails({
                   <Tr key={index} style={{fontSize: '9px'}}>
         
                     <Td className=''  style={{fontWeight: 'bold', fontSize: '9px', maxWidth: '25px'}}>
-                      {/* <Box className="mc-table-product sm">
-                        <Image
-                          src={item?.image || item?.default_image}
-                          alt={item?.alt}
-                        />
-                      </Box> */}
-                        {/* <Text>  {item?.itemName}</Text> */}
                         {item?.item?.itemName}
                     </Td>
                     <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.price?.price}</Td>
                     {/* <Td>{item?.discount}</Td> */}
+                    <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{getAddOnnames(item)}</Td>
+                    <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.addonPrice}</Td>
                     <Td style={{fontWeight: 'bold', fontSize: '9px'}} className='' >{item?.item?.quantity_bought}</Td>
                     <Td style={{fontWeight: 'bold',  fontSize: '9px'}} className='' >
                       {Number((item?.price?.price * item?.item?.quantity_bought) + (item?.addonPrice * item?.item?.quantity_bought)) -
@@ -396,41 +400,38 @@ export default function InvoiceDetails({
       </Col>
 
       <Col className=''>
-        <CardLayout className="d-flex justify-content-end px-0 ">
-          <Row className="justify-content-center justify-items-center text-center w-100 px-0">
-            <Col xs={12} sm={6} md={5} xl={4}  >
-              <Box className="mc-invoice-btns mx-1`">
+        
+       <Row className="action-container2 mx-0 mb-4">
+            
+              
                 <Anchor
-                  style={{ fontSize: '10px'}}
+                  style={{ backgroundColor: 'rgb(247, 35, 35)'}}
                   onClick={() => setAlertModal(false)}
                   href={"#"}
                   icon={"cancel"}
                   text={"cancel"}
-                  className={"btn btn-danger px-2"}
+                  className={"anchor-class"}
                 />
-              </Box>
-            </Col>
 
-            <Col xs={12} sm={6} md={7} xl={8}  className="mx-0 ">
-              <Box className="mc-invoice-btns mx-1"  style={{ fontSize: '12px', fontWeight: 'bolder'}}>
+              
                 {
                   isLoading ? (
                     <Anchor
-                    style={{ fontSize: '10px', cursor:'not-allowed'}}
+                    style={{ cursor:'not-allowed', backgroundColor: '#198754'}}
                     //  onClick={makeSale}
                      href={"#"}
                      icon={"refresh"}
                      text={"loading.........."}
-                     className={"btn btn-success disabled px-1 mx-0"}
+                     className={"anchor-class disabled px-1 mx-0"}
                    />
                   ) : (
                     <Anchor
-                    style={{ fontSize: '10px'}}
+                    style={{backgroundColor: '#198754'}}
                      onClick={makeSale}
                      href={"#"}
                      icon={"print"}
                      text={"confirm transaction"}
-                     className={"btn btn-success px-1 mx-0"}
+                     className={"anchor-class px-1 mx-0"}
                    />
                   )
                 }
@@ -442,10 +443,7 @@ export default function InvoiceDetails({
                   text={"confirm transaction"}
                   className={"btn btn-success px-1 mx-0"}
                 /> */}
-              </Box>
-            </Col>
           </Row>
-        </CardLayout>
       </Col>
 
       

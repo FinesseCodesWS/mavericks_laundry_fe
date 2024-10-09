@@ -157,12 +157,12 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
                                        c51.6,51.5,135,51.5,186.1,0l410.2-410l410.2,410c51.5,51.5,134.6,51.5,186.1,0c51.1-51.5,51.1-134.6-0.5-186.2L1082.2,896.6z"/>
                                    </svg></button>    
                                     </div>
-                                    <div style={{display: "flex", justifyContent: 'space-between', gap: '5px', width: '45%', marginInline: 'auto', fontWeight: 'bold'}}>
+                                    <div style={{display: "flex", justifyContent: 'space-between', gap: '5px', minWidth: '45%', marginInline: 'auto', fontWeight: 'bold'}}>
                                         <p>Name</p>
                                         <p>Price</p>
                                     </div>
                                         <div className="addons-section">
-                                            {addOns.map(addon => (
+                                            {addOns?.map(addon => (
                                                 <div style={{display: 'flex', gap: '3px'}}>
                                                     <input style={{marginBottom: '2px'}} type="checkbox" id={addon._id} name={addon.price} onChange={(e) => handleAddOns(e, item, addon.price)} checked={checkIfChecked(item, addon._id)} />
                                                     <div key={addon._id} className="popup-item">
