@@ -123,6 +123,7 @@ export default function App() {
 
   const [mode, setMode] = useState("");
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
 
   const [weeks, setWeeks] = useState(
     Array.from({ length: 52 }, (_, i) => i + 1)
@@ -223,49 +224,34 @@ export default function App() {
   // GET ALL INVOICES
   useEffect(() => {
     if (isLoggedIn) {
-      if (filterMonthDate || mode) {
-        const getAllInvoices = async () => {
-          try {
-            setIsFilteredCategory(true);
-            const response = await axios.get(
-              `/sales/invoices?&modeOfPayment=${mode}&filter=month&month=${filterMonthDate} ${
-                filterMonth?.split("-")[0]
-              }&year=${filterMonth?.split("-")[0]}`
-            );
-            console.log(response.data)
-            setPageCountInvoice(response.data.count);
-            dispatch({
-              type: "GET_INVOICES",
-              payload: response.data.data,
-            });
-            setIsFilteredCategory(false);
-          } catch (error) {}
-        };
-        getAllInvoices();
-      } else {
-        const getAllInvoices = async () => {
-          try {
-            setIsFilteredCategory(true);
-            const response = await axios.get(`/sales/invoices`);
-            setPageCountInvoice(response.data.count);
-            dispatch({
-              type: "GET_INVOICES",
-              payload: response.data.data,
-            });
-            setIsFilteredCategory(false);
-          } catch (error) {}
-        };
-        getAllInvoices();
-      }
+      const getAllInvoices = async () => {
+        try {
+          setIsFilteredCategory(true);
+          let url = `/sales/invoices`;
+  
+          if (mode || filterMonthDate || filterMonth || status) {
+            const year = filterMonth ? filterMonth.split("-")[0] : null;
+            const month = filterMonth ? `${filterMonthDate} ${year}` : null;
+            url += `?status=${mode || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
+          }
+  
+          const response = await axios.get(url);
+          setPageCountInvoice(response.data.count);
+          dispatch({
+            type: "GET_INVOICES",
+            payload: response.data.data,
+          });
+          setIsFilteredCategory(false);
+        } catch (error) {
+          setIsFilteredCategory(false);
+          console.error("Error fetching invoices:", error);
+        }
+      };
+  
+      getAllInvoices();
     }
-  }, [
-    dispatch,
-    filterYear,
-    filterMonthDate,
-    filterMonth?.split("-")[0],
-    isLoggedIn,
-    mode,
-  ]);
+  }, [isLoggedIn, mode, filterMonthDate, filterMonth, status, dispatch]);
+  
 
   // GET ALL INVENTORIES
   useEffect(() => {
@@ -732,6 +718,8 @@ export default function App() {
             setFilterMonth={setFilterMonth}
             isFilteredCategory={isFilteredCategory}
             setMode={setMode}
+            setStatus={setStatus}
+            status={status}
           />
         }
       />
