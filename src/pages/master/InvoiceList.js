@@ -80,7 +80,23 @@ export default function InvoiceList({
                     onChange={(e) => setFilterMonth(e.target.value)}
                   />
               </Col>
-              {/* <Col xs={1} sm={2} lg={4} className="mb-4">
+              <Col xs={1} sm={2} lg={4} className="mb-4">
+                <Label className="mc-label-field-title">
+                  Filter by Mode of Payment
+                </Label>
+                <Select
+                  name="category_id"
+                  onChange={(e) => setMode(e.target.value)}
+                  className="mc-label-field-select w-100 h-md"
+                >
+                  <Option value="">Select Option</Option>
+                  <Option value="transfer">Transfer</Option>
+                  <Option value="pay later">Pay Later</Option>
+                  <Option value="cash">Cash</Option>
+                  <Option value="pos">POS</Option>
+                </Select>
+              </Col>
+              <Col xs={1} sm={2} lg={4} className="mb-4">
                 <Label className="mc-label-field-title">
                   Filter by Status
                 </Label>
@@ -99,22 +115,8 @@ export default function InvoiceList({
               <Option value="picked up">Picked Up</Option>
               <Option value="dispatched">Dispatched</Option>
                 </Select>
-              </Col> */}
-              {/* <Col xs={1} sm={2} lg={4} className="mb-4">
-                <Label className="mc-label-field-title">
-                  Filter by Mode of Payment
-                </Label>
-                <Select
-                  name="category_id"
-                  onChange={(e) => setMode(e.target.value)}
-                  className="mc-label-field-select w-100 h-md"
-                >
-                  <Option value="">Select Option</Option>
-                  <Option value="transfer">Transfer</Option>
-                  <Option value="cash">Cash</Option>
-                  <Option value="pos">POS</Option>
-                </Select>
-              </Col> */}
+              </Col>
+              
               {/* <Col lg={12} className="mb-4">
                 <LegendField
                   type="number"

@@ -104,7 +104,13 @@ export default function InvoiceTable({ thead, tbody, loading }) {
                     currency: "NGN",
                   }).format(item?.totalPrice)}
                 </Td>
-                <Td className="text-capitalize">{item?.modeOfPayment}</Td>
+                <Td className="text-capitalize">
+                  {item?.modeOfPayment
+                    ? item.modeOfPayment
+                    : item?.items
+                        ?.map((innerItem) => innerItem.modeOfPayment)
+                        .join(", ")}
+                </Td>
                 <Td>
                   <Text className="text-capitalize">{item?.status}</Text>
                 </Td>

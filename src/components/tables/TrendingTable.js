@@ -12,7 +12,7 @@ import {
   Button,
 } from "../elements";
 
-export default function TrendingTable({ thead, tbody }) {
+export default function TrendingTable({ thead, tbody, pageCountInvoice }) {
   const [alertModal, setAlertModal] = React.useState(false);
   const [data, setData] = useState([]);
 
@@ -78,7 +78,7 @@ export default function TrendingTable({ thead, tbody }) {
                 </Box>
               </Td>
               <Td>{item?._id}</Td>
-              
+              <Td>{pageCountInvoice}</Td>
               <Td>{`₦${addCommaToThousand(item?.revenue)}`}</Td>
             </Tr>
           ))}
