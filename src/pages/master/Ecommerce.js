@@ -123,7 +123,7 @@ export default function Ecommerce({
         </Col>
 
         <Col xl={12}>
-          <TrendingTable thead={["id", "count", "revenue"]} tbody={revenues} />
+          <TrendingTable thead={["id", "count", "revenue"]} tbody={revenues} pageCountInvoice={pageCountInvoice} />
         </Col>
 
         {/* <Col xl={8}>
