@@ -346,7 +346,7 @@ export default function MyAccount() {
                         value={user?.phoneNumber}
                       />
                     </Col>
-                    <Col xl={12}>
+                    {/* <Col xl={12}>
                       <LegendTextarea
                         title={data?.address.title}
                         longText={user?.address}
@@ -354,7 +354,7 @@ export default function MyAccount() {
                         name="address"
                         onChange={handleChange}
                       />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </TabCard>
                 <Button
