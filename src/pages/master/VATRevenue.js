@@ -43,6 +43,10 @@ export default function UserList({
 
   const totalCost = vats?.reduce((acc, obj) => acc + obj?.revenue, 0);
 
+  useEffect(() => {
+    handleShow()
+  }, [])
+
   const handleShow = async () => {
     try {
       const response = await axios.get("/sales/vat")
@@ -116,11 +120,45 @@ export default function UserList({
         </Col>
 
         <Col xl={12}>
-          <Button
-            onClick={handleShow}
-            className="mc-btn primary"
-            text="Update VAT"
-          />
+          <CardLayout>
+            <CardHeader title="Update V.A.T"></CardHeader>
+            <Row>
+            <Col>
+              <LabelField
+                type="number"
+                label="Amount"
+                fieldSize="w-100 h-md"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+              />
+            </Col>
+            <Col>
+              <LabelField
+                type="number"
+                label="Threshold"
+                fieldSize="w-100 h-md"
+                value={threshold}
+                onChange={(e) => setThreshold(e.target.value)}
+                required
+              />
+            </Col>
+            <Row>
+                <Col xl={4}>
+                  <Button
+                    icon="verified"
+                    onClick={() => handleUpdateVAT()}
+                    className="mc-btn primary"
+                    text={"update"}
+                  />
+                </Col>
+              </Row>
+            </Row>
+          </CardLayout>
+        </Col>
+
+        <Col xl={12}>
+          
           <CardLayout>
             <CardHeader title="All Revenue"></CardHeader>
             <VATTable thead={["Date", "Count", "Revenue"]} tbody={vats} />
@@ -142,48 +180,6 @@ export default function UserList({
           </Box>
         </Col>
       </Row>
-
-      {/* Modal for updating VAT */}
-      <Modal show={showModal} onHide={handleClose}>
-        <div className="p-8">
-        <Modal.Header closeButton>
-          <Modal.Title>Update VAT</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row>
-            <Col>
-              <LabelField
-                type="number"
-                label="Amount"
-                fieldSize="w-100 h-md"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-              />
-            </Col>
-            <Col>
-              <LabelField
-                type="number"
-                label="Threshold"
-                fieldSize="w-100 h-md"
-                value={threshold}
-                onChange={(e) => setThreshold(e.target.value)}
-                required
-              />
-            </Col>
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="btn btn-secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button className="btn btn-primary" onClick={handleUpdateVAT}>
-            Update VAT
-          </Button>
-        </Modal.Footer>
-        </div>
-        
-      </Modal>
     </PageLayout>
   );
 }
