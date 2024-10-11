@@ -29,7 +29,7 @@ export default function InvoiceList({
   setFilterMonth,
   isFilteredCategory,
   setMode,
-  setStatus
+  setStatus,
 }) {
   const handlePageChange = (e) => {
     setCurrentPageInvoice(e.target.value);
@@ -71,14 +71,13 @@ export default function InvoiceList({
 
             <Row>
               <Col xs={1} sm={2} lg={4} className="mb-4">
-                
-                  <LabelField
-                    type="date"
-                    label="Filter by Month/Year"
-                    fieldSize="w-100 h-md"
-                    name="date"
-                    onChange={(e) => setFilterMonth(e.target.value)}
-                  />
+                <LabelField
+                  type="date"
+                  label="Filter by Month/Year"
+                  fieldSize="w-100 h-md"
+                  name="date"
+                  onChange={(e) => setFilterMonth(e.target.value)}
+                />
               </Col>
               <Col xs={1} sm={2} lg={4} className="mb-4">
                 <Label className="mc-label-field-title">
@@ -97,34 +96,23 @@ export default function InvoiceList({
                 </Select>
               </Col>
               <Col xs={1} sm={2} lg={4} className="mb-4">
-                <Label className="mc-label-field-title">
-                  Filter by Status
-                </Label>
+                <Label className="mc-label-field-title">Filter by Status</Label>
                 <Select
                   name="category_id"
                   onChange={(e) => setStatus(e.target.value)}
                   className="mc-label-field-select w-100 h-md"
                 >
                   <Option value="">Select Option</Option>
-              <Option value="new">New</Option>
-              <Option value="delivered">Delivered</Option>
-              <Option value="washed">Washed</Option>
-              <Option value="sorted">Sorted</Option>
-              <Option value="ironed">Ironed</Option>
-              <Option value="packaged">Packaged</Option>
-              <Option value="picked up">Picked Up</Option>
-              <Option value="dispatched">Dispatched</Option>
+                  <Option value="new">New</Option>
+                  <Option value="delivered">Delivered</Option>
+                  <Option value="washed">Washed</Option>
+                  <Option value="sorted">Sorted</Option>
+                  <Option value="ironed">Ironed</Option>
+                  <Option value="packaged">Packaged</Option>
+                  <Option value="picked up">Picked Up</Option>
+                  <Option value="dispatched">Dispatched</Option>
                 </Select>
               </Col>
-              
-              {/* <Col lg={12} className="mb-4">
-                <LegendField
-                  type="number"
-                  title="Search amount Keyword"
-                  value={searchKeyword}
-                  onChange={handleInputChange}
-                />
-              </Col> */}
             </Row>
             <InvoiceTable
               thead={[
