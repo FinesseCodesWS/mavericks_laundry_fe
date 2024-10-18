@@ -143,8 +143,9 @@ export default function InvoiceDetails() {
                 <Tbody className="mc-table-body">
                   {invoice?.items?.map((item, index) => (
                     <Tr key={index}>
-                      {/* <Td>{item?.salesId}</Td> */}
-                      <Td>{item?.menuId?.itemName}</Td>
+                    {item?.menuId?.map((menuItem, index) => (
+                      <Td key={index}>{menuItem?.itemName || "N/A"}</Td>
+                    ))}
                       <Td>
                         {item?.addOns.map((addOn, index) => (
                           <Text className="text-capitalize" key={index}>{addOn.name}</Text>

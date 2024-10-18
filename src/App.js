@@ -233,7 +233,7 @@ export default function App() {
           if (mode || filterMonthDate || filterMonth || laundry || status) {
             const year = filterMonth ? filterMonth.split("-")[0] : null;
             const month = filterMonth ? `${filterMonthDate} ${year}` : null;
-            url += `?laundryOption=${laundry || ""}&orderStatus=${status || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
+            url += `?laundryOption=${laundry || ""}&status=${status || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
           }
   
           const response = await axios.get(url);
