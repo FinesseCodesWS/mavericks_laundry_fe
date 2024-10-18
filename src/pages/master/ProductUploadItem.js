@@ -43,16 +43,16 @@ export default function ProductUploadItem() {
     category: "",
     countable: true,
     adultMalePrice: {
-      ordinary: "",
-      ironed: "",
+      washAndIron: "",
+      ironOnly: "",
     },
     adultFemalePrice: {
-      ordinary: "",
-      ironed: "",
+      washAndIron: "",
+      ironOnly: "",
     },
     childrenPrice: {
-      ordinary: "",
-      ironed: "",
+      washAndIron: "",
+      ironOnly: "",
     },
   });
 
@@ -158,28 +158,28 @@ export default function ProductUploadItem() {
       //     : menuItem?.countable,
       category: sendData.category ? sendData.category : menuItem?.category_id,
       adultMalePrice: {
-        ordinary: sendData.adultMalePrice.ordinary
-          ? sendData.adultMalePrice.ordinary
-          : menuItem?.adultMalePrice.ordinary,
-        ironed: sendData.adultMalePrice.ironed
-          ? sendData.adultMalePrice.ironed
-          : menuItem?.adultMalePrice.ironed,
+        washAndIron: sendData.adultMalePrice.washAndIron
+          ? sendData.adultMalePrice.washAndIron
+          : menuItem?.adultMalePrice.washAndIron,
+        ironOnly: sendData.adultMalePrice.ironOnly
+          ? sendData.adultMalePrice.ironOnly
+          : menuItem?.adultMalePrice.ironOnly,
       },
       adultFemalePrice: {
-        ordinary: sendData.adultFemalePrice.ordinary
-          ? sendData.adultFemalePrice.ordinary
-          : menuItem?.adultFemalePrice.ordinary,
-        ironed: sendData.adultFemalePrice.ironed
-          ? sendData.adultFemalePrice.ironed
-          : menuItem.adultFemalePrice.ironed,
+        washAndIron: sendData.adultFemalePrice.washAndIron
+          ? sendData.adultFemalePrice.washAndIron
+          : menuItem?.adultFemalePrice.washAndIron,
+        ironOnly: sendData.adultFemalePrice.ironOnly
+          ? sendData.adultFemalePrice.ironOnly
+          : menuItem.adultFemalePrice.ironOnly,
       },
       childrenPrice: {
-        ordinary: sendData.childrenPrice.ordinary
-          ? sendData.childrenPrice.ordinary
-          : menuItem.childrenPrice.ordinary,
-        ironed: sendData.childrenPrice.ironed
-          ? sendData.childrenPrice.ironed
-          : menuItem.childrenPrice.ironed,
+        washAndIron: sendData.childrenPrice.washAndIron
+          ? sendData.childrenPrice.washAndIron
+          : menuItem.childrenPrice.washAndIron,
+        ironOnly: sendData.childrenPrice.ironOnly
+          ? sendData.childrenPrice.ironOnly
+          : menuItem.childrenPrice.ironOnly,
       },
     };
     try {
@@ -284,21 +284,21 @@ export default function ProductUploadItem() {
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ordinary Price"
+                      label="Wash & Iron Price"
                       fieldSize="w-100 h-md"
-                      name="adultMalePrice.ordinary"
+                      name="adultMalePrice.washAndIron"
                       onChange={handleChange}
-                      defaultValue={menuItem?.adultMalePrice?.ordinary}
+                      defaultValue={menuItem?.adultMalePrice?.washAndIron}
                     />
                   </Col>
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ironed Price"
+                      label="iron Only Price"
                       fieldSize="w-100 h-md"
-                      name="adultMalePrice.ironed"
+                      name="adultMalePrice.ironOnly"
                       onChange={handleChange}
-                      defaultValue={menuItem?.adultMalePrice?.ironed}
+                      defaultValue={menuItem?.adultMalePrice?.ironOnly}
                     />
                   </Col>
                 </Row>
@@ -311,21 +311,21 @@ export default function ProductUploadItem() {
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ordinary Price"
+                      label="Wash & Iron Price"
                       fieldSize="w-100 h-md"
-                      name="adultFemalePrice.ordinary"
+                      name="adultFemalePrice.washAndIron"
                       onChange={handleChange}
-                      defaultValue={menuItem?.adultFemalePrice?.ordinary}
+                      defaultValue={menuItem?.adultFemalePrice?.washAndIron}
                     />
                   </Col>
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ironed Price"
+                      label="iron Only Price"
                       fieldSize="w-100 h-md"
-                      name="adultFemalePrice.ironed"
+                      name="adultFemalePrice.ironOnly"
                       onChange={handleChange}
-                      defaultValue={menuItem?.adultFemalePrice?.ironed}
+                      defaultValue={menuItem?.adultFemalePrice?.ironOnly}
                     />
                   </Col>
                 </Row>
@@ -338,21 +338,21 @@ export default function ProductUploadItem() {
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ordinary Price"
+                      label="Wash & Iron Price"
                       fieldSize="w-100 h-md"
-                      name="childrenPrice.ordinary"
+                      name="childrenPrice.washAndIron"
                       onChange={handleChange}
-                      defaultValue={menuItem?.childrenPrice?.ordinary}
+                      defaultValue={menuItem?.childrenPrice?.washAndIron}
                     />
                   </Col>
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ironed Price"
+                      label="iron Only Price"
                       fieldSize="w-100 h-md"
-                      name="childrenPrice.ironed"
+                      name="childrenPrice.ironOnly"
                       onChange={handleChange}
-                      defaultValue={menuItem?.childrenPrice?.ironed}
+                      defaultValue={menuItem?.childrenPrice?.ironOnly}
                     />
                   </Col>
                 </Row>
