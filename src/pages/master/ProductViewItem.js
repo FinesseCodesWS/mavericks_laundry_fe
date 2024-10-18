@@ -56,7 +56,10 @@ export default function ProductView({ data }) {
           <Col xl={5}>
             <DivideTitle title="laundry gallery" className="mb-4" />
             <Box className="mc-product-view-gallery">
-              <Image src={menu?.image ? menu?.image : "https://placeholder.com/500"} alt="product image" />
+              <Image
+                src={menu?.image ? menu?.image : "https://placeholder.com/500"}
+                alt="product image"
+              />
             </Box>
           </Col>
           <Col xl={7}>
@@ -74,44 +77,72 @@ export default function ProductView({ data }) {
 
               <Col xs={12} md={6} className="d-flex align-items-center mb-3">
                 <Icon>male</Icon>
-                <h5 className="mb-0 ms-2">Male Ordinary Price</h5>
+                <h5 className="mb-0 ms-2">Male Wash & Iron Price</h5>
                 <span className="mx-2">:</span>
-                <p className="mb-0">{menu?.adultMalePrice?.ordinary}</p>
+                <p className="mb-0">
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(menu?.adultMalePrice?.washAndIron)}
+                </p>
               </Col>
 
               <Col xs={12} md={6} className="d-flex align-items-center mb-3">
                 <Icon>male</Icon>
-                <h5 className="mb-0 ms-2">Male Ironed Price</h5>
+                <h5 className="mb-0 ms-2">Male Iron Only Price</h5>
                 <span className="mx-2">:</span>
-                <p className="mb-0">{menu?.adultMalePrice?.ironed}</p>
+                <p className="mb-0">
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(menu?.adultMalePrice?.ironOnly)}
+                </p>
               </Col>
 
               <Col xs={12} md={6} className="d-flex align-items-center mb-3">
                 <Icon>female</Icon>
-                <h5 className="mb-0 ms-2">Female Ordinary Price</h5>
+                <h5 className="mb-0 ms-2">Female Wash & Iron Price</h5>
                 <span className="mx-2">:</span>
-                <p className="mb-0">{menu?.adultFemalePrice?.ordinary}</p>
+                <p className="mb-0">
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(menu?.adultFemalePrice?.washAndIron)}
+                </p>
               </Col>
 
               <Col xs={12} md={6} className="d-flex align-items-center mb-3">
                 <Icon>female</Icon>
-                <h5 className="mb-0 ms-2">Female Ironed Price</h5>
+                <h5 className="mb-0 ms-2">Female Iron Only Price</h5>
                 <span className="mx-2">:</span>
-                <p className="mb-0">{menu?.adultFemalePrice?.ironed}</p>
+                <p className="mb-0">
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(menu?.adultFemalePrice?.ironOnly)}
+                </p>
               </Col>
 
               <Col xs={12} md={6} className="d-flex align-items-center mb-3">
                 <Icon>child_care</Icon>
-                <h5 className="mb-0 ms-2">Children Ordinary Price</h5>
+                <h5 className="mb-0 ms-2">Children Wash & Iron Price</h5>
                 <span className="mx-2">:</span>
-                <p className="mb-0">{menu?.childrenPrice?.ordinary}</p>
+                <p className="mb-0">
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(menu?.childrenPrice?.washAndIron)}
+                </p>
               </Col>
 
               <Col xs={12} md={6} className="d-flex align-items-center mb-3">
                 <Icon>child_care</Icon>
-                <h5 className="mb-0 ms-2">Children Ironed Price</h5>
+                <h5 className="mb-0 ms-2">Children Iron Only Price</h5>
                 <span className="mx-2">:</span>
-                <p className="mb-0">{menu?.childrenPrice?.ironed}</p>
+                <p className="mb-0">{new Intl.NumberFormat("en-NG", {
+                  style: "currency",
+                  currency: "NGN",
+                }).format(menu?.childrenPrice?.ironOnly)}</p>
               </Col>
             </Row>
           </Col>
