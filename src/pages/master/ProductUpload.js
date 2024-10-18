@@ -78,7 +78,7 @@ export default function ProductUpload() {
     try {
       const response = await axios.post("/menu/addons", {
         name: newAddOn,
-        price: newAddOnPrice
+        price: newAddOnPrice,
       });
       Swal.fire({
         icon: "success",
@@ -107,7 +107,7 @@ export default function ProductUpload() {
     try {
       const response = await axios.patch(`/menu/addons/${editingAddOn}`, {
         name: editedAddOnName,
-        price: editedAddOnPrice
+        price: editedAddOnPrice,
       });
       Swal.fire({
         icon: "success",
@@ -118,9 +118,7 @@ export default function ProductUpload() {
       // Update the category in the state
       setAddOns(
         addOns.map((cat) =>
-          cat._id === editingAddOn
-            ? response.data.data
-            : cat
+          cat._id === editingAddOn ? response.data.data : cat
         )
       );
 
@@ -248,7 +246,7 @@ export default function ProductUpload() {
     }
     if (nameParts.length > 1) {
       const [mainField, subField] = nameParts;
-  
+
       return setSendData({
         ...sendData,
         [mainField]: {
@@ -272,7 +270,6 @@ export default function ProductUpload() {
     };
     getAddOns();
   }, []);
-  
 
   useEffect(() => {
     const getCategories = async () => {
@@ -460,7 +457,9 @@ export default function ProductUpload() {
 
               <Col xl={6}>
                 <Box className={`mc-label-field-group label-col`}>
-                  <Label className="mc-label-field-title">Select Category</Label>
+                  <Label className="mc-label-field-title">
+                    Select Category
+                  </Label>
                   <Select
                     name="category"
                     onChange={handleChange}
@@ -490,56 +489,56 @@ export default function ProductUpload() {
 
               {/* Adult Male Price Fields */}
               <Col xl={12}>
-  <CardHeader title="Adult Male Price" />
-  <Row>
-    <Col xl={6}>
-      <LabelField
-        type="number"
-        label="Wash & Iron Price"
-        fieldSize="w-100 h-md"
-        name="adultMalePrice.washAndIron"
-        onChange={handleChange}
-        defaultValue={sendData?.adultMalePrice?.washAndIron}
-      />
-    </Col>
-    <Col xl={6}>
-      <LabelField
-        type="number"
-        label="Iron Only Price"
-        fieldSize="w-100 h-md"
-        name="adultMalePrice.ironOnly"
-        onChange={handleChange}
-        defaultValue={sendData?.adultMalePrice?.ironOnly}
-      />
-    </Col>
-  </Row>
-</Col>
+                <CardHeader title="Adult Male Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Wash & Iron Price"
+                      fieldSize="w-100 h-md"
+                      name="adultMalePrice.washAndIron"
+                      onChange={handleChange}
+                      defaultValue={sendData?.adultMalePrice?.washAndIron}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Iron Only Price"
+                      fieldSize="w-100 h-md"
+                      name="adultMalePrice.ironOnly"
+                      onChange={handleChange}
+                      defaultValue={sendData?.adultMalePrice?.ironOnly}
+                    />
+                  </Col>
+                </Row>
+              </Col>
 
-<Col xl={12}>
-  <CardHeader title="Adult Female Price" />
-  <Row>
-    <Col xl={6}>
-      <LabelField
-        type="number"
-        label="Wash & Iron Price"
-        fieldSize="w-100 h-md"
-        name="adultFemalePrice.washAndIron"
-        onChange={handleChange}
-        defaultValue={sendData?.adultFemalePrice?.washAndIron}
-      />
-    </Col>
-    <Col xl={6}>
-      <LabelField
-        type="number"
-        label="Iron Only Price"
-        fieldSize="w-100 h-md"
-        name="adultFemalePrice.ironOnly"
-        onChange={handleChange}
-        defaultValue={sendData?.adultFemalePrice?.ironOnly}
-      />
-    </Col>
-  </Row>
-</Col>
+              <Col xl={12}>
+                <CardHeader title="Adult Female Price" />
+                <Row>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Wash & Iron Price"
+                      fieldSize="w-100 h-md"
+                      name="adultFemalePrice.washAndIron"
+                      onChange={handleChange}
+                      defaultValue={sendData?.adultFemalePrice?.washAndIron}
+                    />
+                  </Col>
+                  <Col xl={6}>
+                    <LabelField
+                      type="number"
+                      label="Iron Only Price"
+                      fieldSize="w-100 h-md"
+                      name="adultFemalePrice.ironOnly"
+                      onChange={handleChange}
+                      defaultValue={sendData?.adultFemalePrice?.ironOnly}
+                    />
+                  </Col>
+                </Row>
+              </Col>
 
               {/* Children Price Fields */}
               <Col xl={12}>
@@ -606,20 +605,19 @@ export default function ProductUpload() {
                           placeholder="Edit category name"
                         />
                         <div className="d-flex gap-1 align-items-center">
-                        <Button
-                          onClick={handleUpdateCategory}
-                          className="mc-btn primary mt-2"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          onClick={handleCancelEdit}
-                          className="mc-btn btn btn-danger mt-2"
-                        >
-                          Cancel
-                        </Button>
+                          <Button
+                            onClick={handleUpdateCategory}
+                            className="mc-btn primary mt-2"
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            onClick={handleCancelEdit}
+                            className="mc-btn btn btn-danger mt-2"
+                          >
+                            Cancel
+                          </Button>
                         </div>
-                        
                       </>
                     ) : (
                       <div className="d-flex justify-content-between align-items-center">
@@ -675,10 +673,7 @@ export default function ProductUpload() {
                 onChange={(e) => setNewAddOnPrice(e.target.value)}
                 placeholder="Enter new add-on price"
               />
-              <Button
-                onClick={handleAddAddOn}
-                className="mc-btn primary mt-2"
-              >
+              <Button onClick={handleAddAddOn} className="mc-btn primary mt-2">
                 Add
               </Button>
             </Box>
@@ -691,44 +686,47 @@ export default function ProductUpload() {
                         <LabelField
                           type="text"
                           value={editedAddOnName}
-                          onChange={(e) =>
-                            setEditedAddOnName(e.target.value)
-                          }
+                          onChange={(e) => setEditedAddOnName(e.target.value)}
                           placeholder="Edit add-on name"
                         />
                         <LabelField
                           type="number"
                           value={editedAddOnPrice}
-                          onChange={(e) =>
-                            setEditedAddOnPrice(e.target.value)
-                          }
+                          onChange={(e) => setEditedAddOnPrice(e.target.value)}
                           placeholder="Edit add-on price"
                         />
                         <div className="d-flex gap-1 align-items-center">
-                        <Button
-                          onClick={handleUpdateAddOn}
-                          className="mc-btn primary mt-2"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          onClick={handleCancelEditAddOn}
-                          className="mc-btn btn btn-danger mt-2"
-                        >
-                          Cancel
-                        </Button>
+                          <Button
+                            onClick={handleUpdateAddOn}
+                            className="mc-btn primary mt-2"
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            onClick={handleCancelEditAddOn}
+                            className="mc-btn btn btn-danger mt-2"
+                          >
+                            Cancel
+                          </Button>
                         </div>
-                        
                       </>
                     ) : (
                       <div className="d-flex justify-content-between align-items-center">
-                        <div className="text-capitalize"
+                        <div
+                          className="text-capitalize"
                           style={{
                             display: "inline-block",
                             marginRight: "10px",
                           }}
                         >
-                          {cat.name} (<span className="text-danger mr-1">₦{cat.price}</span>)
+                          {cat.name} (
+                          <span className="text-danger mr-1">
+                            {new Intl.NumberFormat("en-NG", {
+                              style: "currency",
+                              currency: "NGN",
+                            }).format(cat?.price)}
+                          </span>
+                          )
                         </div>
                         <div>
                           <span

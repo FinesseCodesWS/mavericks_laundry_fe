@@ -92,9 +92,13 @@ export default function InvoiceTable({ thead, tbody, loading }) {
                     {item?.items?.length > 1 ? (
                       <Text>{`+${item?.items?.length}`} items</Text>
                     ) : (
-                      item.items?.map((item, index) => (
-                        <Text key={index}>{item?.menuId?.itemName}</Text>
-                      ))
+                      item.items?.map(
+                        (item, index) =>
+                          item?.menuId?.length > 0 &&
+                          item?.menuId?.map((item, index) => (
+                            <Text key={index}>{item?.itemName}</Text>
+                          ))
+                      )
                     )}
                   </Box>
                 </Td>
@@ -147,7 +151,7 @@ export default function InvoiceTable({ thead, tbody, loading }) {
 
           <div className="mb-3">
             <label htmlFor="laundryOptions" className="form-label">
-              Laundry Status
+              Invoice Status
             </label>
             <select
               value={status}

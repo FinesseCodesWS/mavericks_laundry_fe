@@ -124,6 +124,7 @@ export default function App() {
   const [mode, setMode] = useState("");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+  const [laundry, setLaundry] = useState("");
 
   const [weeks, setWeeks] = useState(
     Array.from({ length: 52 }, (_, i) => i + 1)
@@ -229,10 +230,10 @@ export default function App() {
           setIsFilteredCategory(true);
           let url = `/sales/invoices`;
   
-          if (mode || filterMonthDate || filterMonth || status) {
+          if (mode || filterMonthDate || filterMonth || laundry || status) {
             const year = filterMonth ? filterMonth.split("-")[0] : null;
             const month = filterMonth ? `${filterMonthDate} ${year}` : null;
-            url += `?orderStatus=${status || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
+            url += `?laundryOption=${laundry || ""}&status=${status || ""}&modeOfPayment=${mode || ""}&filter=month&month=${month || ""}&year=${year || ""}`;
           }
   
           const response = await axios.get(url);
@@ -250,7 +251,7 @@ export default function App() {
   
       getAllInvoices();
     }
-  }, [isLoggedIn, mode, filterMonthDate, filterMonth, status, dispatch]);
+  }, [isLoggedIn, mode, filterMonthDate, filterMonth, status, laundry, dispatch]);
   
 
   // GET ALL INVENTORIES
@@ -720,6 +721,8 @@ export default function App() {
             setMode={setMode}
             setStatus={setStatus}
             status={status}
+            laundry={laundry}
+            setLaundry={setLaundry}
           />
         }
       />
