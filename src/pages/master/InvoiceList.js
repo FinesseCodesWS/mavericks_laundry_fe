@@ -105,9 +105,9 @@ export default function InvoiceList({
                   <Option value="">Select Option</Option>
                   <Option value="new">New</Option>
                   <Option value="delivered">Delivered</Option>
-                  <Option value="washed">Washed</Option>
+                  <Option value="washAndIron">Wash & Iron</Option>
                   <Option value="sorted">Sorted</Option>
-                  <Option value="ironed">Ironed</Option>
+                  <Option value="ironOnly">Iron Only</Option>
                   <Option value="packaged">Packaged</Option>
                   <Option value="picked up">Picked Up</Option>
                   <Option value="dispatched">Dispatched</Option>

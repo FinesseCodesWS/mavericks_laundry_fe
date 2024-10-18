@@ -47,16 +47,16 @@ export default function ProductUpload() {
     category: "",
     countable: true,
     adultMalePrice: {
-      ordinary: "",
-      ironed: "",
+      washAndIron: "",
+      ironOnly: "",
     },
     adultFemalePrice: {
-      ordinary: "",
-      ironed: "",
+      washAndIron: "",
+      ironOnly: "",
     },
     childrenPrice: {
-      ordinary: "",
-      ironed: "",
+      washAndIron: "",
+      ironOnly: "",
     },
   });
   const [categories, setCategories] = useState([]);
@@ -313,16 +313,16 @@ export default function ProductUpload() {
       image: sendData.image,
       category: sendData.category,
       adultMalePrice: {
-        ordinary: sendData.adultMalePrice.ordinary,
-        ironed: sendData.adultMalePrice.ironed,
+        washAndIron: sendData.adultMalePrice.washAndIron,
+        ironOnly: sendData.adultMalePrice.ironOnly,
       },
       adultFemalePrice: {
-        ordinary: sendData.adultFemalePrice.ordinary,
-        ironed: sendData.adultFemalePrice.ironed,
+        washAndIron: sendData.adultFemalePrice.washAndIron,
+        ironOnly: sendData.adultFemalePrice.ironOnly,
       },
       childrenPrice: {
-        ordinary: sendData.childrenPrice.ordinary,
-        ironed: sendData.childrenPrice.ironed,
+        washAndIron: sendData.childrenPrice.washAndIron,
+        ironOnly: sendData.childrenPrice.ironOnly,
       },
     };
 
@@ -350,16 +350,16 @@ export default function ProductUpload() {
         itemName: response.data.data.itemName,
         category: response.data.data.category.category,
         adultMalePrice: {
-          ordinary: response.data.data.adultMalePrice.ordinary,
-          ironed: response.data.data.adultMalePrice.ironed,
+          washAndIron: response.data.data.adultMalePrice.washAndIron,
+          ironOnly: response.data.data.adultMalePrice.ironOnly,
         },
         adultFemalePrice: {
-          ordinary: response.data.data.adultFemalePrice.ordinary,
-          ironed: response.data.data.adultFemalePrice.ironed,
+          washAndIron: response.data.data.adultFemalePrice.washAndIron,
+          ironOnly: response.data.data.adultFemalePrice.ironOnly,
         },
         childrenPrice: {
-          ordinary: response.data.data.childrenPrice.ordinary,
-          ironed: response.data.data.childrenPrice.ironed,
+          washAndIron: response.data.data.childrenPrice.washAndIron,
+          ironOnly: response.data.data.childrenPrice.ironOnly,
         },
         createdBy: response.data.data.createdBy._id,
         // unitPrice: response.data.data.unitPrice,
@@ -490,57 +490,56 @@ export default function ProductUpload() {
 
               {/* Adult Male Price Fields */}
               <Col xl={12}>
-                <CardHeader title="Adult Male Price" />
-                <Row>
-                  <Col xl={6}>
-                    <LabelField
-                      type="number"
-                      label="Ordinary Price"
-                      fieldSize="w-100 h-md"
-                      name="adultMalePrice.ordinary"
-                      onChange={handleChange}
-                      defaultValue={sendData.adultMalePrice?.ordinary}
-                    />
-                  </Col>
-                  <Col xl={6}>
-                    <LabelField
-                      type="number"
-                      label="Ironed Price"
-                      fieldSize="w-100 h-md"
-                      name="adultMalePrice.ironed"
-                      onChange={handleChange}
-                      defaultValue={sendData.adultMalePrice?.ironed}
-                    />
-                  </Col>
-                </Row>
-              </Col>
+  <CardHeader title="Adult Male Price" />
+  <Row>
+    <Col xl={6}>
+      <LabelField
+        type="number"
+        label="Wash & Iron Price"
+        fieldSize="w-100 h-md"
+        name="adultMalePrice.washAndIron"
+        onChange={handleChange}
+        defaultValue={sendData?.adultMalePrice?.washAndIron}
+      />
+    </Col>
+    <Col xl={6}>
+      <LabelField
+        type="number"
+        label="Iron Only Price"
+        fieldSize="w-100 h-md"
+        name="adultMalePrice.ironOnly"
+        onChange={handleChange}
+        defaultValue={sendData?.adultMalePrice?.ironOnly}
+      />
+    </Col>
+  </Row>
+</Col>
 
-              {/* Adult Female Price Fields */}
-              <Col xl={12}>
-                <CardHeader title="Adult Female Price" />
-                <Row>
-                  <Col xl={6}>
-                    <LabelField
-                      type="number"
-                      label="Ordinary Price"
-                      fieldSize="w-100 h-md"
-                      name="adultFemalePrice.ordinary"
-                      onChange={handleChange}
-                      defaultValue={sendData.adultFemalePrice?.ordinary}
-                    />
-                  </Col>
-                  <Col xl={6}>
-                    <LabelField
-                      type="number"
-                      label="Ironed Price"
-                      fieldSize="w-100 h-md"
-                      name="adultFemalePrice.ironed"
-                      onChange={handleChange}
-                      defaultValue={sendData.adultFemalePrice?.ironed}
-                    />
-                  </Col>
-                </Row>
-              </Col>
+<Col xl={12}>
+  <CardHeader title="Adult Female Price" />
+  <Row>
+    <Col xl={6}>
+      <LabelField
+        type="number"
+        label="Wash & Iron Price"
+        fieldSize="w-100 h-md"
+        name="adultFemalePrice.washAndIron"
+        onChange={handleChange}
+        defaultValue={sendData?.adultFemalePrice?.washAndIron}
+      />
+    </Col>
+    <Col xl={6}>
+      <LabelField
+        type="number"
+        label="Iron Only Price"
+        fieldSize="w-100 h-md"
+        name="adultFemalePrice.ironOnly"
+        onChange={handleChange}
+        defaultValue={sendData?.adultFemalePrice?.ironOnly}
+      />
+    </Col>
+  </Row>
+</Col>
 
               {/* Children Price Fields */}
               <Col xl={12}>
@@ -549,21 +548,21 @@ export default function ProductUpload() {
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ordinary Price"
+                      label="Wash & Iron Price"
                       fieldSize="w-100 h-md"
-                      name="childrenPrice.ordinary"
+                      name="childrenPrice.washAndIron"
                       onChange={handleChange}
-                      defaultValue={sendData.childrenPrice?.ordinary}
+                      defaultValue={sendData.childrenPrice?.washAndIron}
                     />
                   </Col>
                   <Col xl={6}>
                     <LabelField
                       type="number"
-                      label="Ironed Price"
+                      label="Iron Only Price"
                       fieldSize="w-100 h-md"
-                      name="childrenPrice.ironed"
+                      name="childrenPrice.ironOnly"
                       onChange={handleChange}
-                      defaultValue={sendData.childrenPrice?.ironed}
+                      defaultValue={sendData.childrenPrice?.ironOnly}
                     />
                   </Col>
                 </Row>
