@@ -124,6 +124,7 @@ export default function App() {
   const [mode, setMode] = useState("");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
   const [laundry, setLaundry] = useState("");
 
   const [weeks, setWeeks] = useState(
@@ -299,7 +300,7 @@ export default function App() {
         try {
           setIsFilteredCategory(true);
           const response = await axios.get(
-            `menu/filter-by-category?status=${filterCategory}`
+            `menu/filter-by-category?status=${filterCategory || ""}&search=${searchCategory || ""}`
           );
           setPageCountMenu(response.data?.count);
           dispatch({
@@ -325,7 +326,7 @@ export default function App() {
       };
       getListsNow();
     }
-  }, [dispatch, filterCategory, isLoggedIn]);
+  }, [dispatch, filterCategory, searchCategory, isLoggedIn]);
 
   // FILTER MENU LISTS BY STATUS
   useEffect(() => {
@@ -633,6 +634,8 @@ export default function App() {
             filteredCategory={filteredCategory}
             isFilteredCategory={isFilteredCategory}
             setIsFilteredCategory={setIsFilteredCategory}
+            searchCategory={searchCategory}
+            setSearchCategory={setSearchCategory}
           />
         }
       />

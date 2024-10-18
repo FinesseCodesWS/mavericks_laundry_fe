@@ -21,6 +21,8 @@ export default function ProductList({
   setFilteredCategory,
   isFilteredCategory,
   setIsFilteredCategory,
+  searchCategory,
+  setSearchCategory
 }) {
   const [categories, setCategories] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -83,6 +85,16 @@ export default function ProductList({
                     </Option>
                   ))}
                 </Select>
+              </Col>
+              <Col xs={12} sm={6} md={4} lg={3}>
+              <LabelField
+                  type="text"
+                  label="Search by category name"
+                  fieldSize="w-100 h-md"
+                  name="itemName"
+                  onChange={(e) => setSearchCategory(e.target.value)}
+                  defaultValue={searchCategory}
+                />
               </Col>
 
               <Col xl={12}>
