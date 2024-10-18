@@ -159,7 +159,9 @@ export default function InvoiceDetails() {
                         }).format(item?.totalPrice)}
                       </Td>
                       <Td>{item?.quantity}</Td>
-                      <Td>{item?.createdBy}</Td>
+                      {item?.createdBy?.map((item, index) => (
+                        <Td>{`${item?.firstName} ${item?.lastName}`}</Td>
+                      ))}
                     </Tr>
                   ))}
                 </Tbody>
