@@ -620,6 +620,7 @@ const NewSales = () => {
   useEffect(() => {
     const getT = async () => {
       const res = await getTaxAction();
+      console.log(res);
       if (res) {
         if (res?.vat) {
           const val = {
@@ -1221,8 +1222,8 @@ const NewSales = () => {
                                   <div> <span>Send SMS to Customer</span></div>
                               </div> */}
 
-                  {tableList?.tbody?.item?.tax?.amount >= 1 &&
-                    totalAmount >= tableList?.tbody?.item?.tax?.threshold && (
+                  {tableList?.tax?.amount >= 1 &&
+                    totalAmount >= tableList?.tax?.threshold && (
                       <Col
                         xs={12}
                         sm={6}
@@ -1240,7 +1241,7 @@ const NewSales = () => {
                           {" "}
                           {/* #${totalAmount * tableList?.tax?.amount/100 }   */}
                           <input
-                            value={`${tableList?.tbody?.item?.tax?.amount}%`}
+                            value={`${tableList?.tax?.amount}%`}
                             disabled
                             type="text"
                             placeholder="0%"
@@ -1293,6 +1294,7 @@ const NewSales = () => {
                       </div>
                       {/* <Button className="mc-btn purple">Multiple</Button> */}
                     </Col>
+                    {console.log(tableList)}
                     {tableList?.tax?.amount >= 1 &&
                       totalAmount >= tableList?.tax?.threshold && (
                         <Col xs={12} sm={6} md={3} xl={3} className="button-col">
@@ -1529,9 +1531,9 @@ const NewSales = () => {
                   option={[]}
                 />
               </div> */}
-     
+           {console.log(productList?.data)}
 
-            <Col xl={12} className="salesProductContainer">
+            <Col className="salesProductContainer">
               {searchValue?.length ? filteredData?.map((p) => (
                 <Product
                   key={p._id}
@@ -1758,8 +1760,8 @@ const NewSales = () => {
               disabled={isSizeSelected}
             >
               <option value="None">Select laundry option</option>
-              <option value="ordinary">Wash only</option>
-              <option value="ironed">Wash and Iron</option>
+              <option value="ordinary">Wash and Iron</option>
+              <option value="ironed">Iron Only</option>
             </select>
           </div>
 

@@ -108,7 +108,7 @@ const SalesTable = ({ thead, tbody, deleteProduct, alterProductQuantity, updateF
                            
                                     <Text className='text-primary'
                                          title={ item?.item?.itemName }
-                                    >{`${ item?.item?.itemName} (${item?.price?.size}) [${item?.price?.laundryOptions === "ordinary" ? "O" : "I"}]`}</Text>
+                                    >{`${ item?.item?.itemName} (${item?.price?.size}) [${item?.price?.laundryOptions === "ordinary" ? "W" : "I"}]`}</Text>
                                     
                                     {/* <Icon type={ item?.item_name?.icon } /> */}
                                 </Box>

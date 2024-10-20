@@ -122,7 +122,8 @@ export async function getAllSalesByDateAction( page, date, limit) {
             "modeOfPayment": paymentMode,
             "items": sales,
             "phoneNumber": phoneNumber ? phoneNumber : null,
-            "fullName": fullname ? fullname : null
+            "fullName": fullname ? fullname : null,
+            "couponId": couponId,
         }
         
    
